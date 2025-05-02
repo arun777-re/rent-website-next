@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { Formik, FormikErrors } from "formik";
 import * as yup from "yup";
 import LocationPicker from "./LocationPicker"; // Should call setCoordinates
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createProperty } from "@/redux/slices/propertSlice";
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import Dropzone from "react-dropzone";
 import toast from "react-hot-toast";
 import { latLng } from "leaflet";
@@ -106,14 +106,17 @@ const validationSchema = yup.object().shape({
   }),
 });
 
+
+
 const PropertyForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [amenityInput, setAmenityInput] = useState("");
 
+  const {error,property} = useSelector((state:RootState)=>state.property)
+
+
   const handleSubmit = async (values: any, { resetForm }: any) => {
     const formData = new FormData();
-    console.log("Formik values.address", values.address);
-
     for (const key in values) {
       if (key === "images") {
         values.images.forEach((file: File) => formData.append("images", file));
@@ -130,7 +133,12 @@ const PropertyForm = () => {
 
     try {
       await dispatch(createProperty(formData)).unwrap();
-      toast.success("Property created successfully!");
+      if(error){
+        toast.error(error[0])
+      }else{
+        toast.success("Property created successfully!");
+
+      }
       resetForm();
     } catch (err) {
       toast.error("Property creation failed");

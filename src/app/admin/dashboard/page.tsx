@@ -21,11 +21,27 @@ import Dashboard from "@/app/Components/admin/Dashboard";
 import NotificationSender from "@/app/Components/admin/NotificationSender";
 import ViewRented from "@/app/Components/admin/ViewRented";
 import ViewSold from "@/app/Components/admin/ViewSold";
-
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { getAdmin } from "@/redux/slices/adminSlice";
+import { useRouter } from "next/navigation";
 
 const AdminDashboard = () => {
   const [page, setPage] = useState<string>("dashboard");
+  const router = useRouter();
 
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    dispatch(getAdmin()).unwrap();
+  }, []);
+
+  const admin = useSelector((state: RootState) => state.admin.admin);
+  const loading = useSelector((state: RootState) => state.admin.loading);
+  useEffect(() => {
+    if (!admin && !loading) {
+      router.push("/admin/login");
+    }
+  }, [admin, loading, router]);
 
   return (
     <div className="w-[100vw] relative h-auto mx-auto">
@@ -35,94 +51,102 @@ const AdminDashboard = () => {
             href="/"
             className="flex items-center space-x-1 rtl:space-x-reverse"
           >
-            <RiHome8Line className="text-3xl text-green-600  dark:text-gray-700" size={20}/>
+            <RiHome8Line
+              className="text-3xl text-green-600  dark:text-gray-700"
+              size={20}
+            />
             <span className="self-center text-lg font-normal whitespace-nowrap text-white dark:text-gray-700">
               Hously
             </span>
           </a>
           <div className="flex flex-col items-start relative text-white w-full h-auto gap-8">
-            <Button onClick={()=> setPage("dashboard")}
+            <Button
+              onClick={() => setPage("dashboard")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-300/60
                   active:text-white hover:text-white transition-colors duration-300"
             >
               <RxDashboard size={18} />
               <p className="text-sm font-medium  text-gray-300/60">Dashboard</p>
             </Button>
-            <Button onClick={()=> setPage("explore")}
+            <Button
+              onClick={() => setPage("explore")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-300/60
                   active:text-white hover:text-white transition-colors duration-300"
-            > 
+            >
               <MdOutlineAddHomeWork size={18} />
-              <p className="text-sm font-medium text-gray-300/60">Explore Properties</p>
+              <p className="text-sm font-medium text-gray-300/60">
+                Explore Properties
+              </p>
             </Button>
-            <Button onClick={()=> setPage("featured")}
+            <Button
+              onClick={() => setPage("featured")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-300/60
                   active:text-white hover:text-white transition-colors duration-300"
             >
               <RiHomeHeartFill size={18} />
-              <p className="text-sm font-medium text-gray-300/60">Featured Properties</p>
+              <p className="text-sm font-medium text-gray-300/60">
+                Featured Properties
+              </p>
             </Button>
-            <Button onClick={()=> setPage("favorite")}
+            <Button
+              onClick={() => setPage("favorite")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-300/60
                   active:text-white hover:text-white transition-colors duration-300"
             >
               <RiHome9Fill size={18} />
-              <p className="text-sm font-medium text-gray-300/60">Favorite Properties</p>
+              <p className="text-sm font-medium text-gray-300/60">
+                Favorite Properties
+              </p>
             </Button>
             <Button
-            onClick={() => setPage("addProperty")}
+              onClick={() => setPage("addProperty")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-300/60
                   active:text-white hover:text-white transition-colors duration-300"
             >
-              <MdOutlineAddHomeWork
-                size={25}
-                className="shadow rounded"
-              />
-              <p className="text-sm font-medium text-gray-300/60">Add Property</p>
+              <MdOutlineAddHomeWork size={25} className="shadow rounded" />
+              <p className="text-sm font-medium text-gray-300/60">
+                Add Property
+              </p>
             </Button>
             <Button
-            onClick={() => setPage("profile")}
+              onClick={() => setPage("profile")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-300/60
                   active:text-white hover:text-white transition-colors duration-300"
             >
-              <FaUserPen
-                size={25}
-                className="shadow rounded"
-              />
-              <p className="text-sm font-medium text-gray-300/60">User Profile</p>
+              <FaUserPen size={25} className="shadow rounded" />
+              <p className="text-sm font-medium text-gray-300/60">
+                User Profile
+              </p>
             </Button>
             <Button
-            onClick={() => setPage("notification")}
+              onClick={() => setPage("notification")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-500
                   active:text-white hover:text-white transition-colors duration-300"
             >
-              <FaUserPen
-                size={25}
-                className="shadow rounded"
-              />
-              <p className="text-sm font-medium text-gray-300/60">Send Notification</p>
+              <FaUserPen size={25} className="shadow rounded" />
+              <p className="text-sm font-medium text-gray-300/60">
+                Send Notification
+              </p>
             </Button>
             <Button
-            onClick={() => setPage("sold")}
+              onClick={() => setPage("sold")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-500
                   active:text-white hover:text-white transition-colors duration-300"
             >
-              <FaUserPen
-                size={25}
-                className="shadow rounded"
-              />
-              <p className="text-sm font-medium text-gray-300/60">Sold Properties</p>
+              <FaUserPen size={25} className="shadow rounded" />
+              <p className="text-sm font-medium text-gray-300/60">
+                Sold Properties
+              </p>
             </Button>
             <Button
-            onClick={() => setPage("rent")}
+              onClick={() => setPage("rent")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-500
                   active:text-white hover:text-white transition-colors duration-300"
             >
-              <FaUserPen
-                size={25}
-                className="shadow rounded"
-              />
-              <p className="text-sm font-medium text-gray-300/60">Rented Properties</p>
+              <FaUserPen size={25} className="shadow rounded" />
+              <p className="text-sm font-medium text-gray-300/60">
+                Rented Properties
+              </p>
             </Button>
           </div>
         </aside>
@@ -131,7 +155,7 @@ const AdminDashboard = () => {
             <div className="flex flex-row items-center justify-between shadow px-6 py-4 ">
               <div className="flex flex-row items-center gap-4">
                 <IoReorderThreeOutline size={25} className="shadow" />
-                   
+
                 <form className="max-w-lg w-lg mx-auto">
                   <div className="relative flex flex-row items-center justify-center">
                     <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -146,7 +170,7 @@ const AdminDashboard = () => {
                           stroke="currentColor"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                         strokeWidth="2"
+                          strokeWidth="2"
                           d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                         />
                       </svg>
@@ -168,37 +192,39 @@ const AdminDashboard = () => {
                 </form>
               </div>
               <div className="flex flex-row items-center gap-2">
-            <Image
-              src={"/images/india.png"}
-              height={25}
-              width={25}
-              alt="india flag"
-              className="shadow rounded cursor-pointer"
-            />
-            <IoMdNotificationsOutline size={25} className="shadow rounded cursor-pointer"/>
-            <Image
-              src={"/images/men.png"}
-              height={25}
-              width={25}
-              alt="men"
-              className="shadow rounded cursor-pointer"
-            />
-          </div>
+                <Image
+                  src={"/images/india.png"}
+                  height={25}
+                  width={25}
+                  alt="india flag"
+                  className="shadow rounded cursor-pointer"
+                />
+                <IoMdNotificationsOutline
+                  size={25}
+                  className="shadow rounded cursor-pointer"
+                />
+                <Image
+                  src={"/images/men.png"}
+                  height={25}
+                  width={25}
+                  alt="men"
+                  className="shadow rounded cursor-pointer"
+                />
+              </div>
             </div>
           </div>
-         <div className="relative w-full h-auto px-6 py-6 bg-gray-300/20 overflow-scroll">
-         <h1>{}</h1>
-          {page === 'dashboard' && <Dashboard/>}
-          {page === "addProperty" && <AddProperty />}
-          {page === "explore" && <ExplorePrprty/>}
-          {page === "favorite" && <FavoritePrprty/>}
-          {page === "profile" && <AdProfile/>}
-          {page === "featured" && <FeaturedPrprty/>}
-          {page === "notification" && <NotificationSender/>}
-          {page === "sold" && <ViewSold/>}
-          {page === "rented" && <ViewRented/>}
-         </div>
-
+          <div className="relative w-full h-auto px-6 py-6 bg-gray-300/20 overflow-scroll">
+            <h1>{}</h1>
+            {page === "dashboard" && <Dashboard />}
+            {page === "addProperty" && <AddProperty />}
+            {page === "explore" && <ExplorePrprty />}
+            {page === "favorite" && <FavoritePrprty />}
+            {page === "profile" && <AdProfile />}
+            {page === "featured" && <FeaturedPrprty />}
+            {page === "notification" && <NotificationSender />}
+            {page === "sold" && <ViewSold />}
+            {page === "rented" && <ViewRented />}
+          </div>
         </section>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getRequest } from "@/redux/services/api";
-import { PropertyProps } from "./propertSlice";
+import { handleFullfill, PropertyProps } from "./propertSlice";
 
 
 interface initialValProps{
@@ -143,13 +143,23 @@ export const sendNotification = createAsyncThunk(
 export const getActiveUsers = createAsyncThunk('admin/get/activeusers',async(_,thunkAPI)=>{
   try {
     const res = await getRequest('/api/admin/activeuser',null,thunkAPI);
-    console.log("data ka loda:",res)
     return res.user;
   } catch (error:any) {
     return thunkAPI.rejectWithValue(error.message)
   }
 })
 
+export const getAdmin = createAsyncThunk('admin/getAdmin',async(_,thunkAPI)=>{
+  try {
+    const res = await getRequest('/api/admin/get-admin',null,thunkAPI);
+    return res;
+  } catch (error:any) {
+    return thunkAPI.rejectWithValue(error.message)
+  }
+})
+
+
+export 
 
 const adminSlice = createSlice({
   name: "admin",
@@ -203,7 +213,13 @@ const adminSlice = createSlice({
       .addCase(sendNotification.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string[];
-      });
+      })
+      .addCase(getAdmin.fulfilled,(state,action)=>{
+        state.admin = action.payload;
+        state.loading = false;
+        state.error = null;
+        
+      })
   },
 });
 

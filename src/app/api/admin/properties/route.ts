@@ -9,13 +9,17 @@ import slugify from 'slugify';
 import {v4 as uuidv4} from 'uuid'
 
 interface CustomRequest extends NextRequest {
-    admin: { id: string };
+    admin?:any;
 }
 
 export async function POST(req:CustomRequest){
-await verifyTkn(req);
+    const tokenResult = await verifyTkn(req);
+    if(tokenResult instanceof NextResponse){
+      return tokenResult
+    }
     try {
-    const agent = req.admin.id;
+    const agent = req.admin;
+    console.log('agent is:',agent)
     const formData = await req.formData();
     if(!formData){
         return createResponse("provide valid input data",false,400);
@@ -107,9 +111,9 @@ await verifyTkn(req);
    await newProperty.save();
    return createResponse("property created successfully",true,201);
 
-} catch (error) {
-        console.error(error);
-        return createResponse("Internal Server Error",false,500);
+} catch (error:any) {
+        console.error(error.message);
+        return createResponse(`Internal Server Error:${error.message}`,false,500);
 }
 
 }

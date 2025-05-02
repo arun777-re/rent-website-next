@@ -21,9 +21,10 @@ import { getUser } from "@/redux/slices/userSlice";
 import LastActivity from "@/app/Components/user/LastActivity";
 import ViewFavorate from "@/app/Components/user/ViewFavorate";
 
+
 const UserDashboard = () => {
   const [page, setPage] = useState<string>("dashboard");
-  const dispatch = useDispatch<AppDispatch>();
+   const dispatch = useDispatch<AppDispatch>();
 
   // get user when open dashboard
   useEffect(() => {

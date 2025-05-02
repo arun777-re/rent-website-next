@@ -22,9 +22,7 @@ try {
       return rejectWithValue(errorData);
     }
  
-    if(res.status === 200){
         return res.json();
-    }
 } catch (error:any) {
     const errorData = error.message;
     return rejectWithValue(errorData)

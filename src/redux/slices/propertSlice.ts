@@ -53,7 +53,7 @@ export interface PropertyProps {
 
 export interface initialValProps{
     property:PropertyProps;
-    error?:object | null;
+    error?:string[] | null;
     loading:boolean;
 }
 export interface SearchParams {
@@ -71,7 +71,7 @@ const initialValues:initialValProps =  {
       data:[],
       totalPages:0
     },
-    error:null,
+    error:[],
     loading:false
 }
 
@@ -81,19 +81,21 @@ export const handleFullfill = (state:initialValProps,action:any)=>{
   state.property = action.payload;
 }
 
-export const createProperty = createAsyncThunk('/admin/createproperty',async(formData:FormData,{rejectWithValue})=>{
+export const createProperty = createAsyncThunk<PropertyProps,FormData,
+{rejectValue:string[]}>('/admin/createproperty',async(formData:FormData,{rejectWithValue})=>{
 try {
     const res = await fetch('/api/admin/properties',{
         method:"POST",
         body:formData
     });
-
-    if(res.status === 201){
-        return res.json();
-    }
+    const result = await res.json();
+if(!result.ok){
+  return rejectWithValue(result)
+}
+        return result;
 } catch (error:any) {
     console.error(error.message)
-    return rejectWithValue('Error during create property')
+    return rejectWithValue([`Error during create property:${error.message}`])
 }
 });
 
@@ -313,6 +315,10 @@ const propertySlice = createSlice({
     extraReducers:(builder)=>{
         builder
        .addCase(createProperty.fulfilled,handleFullfill)
+       .addCase(createProperty.rejected,(state,action)=>{
+        state.loading = false;
+        state.error = action.payload || ["Failed to create Property"]
+       })
        .addCase(getPropertyByCategory.fulfilled,handleFullfill)
        .addCase(getPropertyByAdvanceSearch.fulfilled,handleFullfill)
        .addCase(getRecommendedProperties.fulfilled,handleFullfill)
