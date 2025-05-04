@@ -1,8 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { RiHome8Line } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 import Button from "../_component/Button";
 import { CgUser } from "react-icons/cg";
@@ -28,12 +26,11 @@ const Navbar: React.FC<navProps> = ({
   onScrollColor = "third",
   onScrollHover = "first",
 }) => {
-  const path = usePathname();
   const router = useRouter();
 
   const [scrool, setScrool] = useState<boolean>(false);
   // get user if it is logged in
-  const {users,loading,error }= useSelector((state:RootState )=> state.user);
+  const {user}= useSelector((state:RootState )=> state.user);
 
 const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
@@ -64,9 +61,9 @@ const dispatch = useDispatch<AppDispatch>();
     
   },[])
 
-  const handleUserDashboard = (e:React.MouseEvent<HTMLButtonElement>)=>{
+  const handleUserDashboard = (e:React.MouseEvent<SVGElement>)=>{
       e.preventDefault();
-      if(users && users?.success === true){
+      if(user && user?.success === true){
         router.push('/user/user-dashboard');
       }else{
         toast.error('You have to signUp/Login first')
@@ -74,7 +71,12 @@ const dispatch = useDispatch<AppDispatch>();
 
   }
 
-  const small = window.innerWidth < 800;
+  let small;
+  if(typeof window !== 'undefined'){
+     small = window.innerWidth < 800;
+
+  }
+
   return (
     <>
       {!small ? (
@@ -144,7 +146,7 @@ const dispatch = useDispatch<AppDispatch>();
                   className="bg-first text-white rounded-full 
                       cursor-pointer hover:bg-green-700"
                 />
-                {users && users.success ? ( <Button
+                {user && user?.success ? ( <Button
                   onClick={handleLogout}
                   className="md:px-4 md:py-2 lg:px-5 lg:py-2 bg-green-600 rounded-full cursor-pointer
                 hover:bg-green-700 

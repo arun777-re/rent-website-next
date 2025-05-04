@@ -19,6 +19,7 @@ interface CloudinaryUploadResponse {
 // upload a single file
 
 export const uploadImage = async(file:File):Promise<CloudinaryUploadResponse>=>{
+    try {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
     const base64Image = buffer.toString('base64');
@@ -32,16 +33,36 @@ export const uploadImage = async(file:File):Promise<CloudinaryUploadResponse>=>{
             }
         });
     });
+} catch (error:any) {
+        throw new Error(error.message)
+}
 }
 
 export const uploadImages = async(files:File[]):Promise<string[]> =>{
     if(files.length === 0 || files.length >10){
         throw new Error("Please upload between 1 and 10 images")
     }
-    const uploads = files.map(uploadImage);
-    const result = await Promise.all(uploads);
-    const urls = result.map((res) => res.secure_url);
+
+    const urls: string[] = [];
+
+    for (const file of files) {
+      try {
+        const res = await Promise.race([
+          uploadImage(file),
+          new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error("Upload timeout")), 60000) // 60 seconds per file
+          ),
+        ]);
+        urls.push(res.secure_url);
+      } catch (err: any) {
+        console.error(`Upload failed for one image: ${err.message}`);
+        throw new Error("Image upload failed. Try smaller images or fewer files.");
+      }
+    }
+  
     return urls;
+  
+ 
 }
       
             

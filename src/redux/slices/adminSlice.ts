@@ -1,27 +1,73 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getRequest } from "@/redux/services/api";
-import { handleFullfill, PropertyProps } from "./propertSlice";
 
-
-interface initialValProps{
-  admin:PropertyProps,
-  loading:boolean,
-  error?:string[] | null,
-  code?:string,
-  activeUsers?:null  
+export interface DataProps {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  agencyName: string;
+  agencyAddress: string;
+  licenseNumber: number;
+  isMainAdmin: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
-const initialState:initialValProps = {
-  admin:{
-    message:"",
-    status:0,
-    data:[],
-    success:false,
+interface AdminProps {
+  message?: string;
+  status?: number;
+  data?: DataProps | null;
+  success?: boolean;
+  totalPages?: number;
+  totalItems?: number;
+}
+
+export interface ErrorProps {
+  message?: string;
+  status?: number;
+  success?: boolean;
+}
+interface InitialValProps {
+  admin: AdminProps;
+  loading: boolean;
+  error?: ErrorProps;
+  code?: string;
+  activeUsers?: number;
+}
+
+interface SearchParams {
+  propertyId?:string;
+  status?:string;
+}
+const initialState: InitialValProps = {
+  admin: {
+    message: "",
+    status: 0,
+    data: {
+      _id: "",
+      email: "",
+      name: "",
+      agencyName: "",
+      licenseNumber: 0,
+      isMainAdmin: false,
+      agencyAddress: "",
+      phone: "",
+      createdAt: "",
+      updatedAt: "",
+    },
+    success: false,
+    totalItems: 0,
+    totalPages: 0,
   },
   loading: false,
-  error: [],
-  code:'',
-  activeUsers:null
+  error: {
+    message: "",
+    status: 0,
+    success: false,
+  },
+  code: "",
+  activeUsers: 0,
 };
 
 // create a thunk api
@@ -32,10 +78,10 @@ export const signupAdmin = createAsyncThunk(
       try {
         const res = await fetch("/api/auth/signup", {
           method: "POST",
-         headers:{
-            "Content-Type":"application/json"
-         },
-          body:JSON.stringify(formData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         });
         if (res.ok) {
           const data = await res.json();
@@ -93,7 +139,7 @@ export const createCode = createAsyncThunk(
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({code:formData}),
+        body: JSON.stringify({ code: formData }),
       });
 
       if (res.ok) {
@@ -115,53 +161,87 @@ export const sendNotification = createAsyncThunk(
   async (formData: any, { rejectWithValue }) => {
     try {
       if (!formData) throw new Error("please provide formData");
-      const res = await fetch("/api/admin/create-notification?access='secure'", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        "/api/admin/create-notification?access='secure'",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(formData),
+        }
+      );
+      const data = await res.json();
 
-      if (res.ok) {
-        const data = await res.json();
-        return data;
-      } else {
-        const errorData = await res.json();
-        rejectWithValue(errorData);
+      if (!res.ok) {
+        rejectWithValue(data);
       }
+      return data;
     } catch (error: any) {
       const errorData = error.message;
-      rejectWithValue({ errorData });
-      throw new Error("login during admin login");
+      return rejectWithValue({ errorData });
     }
   }
 );
 
+export const getAdmin = createAsyncThunk(
+  "admin/getAdmin",
+  async (_, thunkAPI) => {
+    try {
+      const res = await getRequest("/api/admin/get-admin", null, thunkAPI);
+      return res;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
-export const getActiveUsers = createAsyncThunk('admin/get/activeusers',async(_,thunkAPI)=>{
+export const getActiveUsers = createAsyncThunk(
+  "admin/getactiveusers",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await fetch("/api/user/get-activeuser", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        return rejectWithValue(result.message);
+      }
+      return result;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const changeStatus = createAsyncThunk('admin/changestatus',async(data:SearchParams,{rejectWithValue})=>{
   try {
-    const res = await getRequest('/api/admin/activeuser',null,thunkAPI);
-    return res.user;
-  } catch (error:any) {
-    return thunkAPI.rejectWithValue(error.message)
+    const res = await fetch(`/api/admin/change-status?status=${data.status}&propertyId=${data.propertyId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      return rejectWithValue(result.message);
+    }
+    return result;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
   }
 })
-
-export const getAdmin = createAsyncThunk('admin/getAdmin',async(_,thunkAPI)=>{
-  try {
-    const res = await getRequest('/api/admin/get-admin',null,thunkAPI);
-    return res;
-  } catch (error:any) {
-    return thunkAPI.rejectWithValue(error.message)
-  }
-})
-
-
-export 
-
-const adminSlice = createSlice({
+export const adminSlice = createSlice({
   name: "admin",
   initialState,
   reducers: {},
@@ -169,7 +249,7 @@ const adminSlice = createSlice({
     builder
       .addCase(signupAdmin.pending, (state, action) => {
         state.loading = true;
-        state.error = null;
+        state.error = {message:'',status:0,success:false}
       })
       .addCase(signupAdmin.fulfilled, (state, action) => {
         state.loading = false;
@@ -179,7 +259,7 @@ const adminSlice = createSlice({
           console.error("No admin data received");
         }
 
-        state.error = null;
+        state.error = {message:'',status:0,success:false}
       })
       .addCase(loginAdmin.fulfilled, (state, action) => {
         state.loading = false;
@@ -188,38 +268,41 @@ const adminSlice = createSlice({
         } else {
           console.error("No admin data received");
         }
-        state.error = null;
+        state.error = {message:'',status:0,success:false}
       })
       .addCase(createCode.fulfilled, (state, action) => {
         state.loading = false;
         state.code = action.payload;
-        state.error = null;
-      })
-      .addCase(getActiveUsers.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-        state.activeUsers = action.payload;
+        state.error = {message:'',status:0,success:false}
       })
 
       .addCase(sendNotification.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
-
+        state.error = {message:'',status:0,success:false}
       })
       .addCase(sendNotification.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.error = {message:'',status:0,success:false}
       })
       .addCase(sendNotification.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string[];
+        state.error = action.payload as ErrorProps;
       })
-      .addCase(getAdmin.fulfilled,(state,action)=>{
+      .addCase(getAdmin.fulfilled, (state, action) => {
         state.admin = action.payload;
         state.loading = false;
-        state.error = null;
+        state.error = {message:'',status:0,success:false}
+      })
+      .addCase(changeStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = {message:'',status:0,success:false};
         
       })
+      .addCase(getActiveUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = {message:'',status:0,success:false}
+        state.activeUsers = action.payload?.totalItems;
+      });
   },
 });
 

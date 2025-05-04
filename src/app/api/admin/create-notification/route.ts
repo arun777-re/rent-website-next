@@ -12,8 +12,15 @@ const appId = process.env.PUSHER_APP_ID || '';
   const secret = process.env.PUSHER_APP_SECRET || '';
   const cluster = process.env.PUSHER_CLUSTER || '';
 
-export async function POST(req:NextRequest,res:NextResponse){
-await verifyAccess(req,res);
+interface CustomReq extends NextRequest{
+  user:{string:any}
+}
+
+export async function POST(req:CustomReq,res:NextResponse){
+const authResult = await verifyAccess(req,res);
+if(authResult instanceof NextResponse){
+  return authResult;
+}
     try {
         const {title,message,type='info'} =await req.json();
         if (!title || !message) {
@@ -39,12 +46,18 @@ await verifyAccess(req,res);
             useTLS: true,
           });
         
-          activeUsers.forEach((user:any)=>{
-     pusher.trigger(user._id.toString(),'new-notification',{
-      title,message,type,
+          await Promise.all(
+            activeUsers.map(user =>
+              pusher.trigger((user._id as string).toString(), 'new-notification', {
+                title,
+                message,
+                type,
+                timestamp: new Date().toISOString(),
+              })
+            )
+          );
+          
       
-     })     
-    });
 
     return createResponse('Message sent to all active users',true,201);
 

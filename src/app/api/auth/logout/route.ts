@@ -1,6 +1,5 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { dbConnect } from "@/lib/db";
-import { verifyTkn, verifyUserToken } from "@/lib/middleware/verifyToken";
+import { verifyUserToken } from "@/lib/middleware/verifyToken";
 import { NextRequest, NextResponse } from "next/server";
 import { createResponse } from "@/lib/middleware/error";
 import { cookies } from "next/headers";
@@ -12,7 +11,8 @@ interface CustomNextApiRequest extends NextRequest {
 }
 
 export async function POST(req: CustomNextApiRequest,res:NextResponse) {
-  await verifyUserToken(req,res);
+   const authResult = await verifyUserToken(req,res);
+   if(authResult instanceof NextResponse) return authResult;
   try {
     const user = req?.user;
     user.isActive = false;

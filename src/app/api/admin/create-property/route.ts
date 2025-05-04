@@ -1,12 +1,13 @@
 import { dbConnect } from "@/lib/db";
-await dbConnect();
 import Property from "@/models/Property";
 import { NextResponse,NextRequest} from "next/server";
-import { uploadImage, uploadImages } from "@/lib/middleware/cloudinary";
-import { createResponse, handleValidation } from "@/lib/middleware/error";
+import { uploadImages } from "@/lib/middleware/cloudinary";
+import { createResponse, handleValidation, paginationFunc } from "@/lib/middleware/error";
 import { verifyTkn } from "@/lib/middleware/verifyToken";
 import slugify from 'slugify';
 import {v4 as uuidv4} from 'uuid'
+
+await dbConnect();
 
 interface CustomRequest extends NextRequest {
     admin?:any;
@@ -19,15 +20,18 @@ export async function POST(req:CustomRequest){
     }
     try {
     const agent = req.admin;
-    console.log('agent is:',agent)
     const formData = await req.formData();
+
+    console.log("formdata is",formData)
+
+
     if(!formData){
         return createResponse("provide valid input data",false,400);
     }
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const price = formData.get("price") as string;
-    const type = formData.get("type") as string;
+    const category = formData.get("category") as string;
     const bedrooms = formData.get("bedrooms") as string;
     const bathrooms = formData.get("bathrooms") as string;
     const area = formData.get("area") as string;
@@ -39,23 +43,12 @@ export async function POST(req:CustomRequest){
     // geojson location
     const latitude = Number(formData.get("latitude"));
     const longitude = Number(formData.get("longitude"));
-    const locationData = {
-        type: "Point",
-        coordinates: [longitude, latitude],
-    };
+ 
 
-    const address = {
-        city: formData.get("city") as string,
-        state: formData.get("state") as string,
-        country: formData.get("country") as string,
-        postalCode: formData.get("postalCode") as string,
-    }
-    const owner = {
-        name: formData.get("ownerName") as string,
-        phone: formData.get("ownerPhone") as string,
-        email: formData.get("ownerEmail") as string,
-        address: formData.get("ownerAddress") as string,
-    };
+    const locationData = JSON.parse(formData.get("location") as string);
+    const address = JSON.parse(formData.get("address") as string);
+    const owner = JSON.parse(formData.get("owner") as string);
+    
 
     if(images.length === 0){
         return createResponse("Upload at least one image",false,400);
@@ -68,7 +61,7 @@ export async function POST(req:CustomRequest){
         title,
         description,
         price,
-        type,
+        category,
         bedrooms,
         bathrooms,
         area,
@@ -93,7 +86,7 @@ export async function POST(req:CustomRequest){
     title,
     description,
     price,
-    type,
+    category,
     bedrooms,
     bathrooms,
     area,
@@ -119,19 +112,3 @@ export async function POST(req:CustomRequest){
 }
 
 
-// to get all the properties
-export async function GET(req:CustomRequest){
-    const authResult = await verifyTkn(req);
-  if (authResult instanceof NextResponse) return authResult;
-    try {
-        const allProperty = await Property.find();
-        if(allProperty.length === 0){
-            return createResponse('No property to show',true,200,[]);
-        }
-        
-        return createResponse('Fetched all properties successfully',true,200,allProperty);
-    } catch (error:any) {
-        console.error("Error during get Property",error.message);
-        return createResponse(`${error.message}`,false,500)
-    }
-}

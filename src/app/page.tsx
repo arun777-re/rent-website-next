@@ -1,11 +1,11 @@
 'use client'
-import Image from "next/image";
 import Navbar from "./Components/Navbar";
 import Banner from "./Components/Banner";
 import ListingCategory from "./Components/ListingCategory";
 import FeaturedProperties from "./Components/FeaturedProperties";
 import Footer from "./Components/Footer";
 import HowItWorks from "./Components/HowItWorks";
+import Testimonials from "./Components/Testimonials";
 
 export default function Home() {
 
@@ -16,6 +16,7 @@ export default function Home() {
     <ListingCategory/>
     <HowItWorks/>
     <FeaturedProperties/>
+    <Testimonials/>
     <Footer/>
    </div>
   );

@@ -6,7 +6,7 @@ import Footer from "@/app/Components/Footer";
 import Button from "@/app/_component/Button";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoHomeOutline } from "react-icons/io5";
-import { FaIndianRupeeSign, FaRupeeSign } from "react-icons/fa6";
+import { FaIndianRupeeSign} from "react-icons/fa6";
 import PropertyCard from "@/app/_component/PropertyCard";
 import { useParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +14,6 @@ import { AppDispatch, RootState } from "@/redux/store";
 import {
   getPropertyByAdvanceSearch,
   getPropertyByCategory,
-  PropertyItem,
 } from "@/redux/slices/propertSlice";
 import {
   BiSolidSkipPreviousCircle,
@@ -53,7 +52,7 @@ const ListingByCategory = () => {
     }
   }, [category, currentPage]);
 
-  const { property } = useSelector((state: RootState) => state.property);
+  const { property } = useSelector((state: RootState) => state?.property);
   const totalPages = property?.totalPages ?? 1;
   const properties = property?.data || [];
 

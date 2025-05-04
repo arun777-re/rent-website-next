@@ -20,7 +20,7 @@ const FeaturedProperties = () => {
 // when component loads then fetch api to get recommended properties
   useEffect(()=>{
   dispatch(getRecommendedProperties()).unwrap();
-  },[])
+  },[dispatch])
 
 
   // getting recommended properties after api call

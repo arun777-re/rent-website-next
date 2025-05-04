@@ -1,14 +1,12 @@
 "use client";
-
 import Button from "@/app/_component/Button";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { RiHome8Line } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
 import { MdOutlineAddHomeWork } from "react-icons/md";
 import { IoReorderThreeOutline } from "react-icons/io5";
 import AddProperty from "@/app/Components/admin/AddProperty";
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { MdOutlineMapsHomeWork } from "react-icons/md";
 import { RiHomeHeartFill } from "react-icons/ri";
 import { RiHome9Fill } from "react-icons/ri";
 import { FaUserPen } from "react-icons/fa6";
@@ -25,15 +23,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { getAdmin } from "@/redux/slices/adminSlice";
 import { useRouter } from "next/navigation";
+import { getPropertyByOwner } from "@/redux/slices/propertSlice";
+import ViewProperty from "@/app/Components/admin/ViewProperty";
+import { RiNotification3Line } from "react-icons/ri";
+import { AiTwotonePropertySafety } from "react-icons/ai";
+import { MdOutlineBedroomParent } from "react-icons/md";
 
 const AdminDashboard = () => {
+  const [value, setValue] = useState<string>("");
+  const [property, setProperty] = useState([]);
   const [page, setPage] = useState<string>("dashboard");
   const router = useRouter();
 
   const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
     dispatch(getAdmin()).unwrap();
-  }, []);
+    // eslint-disable-next-line
+  }, [dispatch]);
 
   const admin = useSelector((state: RootState) => state.admin.admin);
   const loading = useSelector((state: RootState) => state.admin.loading);
@@ -41,12 +48,34 @@ const AdminDashboard = () => {
     if (!admin && !loading) {
       router.push("/admin/login");
     }
+    // eslint-disable-next-line
   }, [admin, loading, router]);
+
+  // form
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (value) {
+        dispatch(getPropertyByOwner(value))
+          .unwrap()
+          .then((res) => {
+            const data = res.data;
+            setProperty(data);
+            setValue("");
+            setPage("property");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    [value]
+  );
 
   return (
     <div className="w-[100vw] relative h-auto mx-auto">
       <div className="w-full flex flex-row relative">
-        <aside className="w-[20%] min-h-screen relative flex flex-col items-start justify-start gap-10 p-5 bg-black text-white">
+        <aside className="w-[20%] min-h-screen sticky top-0 fix flex flex-col items-start justify-start gap-10 p-5 bg-black text-white">
           <a
             href="/"
             className="flex items-center space-x-1 rtl:space-x-reverse"
@@ -123,7 +152,7 @@ const AdminDashboard = () => {
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-500
                   active:text-white hover:text-white transition-colors duration-300"
             >
-              <FaUserPen size={25} className="shadow rounded" />
+              <RiNotification3Line size={25} className="shadow rounded" />
               <p className="text-sm font-medium text-gray-300/60">
                 Send Notification
               </p>
@@ -133,17 +162,17 @@ const AdminDashboard = () => {
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-500
                   active:text-white hover:text-white transition-colors duration-300"
             >
-              <FaUserPen size={25} className="shadow rounded" />
+              <AiTwotonePropertySafety size={25} className="shadow rounded" />
               <p className="text-sm font-medium text-gray-300/60">
                 Sold Properties
               </p>
             </Button>
             <Button
-              onClick={() => setPage("rent")}
+              onClick={() => setPage("rented")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-500
                   active:text-white hover:text-white transition-colors duration-300"
             >
-              <FaUserPen size={25} className="shadow rounded" />
+              <MdOutlineBedroomParent size={25} className="shadow rounded" />
               <p className="text-sm font-medium text-gray-300/60">
                 Rented Properties
               </p>
@@ -156,7 +185,7 @@ const AdminDashboard = () => {
               <div className="flex flex-row items-center gap-4">
                 <IoReorderThreeOutline size={25} className="shadow" />
 
-                <form className="max-w-lg w-lg mx-auto">
+                <form className="max-w-lg w-lg mx-auto" onSubmit={handleSubmit}>
                   <div className="relative flex flex-row items-center justify-center">
                     <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                       <svg
@@ -179,7 +208,12 @@ const AdminDashboard = () => {
                       type="search"
                       id="default-search"
                       className="block w-full p-2 ps-10 text-sm text-gray-800 rounded-lg bg-white focus:border-none focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Search"
+                      placeholder="Enter Owner Name"
+                      name="ownerName"
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setValue(e.target.value)
+                      }
+                      value={value}
                       required
                     />
                     <button
@@ -213,7 +247,7 @@ const AdminDashboard = () => {
               </div>
             </div>
           </div>
-          <div className="relative w-full h-auto px-6 py-6 bg-gray-300/20 overflow-scroll">
+          <div className="relative w-full h-auto px-6 py-6 bg-gray-300/20 overflow-y-scroll">
             <h1>{}</h1>
             {page === "dashboard" && <Dashboard />}
             {page === "addProperty" && <AddProperty />}
@@ -224,6 +258,9 @@ const AdminDashboard = () => {
             {page === "notification" && <NotificationSender />}
             {page === "sold" && <ViewSold />}
             {page === "rented" && <ViewRented />}
+            {page === "property" && (
+              <ViewProperty properties={property} ownerName={value} />
+            )}
           </div>
         </section>
       </div>

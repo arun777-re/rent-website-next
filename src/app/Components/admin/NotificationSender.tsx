@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { sendNotification } from '@/redux/slices/adminSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
+import toast from 'react-hot-toast';
 
 const initialVal = {
   title: '',
@@ -25,13 +26,18 @@ const NotificationSender = () => {
 
   const handleOnSubmit = useCallback(async (values: any, { resetForm }: any) => {
     try {
-      dispatch(sendNotification(values));
+      dispatch(sendNotification(values)).unwrap().then((res)=>{
+        toast.success('Notification Sent')
+      }).catch((error)=>{
+        toast.error('Failed Notification')
+      });
       resetForm();
     } catch (error) {
       console.error(error);
       setFeedback('Something went wrong.');
     }
-  }, []);
+    // eslint-disable-nect-line
+  }, [dispatch]);
 
   return (
     <div className="w-full max-w-xl mx-auto p-6 bg-white rounded shadow">

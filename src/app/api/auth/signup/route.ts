@@ -7,11 +7,12 @@ import jwt from 'jsonwebtoken';
 import { cookies } from "next/headers";
 import dotenv from 'dotenv';
 dotenv.config();
+ dbConnect();
 
 const secret = process.env.JWT_SECRET || '';
 
 export async function POST(req: NextRequest) {
-  await dbConnect();
+  
   try {
     const body = await req.json();
 
@@ -114,7 +115,7 @@ export async function POST(req: NextRequest) {
       return createResponse('Admin created successfully',true,201);
     }
 
-    return createResponse('Invalid REquest',false,400);
+    return createResponse('Invalid Request',false,400);
   } catch (error: any) {
     console.error(error.message);
     return createResponse(`${error.message}`,false,500);

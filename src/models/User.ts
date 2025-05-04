@@ -20,11 +20,15 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true,
+        min:6,
+        max:10,
         validate:{
             validator:(values:string)=>{
-                const passmatch = /^([A-Za-z0-9@#$%*]){6,}$/
-                return passmatch.test(values)
-            }
+                const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+                return strongPassword.test(values);
+            },
+            message:
+            'Password must be at least 6 characters long and include an uppercase letter, lowercase letter, number, and special character.',
         }
     },
     isActive:{
@@ -45,9 +49,9 @@ const userSchema = new mongoose.Schema({
         next();
     });
 
-userSchema.methods.comparePass = async function (candidatePassword: string): Promise<boolean> {
-    return await bcrypt.compare(candidatePassword, this.password);
-  };
+    userSchema.methods.comparePassword = async function (candidatePassword: string) {
+        return bcrypt.compare(candidatePassword, this.password);
+      };
 
 const User = mongoose.models.User || mongoose.model('User',userSchema);
 

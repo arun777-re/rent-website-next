@@ -1,10 +1,10 @@
 "use client"
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback} from "react";
 import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch ,RootState} from "@/redux/store";
-import { loginAdmin,signupAdmin } from "@/redux/slices/adminSlice";
+import { useDispatch} from "react-redux";
+import { AppDispatch} from "@/redux/store";
+import {signupAdmin } from "@/redux/slices/adminSlice";
 import { RiHome8Line } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 

@@ -6,19 +6,21 @@ import storage from 'redux-persist/lib/storage';
 import userReducer from '@/redux/slices/userSlice';
 import adminReducer from '@/redux/slices/adminSlice';
 import propertyReducer from '@/redux/slices/propertSlice';
+import cardReducer from '@/redux/slices/cardSlice'
 
 // configuration for the persisted reducer
 const persistConfig = {
     key:'root',
     storage,
-    whitelist:['user','admin','job']
+    whitelist:['user','admin','job','card']
 }
 
 // object of the root reducer
 const rootReducer = {
     user:userReducer,
     admin:adminReducer,
-     property:propertyReducer
+     property:propertyReducer,
+     card:cardReducer
 }
 
 // make the persisted reducers

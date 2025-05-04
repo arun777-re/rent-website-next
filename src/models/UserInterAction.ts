@@ -4,7 +4,9 @@ import mongoose from 'mongoose';
 const userInteractionSchema = new mongoose.Schema({
     userId:{type:mongoose.Schema.Types.ObjectId,ref:'User'},
     category:String,
-    location:String,
+    propertyId:{
+       type:mongoose.Schema.Types.ObjectId,ref:'Property'
+    },
     type:{type:String,enum:["click","view"],required:true},
     count:{type:Number,default:1},
 

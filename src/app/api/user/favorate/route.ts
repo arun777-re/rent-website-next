@@ -18,14 +18,17 @@ export async function POST(req: CustomReq, res: NextResponse) {
     const { searchParams } = new URL(req.url);
 
     const propertyId = searchParams.get("propertyId");
+    const favorateType = searchParams.get("type");
     // handlevalidation for both
     handleValidation({
       userId,
       propertyId,
+      favorateType
     });
     const createFavorate = new Favorite({
       userId,
       propertyId,
+      favorateType
     });
 
     await createFavorate.save();
@@ -35,6 +38,7 @@ export async function POST(req: CustomReq, res: NextResponse) {
     return createResponse(`${error.message}`, false, 500);
   }
 }
+
 
 // getting all the favorite property associated with a user
 export async function GET(req: CustomReq, res: NextResponse) {

@@ -1,8 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
-import Agent from "@/models/AgentSchema";
 import { dbConnect } from "@/lib/db";
 import { createResponse, handleValidation } from "@/lib/middleware/error";
-import InviteCode from "@/models/InviteCode";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import dotenv from "dotenv";
@@ -29,7 +27,6 @@ export async function POST(req: NextRequest) {
     const email = body.email;
     const phone = body.phone;
     const password = body.password;
-    console.log(body)
 
     // handle validation
     handleValidation({
@@ -37,43 +34,45 @@ export async function POST(req: NextRequest) {
       lastName,
       email,
       password,
-      phone
+      phone,
     });
-
-   
 
     const newUser = new User({
       firstName,
       lastName,
       email,
       password,
-      phone
+      phone,
     });
 
     await newUser.save();
-const cookie = await cookies();
-const accesstoken = jwt.sign({id:newUser._id},secret,{expiresIn:"7d"});
-const refreshtoken = jwt.sign({id:newUser._id},secret,{expiresIn:"30d"});
+    const cookie = await cookies();
+    const accesstoken = jwt.sign({ id: newUser._id }, secret, {
+      expiresIn: "7d",
+    });
+    const refreshtoken = jwt.sign({ id: newUser._id }, secret, {
+      expiresIn: "30d",
+    });
 
-cookie.set({
-    name: "accesstoken",
-    value: accesstoken,
-    httpOnly: true,
-    sameSite: "strict",
-    maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
-    path: "/",
-  });
+    cookie.set({
+      name: "accesstoken",
+      value: accesstoken,
+      httpOnly: true,
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
+      path: "/",
+    });
 
-  cookie.set({
-    name: "refreshtoken",
-    value: refreshtoken,
-    httpOnly: true,
-    sameSite: "strict",
-    maxAge: 30 * 24 * 60 * 60, // 7 days in seconds
-    path: "/",
-  });
+    cookie.set({
+      name: "refreshtoken",
+      value: refreshtoken,
+      httpOnly: true,
+      sameSite: "strict",
+      maxAge: 30 * 24 * 60 * 60, // 7 days in seconds
+      path: "/",
+    });
 
-    return createResponse("Admin created successfully", true, 201,[]);
+    return createResponse("Admin created successfully", true, 201, []);
   } catch (error: any) {
     console.error(error.message);
     return createResponse(`${error.message}`, false, 500);

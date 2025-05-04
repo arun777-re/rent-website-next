@@ -1,6 +1,6 @@
 "use client";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import axios from "axios";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";

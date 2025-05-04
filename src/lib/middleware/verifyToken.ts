@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt, { JsonWebTokenError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import Agent from "@/models/AgentSchema";
 import { cookies } from "next/headers";
 import { createResponse } from "./error";
@@ -11,6 +11,7 @@ interface CustomReq extends NextRequest {
 }
 
 const secret = process.env.JWT_SECRET || "";
+
 export const verifyTkn = async (req: CustomReq) => {
   try {
     const cookie = await cookies();
@@ -26,9 +27,8 @@ export const verifyTkn = async (req: CustomReq) => {
     if (!admin) {
       throw new Error('Admin not found');
     }
-
-    console.log("admin is", admin);
     req.admin = admin;
+
     return ;
   } catch (error: any) {
     console.error("JWT verification error", error.message);
@@ -41,6 +41,7 @@ export const verifyTkn = async (req: CustomReq) => {
   }
 };
 
+// middleware to verify user access token
 export const verifyUserToken = async (req: CustomReq, res: NextResponse) => {
   try {
     const cookie = await cookies();
@@ -50,11 +51,7 @@ export const verifyUserToken = async (req: CustomReq, res: NextResponse) => {
     if (!token) {
       const refreshToken = cookie.get("refreshtoken")?.value;
       if (!refreshToken) {
-        return createResponse(
-          "No Token provided , authentication denied",
-          false,
-          401
-        );
+      throw new Error('refresh token is not available login/signup again')
       }
 
       // Verify the refresh token
@@ -63,7 +60,7 @@ export const verifyUserToken = async (req: CustomReq, res: NextResponse) => {
       // Find the user based on the decoded ID from the refresh token
       const user = await User.findById(decodedRefresh.id);
       if (!user) {
-        createResponse("User Not Found", false, 401);
+        throw new Error('user not found')
       }
 
       // Generate new access token and refresh token
@@ -97,7 +94,7 @@ export const verifyUserToken = async (req: CustomReq, res: NextResponse) => {
     // Find the user based on the decoded ID from the access token
     const user = await User.findById(decoded.id);
     if (!user) {
-      return createResponse("User Not Found", false, 401);
+      throw new Error("User Not Found");
     }
 
     // Update the user's active status

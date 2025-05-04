@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Formik, FormikErrors } from "formik";
+import { Formik} from "formik";
 import * as yup from "yup";
 import LocationPicker from "./LocationPicker"; // Should call setCoordinates
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,6 @@ import { createProperty } from "@/redux/slices/propertSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import Dropzone from "react-dropzone";
 import toast from "react-hot-toast";
-import { latLng } from "leaflet";
 interface Address {
   city: string;
   state: string;
@@ -23,10 +22,7 @@ interface Owner {
   address: string;
 }
 
-interface LatLng {
-  lat: number;
-  lng: number;
-}
+
 
 interface FormValues {
   title: string;
@@ -81,8 +77,8 @@ const validationSchema = yup.object().shape({
   description: yup.string().required("Required"),
   price: yup.number().typeError("Must be a number").required("Required"),
   category: yup.string().required("Required"),
-  bedrooms: yup.number().required("Required"),
-  bathrooms: yup.number().required("Required"),
+  bedrooms: yup.number(),
+  bathrooms: yup.number(),
   area: yup.number().required("Required"),
   images: yup.array().min(1, "At least one image is required"),
   amenities: yup.array().min(1, "Add at least one amenity"),
@@ -112,7 +108,7 @@ const PropertyForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [amenityInput, setAmenityInput] = useState("");
 
-  const {error,property} = useSelector((state:RootState)=>state.property)
+  const {error,loading} = useSelector((state:RootState)=>state.property)
 
 
   const handleSubmit = async (values: any, { resetForm }: any) => {
@@ -132,16 +128,11 @@ const PropertyForm = () => {
     }
 
     try {
-      await dispatch(createProperty(formData)).unwrap();
-      if(error){
-        toast.error(error[0])
-      }else{
-        toast.success("Property created successfully!");
-
-      }
+      const res = await dispatch(createProperty(formData)).unwrap();
+      toast.success(res.message || "Property created successfully");
       resetForm();
-    } catch (err) {
-      toast.error("Property creation failed");
+    } catch (err: any) {
+      toast.error(err?.[0] || "Property Creation Failed");
     }
   };
 

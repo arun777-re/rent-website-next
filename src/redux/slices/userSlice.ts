@@ -1,274 +1,439 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { ErrorProps } from "./adminSlice";
 
-interface User {
+interface UserProps {
   _id: string;
   firstName: string;
-  success:boolean;
-  user: Record<string, any> | null;
+  lastName?: string;
+}
+interface dataProps {
+  message?: string;
+  status?: number;
+  success?: boolean;
+  data?: UserProps | null;
 }
 
-interface usertate {
-  success: boolean | null;
-  user: User[] | null;
-  loading: boolean;
-  error: string | null;
-  interaction:null,
+interface NotificationProps {
+  title?: string;
+  message?: string;
 }
-const initialState: usertate = {
+
+interface SearchParams {
+  propertyId?:string;
+  type:"liked" | "booking";
+}
+
+interface userstate {
+  success: boolean | null;
+  user: dataProps;
+  loading: boolean;
+  error: ErrorProps;
+  interaction: null;
+  notification: NotificationProps[] | null;
+}
+const initialState: userstate = {
   success: false,
-  user: null,
+  user: {
+    message: "",
+    status: 0,
+    success: false,
+    data: {
+      _id: "",
+      firstName: "",
+      lastName: "",
+    },
+  },
   loading: false,
-  error: null,
-  interaction:null,
+  error: {
+    message: "",
+    status: 0,
+    success: false,
+  },
+  interaction: null,
+  notification: [
+    {
+      title: "",
+      message: "",
+    },
+  ],
 };
 
-
-
-export const createUser = createAsyncThunk(
-  "/user/create",
-  async (formData: Object,{rejectWithValue}) => {
-    if (formData) {
-      try {
-        const response = await fetch("/api/auth/userignup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
-        const resData = await response.json();
-
-        if (!response.ok) {
-          return rejectWithValue(resData.message) || "Account Creation Failed";
-        }
-        if (response.status === 201) {
-          return resData;
-        }
-      } catch (error: any) {
-        console.error(error);
-        return rejectWithValue(`Error during create user:${error.message}`);
-      }
-    }
-  }
-);
-
-
-export const addFavorate = createAsyncThunk('/user/addfavorate',async(propertyId:string,{rejectWithValue})=>{
+// thunk to create user
+export const createUser = createAsyncThunk<
+  dataProps, // what it resolves to
+  object, // argument
+  { rejectValue: ErrorProps }
+>("/user/create", async (formData, { rejectWithValue }) => {
   try {
-    const response = await fetch(`/api/user/favorate?propertyId=${propertyId}`,{
-      method:'POST',
+    const response = await fetch("/api/auth/usersignup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
     });
+    const resData = await response.json();
+
     if (!response.ok) {
-      const errData = await response.json();
-      return rejectWithValue(errData.message) || "Failed to add to favorate";
+      return rejectWithValue({
+        message: resData.message,
+        status: response.status,
+        success: false,
+      });
     }
-    if (response.status === 201) {
-      alert("Added to favorate successfully");
-      return response.json();
-    }
-  } catch (error:any) {
-    console.error(error);
-      return rejectWithValue(`Error during add to favorate:${error.message}`)
-  }
-})
 
-
-
-
-export const loginUser = createAsyncThunk(
-  "/user/login",
-  async (data: object,{rejectWithValue}) => {
-    try {
-      if (data) {
-        const response = await fetch("/api/auth/userlogin", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-        const resData = await response.json()
-        if (!response.ok) {
-          return rejectWithValue(resData.message || "Login failed");
-        }
-        if (response.status === 200) {
-          alert("Logged in successfully");
-          return response.json();
-        }
-      }
-    } catch (error: any) {
-      console.error(error);
-      return rejectWithValue(`Error during login user:${error.message}`)
-    }
-  }
-);
-
-
-export const logoutuser = createAsyncThunk('user/logout',async(_,thunkAPI)=>{
-  try {
-    const res = await fetch('/api/auth/logout',{
-      method:"POST",
-      credentials:"include"
+    return resData;
+  } catch (error: any) {
+    return rejectWithValue({
+      message: `Error during create user: ${error.message}`,
+      success: false,
     });
-    if(!res.ok){
-      const error = await res.json();
-      return thunkAPI.rejectWithValue(error.message);
+  }
+});
+
+// thunk to add property to favorate
+export const addFavorate = createAsyncThunk<
+  any,
+  SearchParams,
+  { rejectValue: ErrorProps }
+>("/user/addfavorate", async (data, { rejectWithValue }) => {
+  try {
+    const response = await fetch(
+      `/api/user/favorate?propertyId=${data.propertyId}&type=${data.type}`,
+      {
+        method: "POST",
+      }
+    );
+
+    const resData = await response.json();
+
+    if (!response.ok) {
+      return rejectWithValue({
+        message: resData.message,
+        status: response.status,
+        success: false,
+      });
     }
 
-    return res.json();
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error)
+    return resData;
+  } catch (error: any) {
+    return rejectWithValue({
+      message: `Error during add to favorite: ${error.message}`,
+      success: false,
+    });
+  }
+});
+
+// thunk for login user
+export const loginUser = createAsyncThunk<
+  dataProps,
+  object,
+  { rejectValue: ErrorProps }
+>("/user/login", async (data, { rejectWithValue }) => {
+  try {
+    const response = await fetch("/api/auth/userlogin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const resData = await response.json();
+
+    if (!response.ok) {
+      return rejectWithValue({
+        message: resData.message,
+        status: response.status,
+        success: false,
+      });
+    }
+
+    alert("Logged in successfully");
+    return resData;
+  } catch (error: any) {
+    return rejectWithValue({
+      message: `Error during login user: ${error.message}`,
+      success: false,
+    });
+  }
+});
+
+// thunk for logout user
+export const logoutuser = createAsyncThunk<
+  any,
+  void,
+  { rejectValue: ErrorProps }
+>("user/logout", async (_, { rejectWithValue }) => {
+  try {
+    const res = await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    const resData = await res.json();
+
+    if (!res.ok) {
+      return rejectWithValue({
+        message: resData.message,
+        status: res.status,
+        success: false,
+      });
+    }
+
+    return resData;
+  } catch (error: any) {
+    return rejectWithValue({
+      message: `Error during logout: ${error.message}`,
+      success: false,
+    });
   }
 });
 
 // get a user
-export const getUser = createAsyncThunk("/user/get", async (_,{rejectWithValue}) => {
-
-    try {
-      const response = await fetch(`/api/user/get-user`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      if (!response.ok) {
-        const errData =await response.json();
-        return rejectWithValue(errData.message) || "Failed Operation Get User";
-      }
-      if (response.status === 200){
-        return response.json();
-      }
-    } catch (error: any) {
-      console.error(error);
-      return rejectWithValue(`Error during get user:${error.message}`)
-    }
- 
-});
-
-
-
-
-export const createInteraction = createAsyncThunk('/user/create/interaction',async(formData:Object,{rejectWithValue})=>{
+export const getUser = createAsyncThunk<
+  dataProps,
+  void,
+  { rejectValue: ErrorProps }
+>("/user/get", async (_, { rejectWithValue }) => {
   try {
-    const response = await fetch(`/api/user/interaction`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const response = await fetch(`/api/user/get-user`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body:JSON.stringify(formData)
     });
+
+    const resData = await response.json();
+
     if (!response.ok) {
-      const errData =await response.json();
-      return rejectWithValue(errData.message) || "Failed Operation Get User";
+      return rejectWithValue({
+        message: resData.message,
+        status: response.status,
+        success: false,
+      });
     }
-    if (response.status === 200){
-      return response.json();
-    }
+
+    return resData;
   } catch (error: any) {
-    console.error(error);
-      window.location.href = '/login'
-    throw new Error("Error during create User Interaction:", error.message);
+    return rejectWithValue({
+      message: `Error during get user: ${error.message}`,
+      success: false,
+    });
   }
 });
 
-export const getInteraction = createAsyncThunk('/user/get/interaction',async(_,{rejectWithValue})=>{
+export const createInteraction = createAsyncThunk<
+  any,
+  object,
+  { rejectValue: ErrorProps }
+>("/user/create/interaction", async (formData, { rejectWithValue }) => {
   try {
-    const response = await fetch(`/api/user/interaction`, {
+    const response = await fetch(`/api/user/interaction/create`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(formData),
+    });
+
+    const resData = await response.json();
+
+    if (!response.ok) {
+      return rejectWithValue({
+        message: resData.message,
+        status: response.status,
+        success: false,
+      });
+    }
+
+    return resData;
+  } catch (error: any) {
+    console.error(error);
+    window.location.href = "/login";
+    return rejectWithValue({
+      message: `Error during create interaction: ${error.message}`,
+      success: false,
+    });
+  }
+});
+
+export const getInteraction = createAsyncThunk<
+  any,
+  void,
+  { rejectValue: ErrorProps }
+>("/user/get/interaction", async (_, { rejectWithValue }) => {
+  try {
+    const response = await fetch(`/api/user/interaction/get`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+
+    const resData = await response.json();
+
+    if (!response.ok) {
+      return rejectWithValue({
+        message: resData.message,
+        status: response.status,
+        success: false,
+      });
+    }
+
+    return resData;
+  } catch (error: any) {
+    return rejectWithValue({
+      message: `Error during get interaction: ${error.message}`,
+      success: false,
+    });
+  }
+});
+
+export const getNotification = createAsyncThunk<
+  any,
+  void,
+  { rejectValue: ErrorProps }
+>("/user/get/notification", async (_, { rejectWithValue }) => {
+  try {
+    const res = await fetch("/api/user/notify/get-notification", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include",
     });
-    if (!response.ok) {
-      const errData =await response.json();
-      return rejectWithValue(errData.message) || "Failed Operation Get User";
+    const data = await res.json();
+    if (!res.ok) {
+      return rejectWithValue({
+        message: data?.message,
+        status: data?.status,
+        success: data?.success,
+      });
     }
-    if (response.status === 200){
-      return response.json();
-    }
+
+    return data;
   } catch (error: any) {
-    console.error(error);
-    return rejectWithValue(`Error during get Interaction:${error.message}`)
+    return rejectWithValue({
+      message: `Error during get notification: ${error.message}`,
+      success: false,
+    });
   }
 });
-
-
-const userlice = createSlice({
-  initialState: initialState,
+const userSlice = createSlice({
   name: "user",
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(createUser.fulfilled, (state, action) => {
-        state.success = action.payload.success;
+        state.success = action.payload.success ?? true;
         state.loading = false;
-        state.error = null;
+        state.error = { message: "", status: 0, success: false };
         state.user = action.payload;
       })
       .addCase(createUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string || "Failed to create user";
-        state.user = null;
+        state.error = action.payload as ErrorProps;
+        state.user = {
+          message: "",
+          status: 0,
+          success: false,
+          data: {
+            _id: "",
+            firstName: "",
+            lastName: "",
+          },
+        };
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.success = true;
         state.loading = false;
-        state.error = null;
+        state.error = { message: "", status: 0, success: false };
         state.user = action.payload;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.success = false;
         state.loading = false;
-        state.error = action.payload as string || 'Login Failed ';
-        state.user = null;
+        state.error = action.payload as ErrorProps;
+        state.user = {
+          message: "",
+          status: 0,
+          success: false,
+          data: {
+            _id: "",
+            firstName: "",
+            lastName: "",
+          },
+        };
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.success = true;
         state.loading = false;
-        state.error = null;
+        state.error = { message: "", status: 0, success: false };
         state.user = action.payload;
       })
       .addCase(getUser.rejected, (state, action) => {
         state.success = false;
         state.loading = false;
-        state.error = action.payload as string || "Failed to get User";
-        state.user = null;
+        state.error = action.payload as ErrorProps;
+        state.user = {
+          message: "",
+          status: 0,
+          success: false,
+          data: {
+            _id: "",
+            firstName: "",
+            lastName: "",
+          },
+        };
       })
-      .addCase(logoutuser.fulfilled, (state, action) => {
+      .addCase(logoutuser.fulfilled, (state) => {
         state.success = true;
         state.loading = false;
-        state.error = null;
-        state.user = null;
+        state.error = { message: "", status: 0, success: false };
+        state.user = {
+          message: "",
+          status: 0,
+          success: false,
+          data: {
+            _id: "",
+            firstName: "",
+            lastName: "",
+          },
+        };
       })
       .addCase(logoutuser.rejected, (state, action) => {
         state.success = false;
         state.loading = false;
-        state.error = action.payload as string || "Failed Logout User";
-        state.user = null;
+        state.error = action.payload as ErrorProps;
+        state.user = {
+          message: "",
+          status: 0,
+          success: false,
+          data: {
+            _id: "",
+            firstName: "",
+            lastName: "",
+          },
+        };
       })
-      .addCase(createInteraction.fulfilled, (state, action) => {
+      .addCase(createInteraction.fulfilled, (state) => {
         state.success = true;
         state.loading = false;
-        state.error = null;
+        state.error = { message: "", status: 0, success: false };
       })
       .addCase(getInteraction.fulfilled, (state, action) => {
         state.success = true;
         state.loading = false;
-        state.error = null;
+        state.error = { message: "", status: 0, success: false };
         state.interaction = action.payload;
       })
-   
-      .addCase(addFavorate.fulfilled, (state, action) => {
+      .addCase(addFavorate.fulfilled, (state) => {
         state.success = true;
         state.loading = false;
-        state.error = null;
+        state.error = { message: "", status: 0, success: false };
       })
-    
+      .addCase(getNotification.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = { message: "", status: 0, success: false };
+        state.notification = action.payload;
+      });
   },
 });
 
-
-export default userlice.reducer;
+export default userSlice.reducer;

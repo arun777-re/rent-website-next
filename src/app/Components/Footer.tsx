@@ -3,17 +3,18 @@
 import React from "react";
 import Button from "../_component/Button";
 import { TbPhoneCalling } from "react-icons/tb";
-import { CiLocationOn, CiMail, CiMobile4 } from "react-icons/ci";
+import { CiLocationOn, CiMail} from "react-icons/ci";
 import { IoCallOutline } from "react-icons/io5";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { PiGreaterThanBold } from "react-icons/pi";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
+import Link  from "next/link";
 
 const Footer = () => {
   const router = usePathname();
 
-  const handlecontact = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const Handlecontact = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const redirect = useRouter();
     redirect.push('/contact')
@@ -32,7 +33,7 @@ const Footer = () => {
             or commisions.
           </p>
           <Button
-            onClick={handlecontact}
+            onClick={Handlecontact}
             className="py-2 px-4 bg-green-600 w-40 flex items-center
          text-white justify-center gap-2 rounded-md hover:bg-green-700 transition colors duration-150 cursor-pointer"
           >
@@ -81,7 +82,7 @@ const Footer = () => {
           <div className="flex flex-col gap-20">
             <div className="grid grid-cols-4 px-20 lg:px-30 pt-30 gap-10 ">
               <div className="flex flex-col gap-5 items-start justify-start">
-                <a
+                <Link
                   href="/"
                   className="flex items-center space-x-1 rtl:space-x-reverse"
                 >
@@ -95,7 +96,7 @@ const Footer = () => {
                   <span className="self-center text-base font-medium whitespace-nowrap text-white dark:text-white">
                     Hously
                   </span>
-                </a>
+                </Link>
                 <p className="text-sm text-space leading-loose text-gray-100/90 h-20">
                   A great plateform to buy and sell your properties without any
                   agent or commisions.
@@ -105,44 +106,44 @@ const Footer = () => {
                 <h4 className="font-medium">Company</h4>
                 <ul className="flex flex-col gap-3">
                   <li>
-                    <a
+                    <Link
                       href="#"
                       className="text-sm hover:text-gray-100/70 cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
                     >
                       <PiGreaterThanBold /> About us
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
+                    <Link
                       href="#"
                       className="text-sm hover:text-gray-100/70 cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
                     >
                       <PiGreaterThanBold /> Services
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
+                    <Link
                       href="#"
                       className="text-sm hover:text-gray-100/70 cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
                     >
                       <PiGreaterThanBold /> Pricing
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
+                    <Link
                       href="#"
                       className="text-sm hover:text-gray-100/70 cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
                     >
                       <PiGreaterThanBold /> Blog
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
+                    <Link
                       href="#"
                       className="text-sm hover:text-gray-100/70 cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
                     >
                       <PiGreaterThanBold /> Login
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -150,40 +151,40 @@ const Footer = () => {
                 <h4 className="font-normal">Support</h4>
                 <ul className="flex flex-col gap-3">
                   <li>
-                    <a
+                    <Link
                       href="#"
                       className="text-sm hover:text-gray-100/70 cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
                     >
                       <PiGreaterThanBold />
                       Help Center
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
+                    <Link
                       href="#"
                       className="text-sm hover:text-gray-100/70 cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
                     >
                       <PiGreaterThanBold />
                       Terms of Service
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
+                    <Link
                       href="#"
                       className="text-sm hover:text-gray-100/70 cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
                     >
                       <PiGreaterThanBold />
                       Legal Notices
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
+                    <Link
                       href="#"
                       className="text-sm hover:text-gray-100/70 cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
                     >
                       <PiGreaterThanBold />
                       Security
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -197,13 +198,13 @@ const Footer = () => {
                     </span>
                   </li>
                   <li>
-                    <a
+                    <Link
                       href="#"
                       className="text-sm text-green-600 hover:text-green-800 pl-8
                  cursor-pointer transition colors duration-350 ease-in-out"
                     >
                       View on Google map
-                    </a>
+                    </Link>
                   </li>
                   <li className="flex flex-row items-center gap-2">
                     <CiMail size={22} className="text-green-600" />

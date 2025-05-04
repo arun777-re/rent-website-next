@@ -9,13 +9,11 @@ import { MdOutlineBathtub } from "react-icons/md";
 import { IoHeartCircle } from "react-icons/io5";
 import clsx from "clsx";
 import Link from "next/link";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { addFavorate, createInteraction } from "@/redux/slices/userSlice";
 import { PropertyItem } from "@/redux/slices/propertSlice";
 
-type ImageProps = string | StaticImport;
 
 interface PropertyCardProps extends PropertyItem{
   direction?: string;
@@ -43,16 +41,13 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   const [active, setActive] = React.useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
-  const data = {
-    type:'view',
-    propertyId:_id
-  }
-  useEffect(()=>{
-    if(active){
-       dispatch(addFavorate(_id)).unwrap();
-       dispatch(createInteraction(data)).unwrap();
-    }
-  },[active])
+
+  const handleFavorate = (e: React.MouseEvent<HTMLButtonElement | SVGElement>) => {
+    e.stopPropagation(); // 🚫 prevent card click
+    setActive((prev) => !prev);
+    dispatch(addFavorate({propertyId:_id,type:"liked"})).unwrap();
+    dispatch(createInteraction({ type: "click", propertyId: _id })).unwrap();
+  };
  
 
   return (
@@ -81,10 +76,12 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           )}
         >
           <Image
-            src={images[0]}
+            src={images?.[0] || '/images/banner-main-1.jpg'}
             alt="property image"
             fill
             className={clsx("top-0 bottom-0")}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
+            priority
           />
         </div>
 
@@ -147,7 +144,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         </figcaption>
 
         <IoHeartCircle
-          onClick={() => setActive(!active)}
+          onClick={handleFavorate}
           aria-label={active ? "Remove from favorites" : "Add to favorites"}
           size={30}
           className={clsx(

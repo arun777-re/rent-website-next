@@ -8,7 +8,10 @@ dbConnect();
 
 // api to get properties by category
 export async function GET(req:NextRequest,res:NextResponse){
-    await verifyUserToken(req,res);
+  const auth = await verifyUserToken(req,res);
+  if(auth instanceof NextResponse){
+    return auth;
+  }
     try {
         const pageParams:any = req.nextUrl.searchParams.get('page');
         const limitParams:any = req.nextUrl.searchParams.get('limit');
@@ -41,6 +44,6 @@ export async function GET(req:NextRequest,res:NextResponse){
 
     ) {
         console.error(error.message);
-        return createResponse(`Internal Server Error:${error.message}`,false,500);
+        return createResponse(`Error:${error.message}`,false,500);
     }
 }
