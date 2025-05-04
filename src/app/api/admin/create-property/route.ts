@@ -9,6 +9,10 @@ import {v4 as uuidv4} from 'uuid'
 
 await dbConnect();
 
+
+export const runtime = "nodejs";
+
+
 interface CustomRequest extends NextRequest {
     admin?:any;
 }
