@@ -15,7 +15,12 @@ const CreateCode = () => {
             toast.error('Code cannot be empty');
             return;
         }else{
-          await dispatch(createCode(code));
+          await dispatch(createCode(code)).then((res)=>{
+            toast.success('Code generated')
+          }).catch((err)=>{
+            toast.error('Code not generated')
+          }
+        );
             setCode('');
         }
      
