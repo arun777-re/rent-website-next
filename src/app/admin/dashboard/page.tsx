@@ -86,7 +86,7 @@ const AdminDashboard = () => {
       <aside className="w-[20%] h-screen sticky top-0 z-10 flex flex-col items-start justify-start gap-10 p-5 bg-black text-white">
           <Link
             href={"/"}
-            className="flex items-center space-x-1 rtl:space-x-reverse sticky top-3 backdrop-blur-3xl z-20"
+            className="flex items-center space-x-1 rtl:space-x-reverse sticky top-4 backdrop-blur-3xl z-20"
           >
             <RiHome8Line
               className="text-3xl text-green-600  dark:text-gray-700"

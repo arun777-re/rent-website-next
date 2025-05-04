@@ -11,7 +11,11 @@ await dbConnect();
 
 
 export const runtime = "nodejs";
-
+export const config = {
+    api: {
+      bodyParser: false, // Required for handling `formData` in App Router
+    },
+  };
 
 interface CustomRequest extends NextRequest {
     admin?:any;
