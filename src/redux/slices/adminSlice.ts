@@ -130,25 +130,24 @@ export const loginAdmin = createAsyncThunk(
 );
 export const createCode = createAsyncThunk(
   "/admin/code",
-  async (formData: any, { rejectWithValue }) => {
+  async (data:string, { rejectWithValue }) => {
     try {
-      if (!formData) throw new Error("please provide formData");
-      const res = await fetch("/api/admin/admin1", {
+      if (!data) throw new Error("please provide formData");
+      const res = await fetch(`/api/admin/create-code`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ code: formData }),
+        body:JSON.stringify({code:data})
       });
+      const data1 = await res.json();
 
-      if (res.ok) {
-        const data = await res.json();
-        return data;
-      } else {
-        const errorData = await res.json();
-        rejectWithValue(errorData);
+      if (!res.ok) {
+        return rejectWithValue(data1?.message)
       }
+      return data1;
+
     } catch (error: any) {
       const errorData = error.message;
       rejectWithValue({ errorData });

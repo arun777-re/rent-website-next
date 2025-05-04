@@ -15,7 +15,7 @@ const InviteCodeSchema: Schema = new Schema(
       unique: true,
       validate: {
         validator: (v: string) => {
-          return /^[A-Z0-9]{8}$/.test(v);
+          return /^[A-Z0-9a-z]{10}$/.test(v);
         },
         message: (props: any) => `${props.value} is not a valid invite code!`,
       },
