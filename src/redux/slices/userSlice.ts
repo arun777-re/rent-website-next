@@ -100,6 +100,7 @@ export const addFavorate = createAsyncThunk<
       `/api/user/favorate?propertyId=${data.propertyId}&type=${data.type}`,
       {
         method: "POST",
+        credentials:"include"
       }
     );
 
