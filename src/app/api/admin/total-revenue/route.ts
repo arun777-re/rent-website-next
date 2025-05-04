@@ -1,8 +1,10 @@
+import { dbConnect } from "@/lib/db";
 import { createResponse } from "@/lib/middleware/error";
 import { verifyTkn } from "@/lib/middleware/verifyToken";
 import Property from "@/models/Property";
 import { NextRequest, NextResponse } from "next/server";
 
+dbConnect()
 // api to get total revenue
 export async function GET(req: NextRequest) {
   const authResult = await verifyTkn(req);

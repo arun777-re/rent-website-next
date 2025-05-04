@@ -80,7 +80,6 @@ const AdminDashboard = () => {
     [value,dispatch]
   );
 
-
   return (
     <div className="w-[100vw] relative h-auto mx-auto">
       <div className="w-full flex flex-row relative">
