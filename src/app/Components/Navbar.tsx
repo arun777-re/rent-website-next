@@ -43,12 +43,13 @@ const dispatch = useDispatch<AppDispatch>();
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+    // eslint-disable-next-line
   }, []);
 
-  const handleSignUp = (e: any) => {
+  const handleSignUp = useCallback((e:React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     router.push("/user/auth-login");
-  };
+  },[router]);
 
   const handleLogout = useCallback((e:React.MouseEvent<HTMLButtonElement>)=>{
     e.preventDefault();
@@ -59,17 +60,17 @@ const dispatch = useDispatch<AppDispatch>();
       toast.error(error);
     }
     
-  },[])
+  },[dispatch])
 
-  const handleUserDashboard = (e:React.MouseEvent<SVGElement>)=>{
+  const handleUserDashboard = useCallback((e:React.MouseEvent<SVGElement>)=>{
       e.preventDefault();
       if(user && user?.success === true){
         router.push('/user/user-dashboard');
       }else{
-        toast.error('You have to signUp/Login first')
+        toast.error('You have to signUp/Login first');
       }
 
-  }
+  },[router]);
 
   let small;
   if(typeof window !== 'undefined'){

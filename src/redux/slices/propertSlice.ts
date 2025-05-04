@@ -138,6 +138,7 @@ export const handleFullfill = (state: initialValProps, action: any) => {
   state.property = action.payload;
 };
 
+
 export const createProperty = createAsyncThunk<
   PropertyProps, // Make sure this matches what your backend returns in `data`
   FormData,
@@ -460,6 +461,8 @@ export const getFavorate = createAsyncThunk(
     }
   }
 );
+
+
 export const getFeatured = createAsyncThunk(
   "property/getfeatured",
   async (data: SearchParams, { rejectWithValue }) => {
@@ -558,7 +561,7 @@ const propertySlice = createSlice({
       .addCase(getAllProperty.fulfilled, handleFullfill)
       .addCase(getFeatured.fulfilled, handleFullfill)
       .addCase(getTotalRevenue.fulfilled, handleFullfill)
-      .addCase(getPropertyByOwner.fulfilled, handleFullfill);
+      .addCase(getPropertyByOwner.fulfilled, handleFullfill)
   },
 });
 

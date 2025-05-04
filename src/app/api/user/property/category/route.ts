@@ -26,7 +26,7 @@ export async function GET(req:NextRequest,res:NextResponse){
             return createResponse('Provide a Category to search',false,400);
         }
         
-        const properties = await Property.find({category:category}).sort({createdAt: -1})
+        const properties = await Property.find({category,status:'available'}).sort({createdAt: -1})
         .skip(skip)
         .limit(limit);
 

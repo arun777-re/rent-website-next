@@ -5,13 +5,12 @@ import React from 'react';
 
 interface Properties {
   properties?: PropertyItem[]; 
-  ownerName?:string;
 }
 
-const ViewProperty: React.FC<Properties> = ({ properties,ownerName }) => {
+const ViewProperty: React.FC<Properties> = ({ properties }) => {
   return (
     <section className="w-full min-h-screen relative space-y-4">
-      <h4 className="text-xl font-semibold">Property By Owner&nbsp;{ownerName}</h4>
+      <h4 className="text-xl font-semibold">Property By Owner</h4>
 
       <div className="flex flex-wrap gap-4 sticky overflow-y-scroll h-auto">
         {properties && properties.length > 0 ? (

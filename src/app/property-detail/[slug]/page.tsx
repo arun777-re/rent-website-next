@@ -46,7 +46,7 @@ const PropertyDetails = () => {
         .catch((err) => {});
     }
     // eslint-disable-next-line
-  }, [dispatch]);
+  }, [dispatch,slug]);
 
   // thunk to create user interaction
   const data = {
@@ -59,7 +59,7 @@ const PropertyDetails = () => {
       dispatch(createInteraction(data)).unwrap();
     }
     // eslint-disable-next-line
-  }, [property]);
+  }, [property,dispatch]);
 
   const createdAtDate = new Date(property?.createdAt ?? "");
   const now = new Date();

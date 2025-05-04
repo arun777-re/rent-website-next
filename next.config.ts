@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  reactStrictMode: true,
+  experimental: {
+    disableOptimizedLoading: true, // Disable automatic static optimization
+  },
 eslint:{
     ignoreDuringBuilds: true,
 },

@@ -1,10 +1,11 @@
-"use client"
+/* eslint-disable react-hooks/exhaustive-deps */
+
+"use client";
 import React, { useEffect, useState } from "react";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import { PiUsersThreeBold } from "react-icons/pi";
-import { MdOutlineMapsHomeWork } from "react-icons/md";
+import { MdOutlineMapsHomeWork, MdOutlineAddHome } from "react-icons/md";
 import { BsLightningCharge } from "react-icons/bs";
-import { MdOutlineAddHome } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { Bar } from "react-chartjs-2";
@@ -49,40 +50,45 @@ const Dashboard = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(getSoldProperties({ page: 6, limit: 10 })).unwrap().then((res)=>{
-      const items = res.dataLength ?? 0;
-    setSold(items);
-
-    });
+    dispatch(getSoldProperties({ page: 6, limit: 10 }))
+      .unwrap()
+      .then((res) => {
+        const items = res.dataLength ?? 0;
+        setSold(items);
+      });
   }, [dispatch]);
   useEffect(() => {
-    dispatch(getAllProperty({ page: 1, limit: 10 })).unwrap().then((res)=>{
-      const items = res.dataLength ?? 0;
-    setAllProperties(items);
-
-    });
+    dispatch(getAllProperty({ page: 1, limit: 10 }))
+      .unwrap()
+      .then((res) => {
+        const items = res.dataLength ?? 0;
+        setAllProperties(items);
+      });
   }, [dispatch]);
   useEffect(() => {
-    dispatch(getActiveUsers()).unwrap().then((res)=>{
-      const items = res.dataLength ?? 0;
-    setActive(items);
-
-    });
+    dispatch(getActiveUsers())
+      .unwrap()
+      .then((res) => {
+        const items = res.dataLength ?? 0;
+        setActive(items);
+      });
   }, [dispatch]);
   useEffect(() => {
-    dispatch(getRentedProperties({ page: 6, limit: 10 })).unwrap().then((res)=>{
-      const items = res.dataLength ?? 0;
-    setRented(items);
-
-    });
+    dispatch(getRentedProperties({ page: 6, limit: 10 }))
+      .unwrap()
+      .then((res) => {
+        const items = res.dataLength ?? 0;
+        setRented(items);
+      });
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getTotalRevenue()).unwrap().then((res)=>{
-      const items = res.dataLength ?? 0;
-    setRevenue(items);
-
-    });
+    dispatch(getTotalRevenue())
+      .unwrap()
+      .then((res) => {
+        const items = res.dataLength ?? 0;
+        setRevenue(items);
+      });
   }, [dispatch]);
 
   const data = {
@@ -167,7 +173,7 @@ const Dashboard = () => {
                 Total Revenue
               </p>
               <h1 className="text-xl text-gray-800 font-semibold">
-                Rs&nbsp;{revenue}
+                Rs&nbsp;{typeof revenue === 'number' ? revenue : 0}
               </h1>
             </div>
             <FaIndianRupeeSign
@@ -180,7 +186,7 @@ const Dashboard = () => {
               <p className="text-gray-700/60 text-sm pb-4">
                 Total Visitor Come
               </p>
-              <h1 className="text-xl text-gray-800 font-semibold">{active}</h1>
+              <h1 className="text-xl text-gray-800 font-semibold">{typeof active === 'number' ? active : 0}</h1>
             </div>
             <PiUsersThreeBold
               size={35}
@@ -191,7 +197,7 @@ const Dashboard = () => {
             <div className="gap-8">
               <p className="text-gray-700/60 text-sm pb-4">Total Properties</p>
               <h1 className="text-xl text-gray-800 font-semibold">
-                {allProperties}
+                {typeof allProperties === 'number' ? allProperties : 0}
               </h1>
             </div>
             <MdOutlineMapsHomeWork
@@ -204,7 +210,7 @@ const Dashboard = () => {
               <p className="text-gray-700/60 text-sm pb-4">
                 Properties for Sell
               </p>
-              <h1 className="text-xl text-gray-800 font-semibold">{sold}</h1>
+              <h1 className="text-xl text-gray-800 font-semibold">{typeof sold === 'number' ? sold : 0}</h1>
             </div>
             <BsLightningCharge
               size={35}
@@ -216,7 +222,7 @@ const Dashboard = () => {
               <p className="text-gray-700/60 text-sm pb-4">
                 Properties for Rent
               </p>
-              <h1 className="text-xl text-gray-800 font-semibold">{rented}</h1>
+              <h1 className="text-xl text-gray-800 font-semibold">{typeof rented === 'number' ? rented : 0}</h1>
             </div>
             <MdOutlineAddHome
               size={35}

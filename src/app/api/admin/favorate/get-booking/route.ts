@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
       filter
     );
 
-    const favorate = await Favorite.find()
+    const favorate = await Favorite.find({favorateType:"booking"})
       .sort({ createdAt: -1 })
       .populate("userId", "firstName lastName email phone")
       .populate("propertyId",'slug  price address owner')

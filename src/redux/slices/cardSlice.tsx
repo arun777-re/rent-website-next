@@ -62,11 +62,14 @@ const initialState:InitialValProps = {
     loading:false,
     error:null
 }
+
+
+// get favorate
 export const getAdminFavorate = createAsyncThunk(
     "property/getadminfavorate",
     async (data:SearchParams, { rejectWithValue }) => {
       try {
-        const response = await fetch(`/api/admin/favorate?page=${data.page}&limit=${data.limit}`, {
+        const response = await fetch(`/api/admin/favorate/get-liked?page=${data.page}&limit=${data.limit}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -84,6 +87,30 @@ export const getAdminFavorate = createAsyncThunk(
     }
   );
 
+  // get booking
+export const getAdminBooking = createAsyncThunk(
+    "property/getadminbooking",
+    async (data:SearchParams, { rejectWithValue }) => {
+      try {
+        const response = await fetch(`/api/admin/favorate/get-booking?page=${data.page}&limit=${data.limit}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const errData = await response.json();
+        if (!response.ok) {
+          return rejectWithValue(errData.message) || "Failed to get booking";
+        }
+        return errData;
+      } catch (error: any) {
+        console.error(error);
+        return rejectWithValue(`Error during get booking:${error.message}`);
+      }
+    }
+  );
+
+
 export const cardSlice = createSlice({
     name:'card',
     initialState:initialState,
@@ -91,6 +118,11 @@ export const cardSlice = createSlice({
     extraReducers(builder) {
         builder
               .addCase(getAdminFavorate.fulfilled,(state,action)=>{
+                state.loading = false;
+                state.error= null;
+                state.cardData = action.payload;
+              })
+              .addCase(getAdminBooking.fulfilled,(state,action)=>{
                 state.loading = false;
                 state.error= null;
                 state.cardData = action.payload;

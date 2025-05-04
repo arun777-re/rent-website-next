@@ -23,15 +23,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { getAdmin } from "@/redux/slices/adminSlice";
 import { useRouter } from "next/navigation";
-import { getPropertyByOwner } from "@/redux/slices/propertSlice";
+import { getPropertyByOwner, PropertyItem, PropertyProps } from "@/redux/slices/propertSlice";
 import ViewProperty from "@/app/Components/admin/ViewProperty";
 import { RiNotification3Line } from "react-icons/ri";
 import { AiTwotonePropertySafety } from "react-icons/ai";
 import { MdOutlineBedroomParent } from "react-icons/md";
+import ViewBooking from "@/app/Components/admin/ViewBooking";
 
 const AdminDashboard = () => {
   const [value, setValue] = useState<string>("");
-  const [property, setProperty] = useState([]);
+  const [property, setProperty] = useState<PropertyItem[]>([]);
   const [page, setPage] = useState<string>("dashboard");
   const router = useRouter();
 
@@ -60,17 +61,21 @@ const AdminDashboard = () => {
           .unwrap()
           .then((res) => {
             const data = res.data;
-            setProperty(data);
-            setValue("");
-            setPage("property");
+            if(Array.isArray(data)){
+              setProperty(data);
+              setValue("");
+              setPage("property");
+            }
+        
           })
           .catch((err) => {
             console.log(err);
           });
       }
     },
-    [value]
+    [value,dispatch]
   );
+
 
   return (
     <div className="w-[100vw] relative h-auto mx-auto">
@@ -125,6 +130,16 @@ const AdminDashboard = () => {
               <RiHome9Fill size={18} />
               <p className="text-sm font-medium text-gray-300/60">
                 Favorite Properties
+              </p>
+            </Button>
+            <Button
+              onClick={() => setPage("booking")}
+              className="flex flex-row items-center gap-4 cursor-pointer text-gray-300/60
+                  active:text-white hover:text-white transition-colors duration-300"
+            >
+              <RiHome9Fill size={18} />
+              <p className="text-sm font-medium text-gray-300/60">
+                View Booking Call
               </p>
             </Button>
             <Button
@@ -248,18 +263,18 @@ const AdminDashboard = () => {
             </div>
           </div>
           <div className="relative w-full h-auto px-6 py-6 bg-gray-300/20 overflow-y-scroll">
-            <h1>{}</h1>
-            {page === "dashboard" && <Dashboard />}
+            {page === "dashboard" && <Dashboard/>}
             {page === "addProperty" && <AddProperty />}
             {page === "explore" && <ExplorePrprty />}
             {page === "favorite" && <FavoritePrprty />}
+            {page === "booking" && <ViewBooking/>}
             {page === "profile" && <AdProfile />}
             {page === "featured" && <FeaturedPrprty />}
             {page === "notification" && <NotificationSender />}
             {page === "sold" && <ViewSold />}
             {page === "rented" && <ViewRented />}
             {page === "property" && (
-              <ViewProperty properties={property} ownerName={value} />
+              <ViewProperty properties={property} />
             )}
           </div>
         </section>

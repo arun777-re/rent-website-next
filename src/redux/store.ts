@@ -2,11 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "@reduxjs/toolkit";
 import logger from 'redux-logger';
 import { persistStore,persistReducer } from "redux-persist";
-import storage from 'redux-persist/lib/storage';
 import userReducer from '@/redux/slices/userSlice';
 import adminReducer from '@/redux/slices/adminSlice';
 import propertyReducer from '@/redux/slices/propertSlice';
-import cardReducer from '@/redux/slices/cardSlice'
+import cardReducer from '@/redux/slices/cardSlice';
+import storage from "@/lib/storage";
 
 // configuration for the persisted reducer
 const persistConfig = {
@@ -30,6 +30,7 @@ reducer:persistedReducer,
 middleware:(getDefaultMiddleware)=> {
    return getDefaultMiddleware({
         serializableCheck: false,
+        immutableCheck:false,
     }).concat(logger);
 }
 });

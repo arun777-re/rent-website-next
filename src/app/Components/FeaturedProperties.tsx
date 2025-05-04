@@ -56,7 +56,7 @@ const FeaturedProperties = () => {
         <div className="w-full">
           <Carousel className="w-full max-w-full" plugins={[autoplay]}>
             <CarouselContent className="-ml-0 py-10 flex flex-row gap-1">
-              {properties && properties?.map((prprty, index) => {
+              {properties && properties?.map((prprty) => {
                 return (
                   <CarouselItem 
                     key={prprty._id}
