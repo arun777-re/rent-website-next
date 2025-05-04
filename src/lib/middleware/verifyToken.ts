@@ -10,6 +10,8 @@ interface CustomReq extends NextRequest {
   user?: any;
 }
 
+export const runtime = "nodejs";
+
 const secret = process.env.JWT_SECRET || "";
 
 export const verifyTkn = async (req: CustomReq) => {

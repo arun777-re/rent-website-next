@@ -4,27 +4,21 @@ import { dbConnect } from "@/lib/db";
 import { createResponse, handleValidation } from "@/lib/middleware/error";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+await dbConnect();
 
 const secret = process.env.JWT_SECRET || "";
 
 export async function POST(req: NextRequest) {
-  await dbConnect();
-
   try {
-    const body = await req.formData();
-    if (!body) {
-      return createResponse("Provide valid Input Values", false, 400);
-    }
-
-    const adminEmail = body.get("email") as string;
-    const password = body.get("password") as string;
-
+    const body = await req.json();
+    const { password } = body;
+    const adminEmail = body.email;
     // validate fields
     handleValidation({ adminEmail, password });
 
     // check user exists with the email
 
-    const admin = await Agent.findOne({ adminEmail });
+    const admin = await Agent.findOne({email: adminEmail });
 
     if (!admin) {
       return createResponse("No Admin available with this email", false, 401);

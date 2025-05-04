@@ -105,6 +105,7 @@ export const loginAdmin = createAsyncThunk(
   async (formData: any, { rejectWithValue }) => {
     try {
       if (!formData) throw new Error("please provide formData");
+      console.log('fhghjk',formData)
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -113,18 +114,16 @@ export const loginAdmin = createAsyncThunk(
         body: JSON.stringify(formData),
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        window.location.href = `/admindashboard/${data?.admin?._id}`;
-        return data.admin;
-      } else {
-        const errorData = await res.json();
-        rejectWithValue(errorData);
+      const data = await res.json();
+      if(!res.ok){
+        return rejectWithValue(data?.message)
       }
+return data;
+
+    
     } catch (error: any) {
       const errorData = error.message;
-      rejectWithValue({ errorData });
-      throw new Error("login during admin login");
+     return rejectWithValue(errorData);
     }
   }
 );
