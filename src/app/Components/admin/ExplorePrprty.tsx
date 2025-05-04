@@ -38,10 +38,10 @@ const ExplorePrprty: React.FC = () => {
     <section className="w-full min-h-screen relative space-y-4">
       <h4 className="text-xl font-semibold">Explore Properties</h4>
 
-      <div className="flex flex-wrap gap-4 sticky overflow-y-scroll h-auto">
+      <div className="flex flex-wrap gap-10 sticky overflow-y-scroll h-auto">
         {success && dataLength > 0 ? (
           properties.map((item) => (
-            <PropertyCard key={item._id} {...item} />
+            <PropertyCard width={'20vw'} imageHeight={'10vh'} round={true} key={item._id} {...item} />
           ))
         ) : (
           <p className="text-gray-600">No properties found.</p>

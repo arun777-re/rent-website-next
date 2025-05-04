@@ -1,7 +1,7 @@
 "use client";
 import { Card } from "@radix-ui/themes";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 import { FaStar } from "react-icons/fa";
 import { HiMiniArrowsPointingIn } from "react-icons/hi2";
 import { LuBedSingle } from "react-icons/lu";
@@ -17,7 +17,7 @@ import { PropertyItem } from "@/redux/slices/propertSlice";
 
 interface PropertyCardProps extends PropertyItem{
   direction?: string;
-  width?: string;
+  width?: string | number;
   imageHeight?: string;
   imageWidth?: string;
   round?: boolean;
@@ -52,8 +52,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
   return (
     <Card
+    style={{width:width || '24.9vw'}}
       className={clsx(
-        width ? `w-[${width}]` : "w-[24.9vw]",
         "h-auto bg-white shadow hover:shadow-xl cursor-pointer transition-all duration-300 rounded-lg overflow-hidden"
       )}
     >

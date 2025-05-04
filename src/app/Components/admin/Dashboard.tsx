@@ -208,7 +208,7 @@ const Dashboard = () => {
           <article className="p-3 shadow flex flex-row items-center gap-6 rounded bg-white">
             <div className="gap-8">
               <p className="text-gray-700/60 text-sm pb-4">
-                Properties for Sell
+                Sold Properties
               </p>
               <h1 className="text-xl text-gray-800 font-semibold">{typeof sold === 'number' ? sold : 0}</h1>
             </div>
@@ -220,7 +220,7 @@ const Dashboard = () => {
           <article className="p-3 shadow flex flex-row items-center gap-6 rounded bg-white">
             <div className="gap-8">
               <p className="text-gray-700/60 text-sm pb-4">
-                Properties for Rent
+                Rented Properties
               </p>
               <h1 className="text-xl text-gray-800 font-semibold">{typeof rented === 'number' ? rented : 0}</h1>
             </div>

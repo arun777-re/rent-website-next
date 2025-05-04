@@ -42,10 +42,10 @@ const FeaturedPrprty: React.FC = () => {
     <section className="w-full min-h-screen relative space-y-4">
       <h4 className="text-xl font-semibold">Featured Properties</h4>
 
-      <div className="flex flex-wrap gap-4 sticky overflow-y-scroll h-auto">
+      <div className="flex flex-row flex-wrap gap-10 h-auto w-full">
         {success && dataLength > 0 ? (
           properties.map((item) => (
-            <PropertyCard key={item._id} {...item} />
+            <PropertyCard width={'20vw'} imageHeight={'10vh'} round={true} key={item._id} {...item} />
           ))
         ) : (
           <p className="text-gray-600">No properties found.</p>

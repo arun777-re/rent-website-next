@@ -84,7 +84,7 @@ const AdminDashboard = () => {
   return (
     <div className="w-[100vw] relative h-auto mx-auto">
       <div className="w-full flex flex-row relative">
-        <aside className="w-[20%] min-h-screen relative flex flex-col items-start justify-start gap-10 p-5 bg-black text-white">
+      <aside className="w-[20%] h-screen sticky top-0 z-10 flex flex-col items-start justify-start gap-10 p-5 bg-black text-white">
           <Link
             href={"/"}
             className="flex items-center space-x-1 rtl:space-x-reverse sticky top-3 backdrop-blur-3xl z-20"
