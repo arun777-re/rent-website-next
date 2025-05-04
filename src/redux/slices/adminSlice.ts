@@ -105,7 +105,7 @@ export const loginAdmin = createAsyncThunk(
   async (formData: any, { rejectWithValue }) => {
     try {
       if (!formData) throw new Error("please provide formData");
-      const res = await fetch("/api/auth/adminlogin", {
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
