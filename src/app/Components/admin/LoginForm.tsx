@@ -32,9 +32,14 @@ const LoginForm = () => {
       const handleLogin = async (values:loginProps, { resetForm }:FormikHelpers<loginProps>) => {
         try {
           // API call to login user
-          await dispatch(loginAdmin(values)).unwrap();
-          resetForm();
-          router.push('/admin/dashboard')
+          await dispatch(loginAdmin(values)).unwrap().then((res)=>{
+            const succ = res?.message;
+            if(succ === true){
+              resetForm();
+              router.push('/admin/dashboard')
+            }
+          });
+         
         } catch (error) {
           console.error("login failed. Please check your credentials.");
           throw error;
