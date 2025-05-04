@@ -37,8 +37,8 @@ interface InitialValProps {
 }
 
 interface SearchParams {
-  propertyId?:string;
-  status?:string;
+  propertyId?: string;
+  status?: string;
 }
 const initialState: InitialValProps = {
   admin: {
@@ -105,7 +105,7 @@ export const loginAdmin = createAsyncThunk(
   async (formData: any, { rejectWithValue }) => {
     try {
       if (!formData) throw new Error("please provide formData");
-      console.log('fhghjk',formData)
+      console.log("fhghjk", formData);
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -115,21 +115,19 @@ export const loginAdmin = createAsyncThunk(
       });
 
       const data = await res.json();
-      if(!res.ok){
-        return rejectWithValue(data?.message)
+      if (!res.ok) {
+        return rejectWithValue(data?.message);
       }
-return data;
-
-    
+      return data;
     } catch (error: any) {
       const errorData = error.message;
-     return rejectWithValue(errorData);
+      return rejectWithValue(errorData);
     }
   }
 );
 export const createCode = createAsyncThunk(
   "/admin/code",
-  async (data:string, { rejectWithValue }) => {
+  async (data: string, { rejectWithValue }) => {
     try {
       if (!data) throw new Error("please provide formData");
       const res = await fetch(`/api/admin/create-code`, {
@@ -138,15 +136,14 @@ export const createCode = createAsyncThunk(
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body:JSON.stringify({code:data})
+        body: JSON.stringify({ code: data }),
       });
       const data1 = await res.json();
 
       if (!res.ok) {
-        return rejectWithValue(data1?.message)
+        return rejectWithValue(data1?.message);
       }
       return data1;
-
     } catch (error: any) {
       const errorData = error.message;
       rejectWithValue({ errorData });
@@ -219,26 +216,32 @@ export const getActiveUsers = createAsyncThunk(
   }
 );
 
-export const changeStatus = createAsyncThunk('admin/changestatus',async(data:SearchParams,{rejectWithValue})=>{
-  try {
-    const res = await fetch(`/api/admin/change-status?status=${data.status}&propertyId=${data.propertyId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
+export const changeStatus = createAsyncThunk(
+  "admin/changestatus",
+  async (data: SearchParams, { rejectWithValue }) => {
+    try {
+      const res = await fetch(
+        `/api/admin/change-status?status=${data.status}&propertyId=${data.propertyId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
-    const result = await res.json();
+      const result = await res.json();
 
-    if (!res.ok) {
-      return rejectWithValue(result.message);
+      if (!res.ok) {
+        return rejectWithValue(result.message);
+      }
+      return result;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
     }
-    return result;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
   }
-})
+);
 export const adminSlice = createSlice({
   name: "admin",
   initialState,
@@ -247,7 +250,7 @@ export const adminSlice = createSlice({
     builder
       .addCase(signupAdmin.pending, (state, action) => {
         state.loading = true;
-        state.error = {message:'',status:0,success:false}
+        state.error = { message: "", status: 0, success: false };
       })
       .addCase(signupAdmin.fulfilled, (state, action) => {
         state.loading = false;
@@ -257,7 +260,7 @@ export const adminSlice = createSlice({
           console.error("No admin data received");
         }
 
-        state.error = {message:'',status:0,success:false}
+        state.error = { message: "", status: 0, success: false };
       })
       .addCase(loginAdmin.fulfilled, (state, action) => {
         state.loading = false;
@@ -266,21 +269,21 @@ export const adminSlice = createSlice({
         } else {
           console.error("No admin data received");
         }
-        state.error = {message:'',status:0,success:false}
+        state.error = { message: "", status: 0, success: false };
       })
       .addCase(createCode.fulfilled, (state, action) => {
         state.loading = false;
         state.code = action.payload;
-        state.error = {message:'',status:0,success:false}
+        state.error = { message: "", status: 0, success: false };
       })
 
       .addCase(sendNotification.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = {message:'',status:0,success:false}
+        state.error = { message: "", status: 0, success: false };
       })
       .addCase(sendNotification.pending, (state) => {
         state.loading = true;
-        state.error = {message:'',status:0,success:false}
+        state.error = { message: "", status: 0, success: false };
       })
       .addCase(sendNotification.rejected, (state, action) => {
         state.loading = false;
@@ -289,16 +292,15 @@ export const adminSlice = createSlice({
       .addCase(getAdmin.fulfilled, (state, action) => {
         state.admin = action.payload;
         state.loading = false;
-        state.error = {message:'',status:0,success:false}
+        state.error = { message: "", status: 0, success: false };
       })
       .addCase(changeStatus.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = {message:'',status:0,success:false};
-        
+        state.error = { message: "", status: 0, success: false };
       })
       .addCase(getActiveUsers.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = {message:'',status:0,success:false}
+        state.error = { message: "", status: 0, success: false };
         state.activeUsers = action.payload?.totalItems;
       });
   },
