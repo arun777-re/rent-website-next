@@ -8,6 +8,8 @@ import { IoReorderThreeOutline } from "react-icons/io5";
 import AddProperty from "@/app/Components/admin/AddProperty";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { RiHomeHeartFill } from "react-icons/ri";
+import { TbBrandBooking } from "react-icons/tb";
+import { FcInvite } from "react-icons/fc";
 import { RiHome9Fill } from "react-icons/ri";
 import { FaUserPen } from "react-icons/fa6";
 import Image from "next/image";
@@ -29,6 +31,8 @@ import { RiNotification3Line } from "react-icons/ri";
 import { AiTwotonePropertySafety } from "react-icons/ai";
 import { MdOutlineBedroomParent } from "react-icons/md";
 import ViewBooking from "@/app/Components/admin/ViewBooking";
+import CreateCode from "@/app/Components/admin/CreateCode";
+import Link from "next/link";
 
 const AdminDashboard = () => {
   const [value, setValue] = useState<string>("");
@@ -80,10 +84,10 @@ const AdminDashboard = () => {
   return (
     <div className="w-[100vw] relative h-auto mx-auto">
       <div className="w-full flex flex-row relative">
-        <aside className="w-[20%] min-h-screen sticky top-0 fix flex flex-col items-start justify-start gap-10 p-5 bg-black text-white">
-          <a
-            href="/"
-            className="flex items-center space-x-1 rtl:space-x-reverse"
+        <aside className="w-[20%] min-h-screen relative flex flex-col items-start justify-start gap-10 p-5 bg-black text-white">
+          <Link
+            href={"/"}
+            className="flex items-center space-x-1 rtl:space-x-reverse sticky top-3 backdrop-blur-3xl z-20"
           >
             <RiHome8Line
               className="text-3xl text-green-600  dark:text-gray-700"
@@ -92,7 +96,7 @@ const AdminDashboard = () => {
             <span className="self-center text-lg font-normal whitespace-nowrap text-white dark:text-gray-700">
               Hously
             </span>
-          </a>
+          </Link>
           <div className="flex flex-col items-start relative text-white w-full h-auto gap-8">
             <Button
               onClick={() => setPage("dashboard")}
@@ -137,7 +141,7 @@ const AdminDashboard = () => {
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-300/60
                   active:text-white hover:text-white transition-colors duration-300"
             >
-              <RiHome9Fill size={18} />
+              <TbBrandBooking size={18} />
               <p className="text-sm font-medium text-gray-300/60">
                 View Booking Call
               </p>
@@ -192,10 +196,20 @@ const AdminDashboard = () => {
                 Rented Properties
               </p>
             </Button>
+            <Button
+              onClick={() => setPage("invite")}
+              className="flex flex-row items-center gap-4 cursor-pointer text-gray-500
+                  active:text-white hover:text-white transition-colors duration-300"
+            >
+              <FcInvite size={25} className="shadow rounded" />
+              <p className="text-sm font-medium text-gray-300/60">
+                Invite Code
+              </p>
+            </Button>
           </div>
         </aside>
         <section className="w-[80%] h-auto relative">
-          <div className="w-full relative mx-auto">
+          <div className="w-full sticky top-0 mx-auto backdrop-blur-3xl z-30">
             <div className="flex flex-row items-center justify-between shadow px-6 py-4 ">
               <div className="flex flex-row items-center gap-4">
                 <IoReorderThreeOutline size={25} className="shadow" />
@@ -273,6 +287,7 @@ const AdminDashboard = () => {
             {page === "notification" && <NotificationSender />}
             {page === "sold" && <ViewSold />}
             {page === "rented" && <ViewRented />}
+            {page === "invite" && <CreateCode/>}
             {page === "property" && (
               <ViewProperty properties={property} />
             )}
