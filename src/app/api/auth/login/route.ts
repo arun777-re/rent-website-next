@@ -40,7 +40,8 @@ export async function POST(req: NextRequest) {
 
     (await cookies()).set("accessToken", token, {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: "none",
+      secure: process.env.NODE_ENV === "production",
       maxAge: 7 * 60 * 60 * 24,
       path: "/",
     });
