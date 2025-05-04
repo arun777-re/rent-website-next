@@ -30,7 +30,6 @@ export interface PropertyItem {
     | "hospitality"
     | "hospital"
     | "school"
-    | "university"
     | "college"
     | "hotel"
     | "mansion"

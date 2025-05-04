@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { Formik} from "formik";
+import { Formik } from "formik";
 import * as yup from "yup";
 import LocationPicker from "./LocationPicker"; // Should call setCoordinates
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createProperty } from "@/redux/slices/propertSlice";
-import { AppDispatch, RootState } from "@/redux/store";
+import { AppDispatch } from "@/redux/store";
 import Dropzone from "react-dropzone";
 import toast from "react-hot-toast";
 interface Address {
@@ -22,8 +22,6 @@ interface Owner {
   address: string;
 }
 
-
-
 interface FormValues {
   title: string;
   description: string;
@@ -38,11 +36,10 @@ interface FormValues {
   status: string;
   location: { coordinates: number[]; type: string };
   address: Address;
-  owner: Owner
+  owner: Owner;
 }
 
-
-const initialValues:FormValues = {
+const initialValues: FormValues = {
   title: "",
   description: "",
   price: "",
@@ -102,14 +99,9 @@ const validationSchema = yup.object().shape({
   }),
 });
 
-
-
 const PropertyForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [amenityInput, setAmenityInput] = useState("");
-
-  const {error,loading} = useSelector((state:RootState)=>state.property)
-
 
   const handleSubmit = async (values: any, { resetForm }: any) => {
     const formData = new FormData();
@@ -136,12 +128,11 @@ const PropertyForm = () => {
     }
   };
 
-
   return (
     <div className="p-10 max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
       <Formik
         initialValues={initialValues}
-        enableReinitialize={true} 
+        enableReinitialize={true}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
@@ -154,215 +145,277 @@ const PropertyForm = () => {
           handleSubmit,
           setFieldValue,
         }) => {
-
           return (
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-            {/* Basic Inputs */}
-            {[
-              { name: "title", placeholder: "Property Title" },
-              { name: "description", placeholder: "Description" },
-              { name: "price", placeholder: "Price", type: "number" },
-              { name: "category", placeholder: "Category" },
-              { name: "bedrooms", placeholder: "Bedrooms", type: "number" },
-              { name: "bathrooms", placeholder: "Bathrooms", type: "number" },
-              { name: "area", placeholder: "Area (sq ft)", type: "number" },
-            ].map((field) => (
-              <div key={field.name}>
-                <input
-                  type={field.type || "text"}
-                  name={field.name}
-                  placeholder={field.placeholder}
-                  value={(values as any)[field.name]}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className="w-full px-4 py-2 border rounded"
-                />
-                {(errors as any)[field.name] && (touched as any)[field.name] && (
-                  <div className="text-red-500 text-sm">{(errors as any)[field.name]}</div>
-                )}
-              </div>
-            ))}
-
-            {/* Address */}
-      
-                <input
-                  name={'city'}
-                  placeholder={'City'}
-                  value={values.address.city}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className="w-full px-4 py-2 border rounded"
-                />
-                {errors.address?.city && touched.address?.city && (
-                  <div className="text-red-500 text-sm">{errors.address.city}</div>
-                )}
-      
-                <input
-                  name={'country'}
-                  placeholder={'country'}
-                  value={values.address.country}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className="w-full px-4 py-2 border rounded"
-                />
-                {errors.address?.country && touched.address?.country && (
-                  <div className="text-red-500 text-sm">{errors.address.country}</div>
-                )}
-      
-                <input
-                  name={'state'}
-                  placeholder={'state'}
-                  value={values.address.state}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className="w-full px-4 py-2 border rounded"
-                />
-                {errors.address?.state && touched.address?.state && (
-                  <div className="text-red-500 text-sm">{errors.address.state}</div>
-                )}
-      
-                <input
-                  name={'postalCode'}
-                  placeholder={'postalCode'}
-                  value={values.address.postalCode}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className="w-full px-4 py-2 border rounded"
-                />
-                {errors.address?.postalCode && touched.address?.postalCode && (
-                  <div className="text-red-500 text-sm">{errors.address.postalCode}</div>
-                )}
-
-            {/* Owner Info */}
-            {["name", "phone", "email", "address"].map((key) => (
-              <div key={key}>
-                <input
-                  name={`owner.${key}`}
-                  placeholder={`Owner ${key}`}
-                  value={values.owner[key as keyof Owner]}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className="w-full px-4 py-2 border rounded"
-                />
-                {errors.owner?.[key as keyof Owner] && touched.owner?.[key as keyof Owner] && (
-                  <div className="text-red-500 text-sm">{errors.owner[key as keyof Owner]}</div>
-                )}
-              </div>
-            ))}
-
-            {/* Amenities */}
-            <div className="col-span-full">
-              <div className="flex gap-2 mb-2">
-                <input
-                  type="text"
-                  placeholder="Add Amenity"
-                  value={amenityInput}
-                  onChange={(e) => setAmenityInput(e.target.value)}
-                  className="flex-grow px-3 py-2 border rounded"
-                />
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (amenityInput.trim()) {
-                      setFieldValue("amenities", [...values.amenities, amenityInput.trim()]);
-                      setAmenityInput("");
-                    }
-                  }}
-                  className="px-4 py-2 bg-blue-500 text-white rounded"
-                >
-                  Add
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {values.amenities.map((item, idx) => (
-                  <span key={idx} className="bg-gray-200 px-3 py-1 rounded-full text-sm">
-                    {item}
-                  </span>
-                ))}
-              </div>
-              {errors.amenities && touched.amenities && (
-                <div className="text-red-500 text-sm mt-1">{errors.amenities}</div>
-              )}
-            </div>
-
-            {/* Dropzone */}
-            <div className="col-span-full">
-              <Dropzone
-                onDrop={(acceptedFiles) =>
-                  setFieldValue("images", [...values.images, ...acceptedFiles])
-                }
-              >
-                {({ getRootProps, getInputProps }) => (
-                  <div
-                    {...getRootProps()}
-                    className="border-dashed border-2 border-gray-400 p-6 text-center rounded-lg cursor-pointer"
-                  >
-                    <input {...getInputProps()} />
-                    <p className="text-gray-500">Drag and drop images here, or click to select</p>
-                    {values.images.length > 0 && (
-                      <p className="mt-2 text-sm text-green-600">
-                        {values.images.length} image(s) selected
-                      </p>
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 md:grid-cols-2 gap-5"
+            >
+              {/* Basic Inputs */}
+              {[
+                { name: "title", placeholder: "Property Title" },
+                { name: "description", placeholder: "Description" },
+                { name: "price", placeholder: "Price", type: "number" },
+                { name: "bedrooms", placeholder: "Bedrooms", type: "number" },
+                { name: "bathrooms", placeholder: "Bathrooms", type: "number" },
+                { name: "area", placeholder: "Area (sq ft)", type: "number" },
+              ].map((field) => (
+                <div key={field.name}>
+                  <input
+                    type={field.type || "text"}
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    value={(values as any)[field.name]}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className="w-full px-4 py-2 border rounded"
+                  />
+                  {(errors as any)[field.name] &&
+                    (touched as any)[field.name] && (
+                      <div className="text-red-500 text-sm">
+                        {(errors as any)[field.name]}
+                      </div>
                     )}
-                  </div>
-                )}
-              </Dropzone>
-              {errors.images && touched.images && (
-                <div className="text-red-500 text-sm mt-1">{errors.images}</div>
-              )}
-            </div>
+                </div>
+              ))}
 
-            {/* Status and Featured */}
-            <div>
               <select
-                name="status"
+                name="category"
+                value={values.category}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.status}
                 className="w-full px-4 py-2 border rounded"
               >
-                <option value="">Select Status</option>
-                <option value="available">Available</option>
-                <option value="rented">Rented</option>
-                <option value="sold">Sold</option>
+                <option value="">Select Category</option>
+                <option value="apartment">apartment</option>
+                <option value="house">house</option>
+                <option value="commercial">commercial</option>
+                <option value="land">land</option>
+                <option value="industrial">industrial</option>
+                <option value="farmhouse">farmhouse</option>
+                <option value="villa">villa</option>
+                <option value="office">office</option>
+                <option value="shop">shop</option>
+                <option value="warehouse">warehouse</option>
+                <option value="factory">factory</option>
+                <option value="plot">plot</option>
+                <option value="residential">residential</option>
+                <option value="retail">retail</option>
+                <option value="mixed-use">mixed-use</option>
+                <option value="hospitality">hospitality</option>
+                <option value="hospital">hospital</option>
+                <option value="school">school</option>
+                <option value="school">school</option>
+                <option value="college">college</option>
+                <option value="hotel">hotel</option>
+                <option value="mansion">mansion</option>
+                <option value="penthouse">penthouse</option>
+                <option value="studio">studio</option>
+                <option value="duplex">duplex</option>
+                <option value="triplex">triplex</option>
+                <option value="townhouse">townhouse</option>
               </select>
-            </div>
+              {/* Address */}
 
-            <div className="flex items-center gap-2">
               <input
-                type="checkbox"
-                name="featured"
-                checked={values.featured}
-                onChange={(e) => setFieldValue("featured", e.target.checked)}
+                name={"city"}
+                placeholder={"City"}
+                value={values.address.city}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="w-full px-4 py-2 border rounded"
               />
-              <label>Featured Property</label>
-            </div>
-
-            {/* Location Picker */}
-            <div className="col-span-full">
-              <LocationPicker
-               setFieldValue={setFieldValue}
-              />
-              {errors.location?.coordinates && (
+              {errors.address?.city && touched.address?.city && (
                 <div className="text-red-500 text-sm">
-                  {errors.location.coordinates as string}
+                  {errors.address.city}
                 </div>
               )}
-            </div>
 
-            {/* Submit Button */}
-            <div className="col-span-full mt-6">
-              <button
-                type="submit"
-                className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700"
-              >
-                Create Property
-              </button>
-            </div>
-          </form>
-          )
-       
+              <input
+                name={"country"}
+                placeholder={"country"}
+                value={values.address.country}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="w-full px-4 py-2 border rounded"
+              />
+              {errors.address?.country && touched.address?.country && (
+                <div className="text-red-500 text-sm">
+                  {errors.address.country}
+                </div>
+              )}
+
+              <input
+                name={"state"}
+                placeholder={"state"}
+                value={values.address.state}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="w-full px-4 py-2 border rounded"
+              />
+              {errors.address?.state && touched.address?.state && (
+                <div className="text-red-500 text-sm">
+                  {errors.address.state}
+                </div>
+              )}
+
+              <input
+                name={"postalCode"}
+                placeholder={"postalCode"}
+                value={values.address.postalCode}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="w-full px-4 py-2 border rounded"
+              />
+              {errors.address?.postalCode && touched.address?.postalCode && (
+                <div className="text-red-500 text-sm">
+                  {errors.address.postalCode}
+                </div>
+              )}
+
+              {/* Owner Info */}
+              {["name", "phone", "email", "address"].map((key) => (
+                <div key={key}>
+                  <input
+                    name={`owner.${key}`}
+                    placeholder={`Owner ${key}`}
+                    value={values.owner[key as keyof Owner]}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className="w-full px-4 py-2 border rounded"
+                  />
+                  {errors.owner?.[key as keyof Owner] &&
+                    touched.owner?.[key as keyof Owner] && (
+                      <div className="text-red-500 text-sm">
+                        {errors.owner[key as keyof Owner]}
+                      </div>
+                    )}
+                </div>
+              ))}
+
+              {/* Amenities */}
+              <div className="col-span-full">
+                <div className="flex gap-2 mb-2">
+                  <input
+                    type="text"
+                    placeholder="Add Amenity"
+                    value={amenityInput}
+                    onChange={(e) => setAmenityInput(e.target.value)}
+                    className="flex-grow px-3 py-2 border rounded"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (amenityInput.trim()) {
+                        setFieldValue("amenities", [
+                          ...values.amenities,
+                          amenityInput.trim(),
+                        ]);
+                        setAmenityInput("");
+                      }
+                    }}
+                    className="px-4 py-2 bg-blue-500 text-white rounded"
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {values.amenities.map((item, idx) => (
+                    <span
+                      key={idx}
+                      className="bg-gray-200 px-3 py-1 rounded-full text-sm"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+                {errors.amenities && touched.amenities && (
+                  <div className="text-red-500 text-sm mt-1">
+                    {errors.amenities}
+                  </div>
+                )}
+              </div>
+
+              {/* Dropzone */}
+              <div className="col-span-full">
+                <Dropzone
+                  onDrop={(acceptedFiles) =>
+                    setFieldValue("images", [
+                      ...values.images,
+                      ...acceptedFiles,
+                    ])
+                  }
+                >
+                  {({ getRootProps, getInputProps }) => (
+                    <div
+                      {...getRootProps()}
+                      className="border-dashed border-2 border-gray-400 p-6 text-center rounded-lg cursor-pointer"
+                    >
+                      <input {...getInputProps()} />
+                      <p className="text-gray-500">
+                        Drag and drop images here, or click to select
+                      </p>
+                      {values.images.length > 0 && (
+                        <p className="mt-2 text-sm text-green-600">
+                          {values.images.length} image(s) selected
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </Dropzone>
+                {errors.images && touched.images && (
+                  <div className="text-red-500 text-sm mt-1">
+                    {errors.images}
+                  </div>
+                )}
+              </div>
+
+              {/* Status and Featured */}
+              <div>
+                <select
+                  name="status"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.status}
+                  className="w-full px-4 py-2 border rounded"
+                >
+                  <option value="">Select Status</option>
+                  <option value="available">Available</option>
+                  <option value="rented">Rented</option>
+                  <option value="sold">Sold</option>
+                </select>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="featured"
+                  checked={values.featured}
+                  onChange={(e) => setFieldValue("featured", e.target.checked)}
+                />
+                <label>Featured Property</label>
+              </div>
+
+              {/* Location Picker */}
+              <div className="col-span-full">
+                <LocationPicker setFieldValue={setFieldValue} />
+                {errors.location?.coordinates && (
+                  <div className="text-red-500 text-sm">
+                    {errors.location.coordinates as string}
+                  </div>
+                )}
+              </div>
+
+              {/* Submit Button */}
+              <div className="col-span-full mt-6">
+                <button
+                  type="submit"
+                  className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700"
+                >
+                  Create Property
+                </button>
+              </div>
+            </form>
+          );
         }}
       </Formik>
     </div>
@@ -370,4 +423,3 @@ const PropertyForm = () => {
 };
 
 export default PropertyForm;
-
