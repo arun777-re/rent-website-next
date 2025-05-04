@@ -33,7 +33,7 @@ const LoginForm = () => {
         try {
           // API call to login user
           await dispatch(loginAdmin(values)).unwrap().then((res)=>{
-            const succ = res?.message;
+            const succ = res?.success;
             if(succ === true){
               resetForm();
               router.push('/admin/dashboard')
