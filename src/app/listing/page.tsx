@@ -93,7 +93,7 @@ const ListingPage = () => {
   }
 
   return (
-    <>
+    <div className="mx-auto w-full h-auto flex flex-col items-center" >
       <Navbar color="gray-400" />
       <Banner heading="List View Layout" image={"/images/prprty-2.jpg"} />
       <section className="max-w-screen-xl relative w-full h-auto">
@@ -207,7 +207,7 @@ const ListingPage = () => {
         </div>
       </section>
       <section className="relative py-20 max-w-screen-xl w-full">
-        <div className="grid grid-cols-1 grid-rows-auto lg:grid-cols-2 gap-4 px-30 xl:px-30 md:px-16">
+        <div className="flex flex-row flex-wrap items-center justify-center px-30 gap-10">
 
           {
             (isSearch ? propertyBySearch : properties).map((i, k) => {
@@ -251,7 +251,7 @@ const ListingPage = () => {
         </Button>
       </div>
       <Footer />
-    </>
+    </div >
   );
 };
 

@@ -14,8 +14,7 @@ import { AppDispatch } from "@/redux/store";
 import { addFavorate, createInteraction } from "@/redux/slices/userSlice";
 import { PropertyItem } from "@/redux/slices/propertSlice";
 
-
-interface PropertyCardProps extends PropertyItem{
+interface PropertyCardProps extends PropertyItem {
   width?: string | number;
 }
 
@@ -32,46 +31,36 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   const [active, setActive] = React.useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
-
-  const handleFavorate = (e: React.MouseEvent<HTMLButtonElement | SVGElement>) => {
+  const handleFavorate = (
+    e: React.MouseEvent<HTMLButtonElement | SVGElement>
+  ) => {
     e.stopPropagation(); // 🚫 prevent card click
     setActive((prev) => !prev);
-    dispatch(addFavorate({propertyId:_id,type:"liked"})).unwrap();
+    dispatch(addFavorate({ propertyId: _id, type: "liked" })).unwrap();
     dispatch(createInteraction({ type: "click", propertyId: _id })).unwrap();
   };
- 
 
   return (
     <Card
-    
       className={clsx(
         "w-[38vw] h-auto bg-white shadow hover:shadow-xl cursor-pointer transition-all duration-300 rounded-lg overflow-hidden"
       )}
     >
       <figure
         className={clsx(
-          "flex","flex-row",
+          "flex",
+          "flex-row",
           "items-center relative w-full h-auto"
         )}
       >
-        <div
-          className={clsx(
-            "relative",
-            "w-full",
-            "h-[34vh]",
-            "lg:h-[40vh] md:h-[30vh] sm:h-[25vh] ",
-            "xl:h-[33vh]",
-            "object-fill object-center",
-            "rounded-l-lg" 
-          )}
-        >
+        <div className="relative w-full aspect-[4/3] overflow-hidden rounded-l-lg">
           <Image
-            src={images?.[0] || '/images/banner-main-1.jpg'}
+            src={images?.[0] || "/images/banner-main-1.jpg"}
             alt="property image"
             fill
-            className={clsx("top-0 bottom-0")}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
+            className="object-cover"
             priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
 
