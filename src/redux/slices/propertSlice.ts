@@ -137,13 +137,59 @@ export const handleFullfill = (state: initialValProps, action: any) => {
   state.property = action.payload;
 };
 
+// cloudinary env
+const secret = process.env.NEXT_PUBLIC_CLOUD_NAME;
+
+// function to upload images to cloudinary
+
+const handleImageUpload = async (file: File): Promise<string> => {
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const base64Image = buffer.toString("base64");
+    const imageUri = `data:${file.type};base64,${base64Image}`;
+
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`, {
+      method: "POST",
+      body: new URLSearchParams({
+        file: imageUri,
+        upload_preset: "ml_default", // Replace with your preset
+        folder: "rentwebsite/property", // Optional, specify folder
+      }),
+    });
+
+    const result = await res.json();
+    if (res.ok) {
+      return result.secure_url; // Return the URL of the uploaded image
+    } else {
+      throw new Error(result.message || "Image upload failed");
+    }
+  } catch (error) {
+    console.error("Cloudinary Image Upload Error:", error);
+    throw new Error("Image upload failed");
+  }
+};
 
 export const createProperty = createAsyncThunk<
-  PropertyProps, // Make sure this matches what your backend returns in `data`
+  PropertyProps, 
   FormData,
   { rejectValue: string[] }
 >("/admin/createproperty", async (formData, { rejectWithValue }) => {
+  const urls = [] as string[];
+
   try {
+
+    const images = formData.getAll('images') as File[];
+    if(images.length > 0){
+      urls.push(...await Promise.all(images.map(file=> handleImageUpload(file))))
+    }
+
+    formData.delete('images');
+    urls.forEach((url)=>{
+      formData.append('images',url)
+
+    })
+    
     const res = await fetch("/api/admin/create-property", {
       method: "POST",
       body: formData,

@@ -83,12 +83,6 @@ export async function POST(req:CustomRequest){
         address:address
     });
   
-    const uploadImageUrls:string[] = [];
-
-   const secure_url = await uploadImages(images);
-   secure_url.forEach((url)=>{
-    uploadImageUrls.push(url);
-   });
 
    const newProperty = new Property({
     title,
@@ -98,7 +92,7 @@ export async function POST(req:CustomRequest){
     bedrooms,
     bathrooms,
     area,
-    images:uploadImageUrls,
+    images,
     agent,
     slug,
     featured,
