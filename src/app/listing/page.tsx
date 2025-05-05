@@ -7,7 +7,7 @@ import Button from "../_component/Button";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoHomeOutline } from "react-icons/io5";
 import { FaIndianRupeeSign, FaRupeeSign } from "react-icons/fa6";
-import PropertyCard from "../_component/PropertyCard";
+import ListingCard from "../_component/ListingCard";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import {
@@ -212,13 +212,9 @@ const ListingPage = () => {
           {
             (isSearch ? propertyBySearch : properties).map((i, k) => {
               return (
-                <PropertyCard
+                <ListingCard
                   key={k}
                   {...i}
-                  direction="flex-row"
-                  width="45%"
-                  imageWidth="w-[44%]"
-                  round={true}
                 />
               );
             })
