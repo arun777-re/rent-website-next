@@ -48,6 +48,7 @@ const AdminDashboard = () => {
   }, [dispatch]);
 
   const admin = useSelector((state: RootState) => state.admin.admin);
+  const isMain = admin?.data?.isMainAdmin;
   const loading = useSelector((state: RootState) => state.admin.loading);
   useEffect(() => {
     if (!admin && !loading) {
@@ -139,6 +140,7 @@ const AdminDashboard = () => {
               onClick={() => setPage("booking")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-300/60
                   active:text-white hover:text-white transition-colors duration-300"
+                  disabled={isMain ? false : true}
             >
               <TbBrandBooking size={18} />
               <p className="text-sm font-medium text-gray-300/60">
@@ -169,6 +171,7 @@ const AdminDashboard = () => {
               onClick={() => setPage("notification")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-500
                   active:text-white hover:text-white transition-colors duration-300"
+                  disabled={isMain ? false : true}
             >
               <RiNotification3Line size={25} className="shadow rounded" />
               <p className="text-sm font-medium text-gray-300/60">

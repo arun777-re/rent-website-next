@@ -586,6 +586,34 @@ export const getPropertyByOwner = createAsyncThunk(
   }
 );
 
+export const getFeaturedProperty = createAsyncThunk('user/featuredproperties',async(_,{rejectWithValue})=>{
+  try {
+    const res = await fetch("/api/user/feature", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const data = await res.json();
+    console.log('datatatat',data)
+    if (!res.ok) {
+      return rejectWithValue({
+        message: data?.message,
+        status: data?.status,
+        success: data?.success,
+      });
+    }
+
+    return data;
+  } catch (error: any) {
+    return rejectWithValue({
+      message: `Error during get Property: ${error.message}`,
+      success: false,
+    });
+  }
+})
+
 const propertySlice = createSlice({
   name: "property",
   initialState: initialValues,
@@ -608,6 +636,7 @@ const propertySlice = createSlice({
       .addCase(getAllProperty.fulfilled, handleFullfill)
       .addCase(getFeatured.fulfilled, handleFullfill)
       .addCase(getTotalRevenue.fulfilled, handleFullfill)
+      .addCase(getFeaturedProperty.fulfilled, handleFullfill)
       .addCase(getPropertyByOwner.fulfilled, handleFullfill)
   },
 });

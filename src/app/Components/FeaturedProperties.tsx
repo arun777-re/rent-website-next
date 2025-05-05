@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropertCard from "../_component/PropertyCard";
 import {
   Carousel,
@@ -12,21 +12,33 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { getRecommendedProperties } from "@/redux/slices/propertSlice";
+import { getFeaturedProperty, getRecommendedProperties, PropertyItem } from "@/redux/slices/propertSlice";
+import PropertySkeleton from "../_component/PropertySkeleton";
 
 const FeaturedProperties = () => {
+
+  const [properties,setProperties] = useState<PropertyItem[]>([]);
+
   const dispatch = useDispatch<AppDispatch>();
-
+  const user = useSelector((state:RootState)=>state.user.user);
+  const isLogin = user?.success;
 // when component loads then fetch api to get recommended properties
-  useEffect(()=>{
-  dispatch(getRecommendedProperties()).unwrap();
-  },[dispatch])
+useEffect(() => {
+  const fetchProperties = async () => {
+    try {
+      const res = isLogin
+        ? await dispatch(getRecommendedProperties()).unwrap()
+        : await dispatch(getFeaturedProperty()).unwrap();
 
+      setProperties(res?.data || []);
+    } catch (err) {
+      console.error("Failed to fetch properties", err);
+    }
+  };
 
-  // getting recommended properties after api call
-  const propertyState = useSelector((state:RootState)=>state.property.property);
+  fetchProperties();
+}, [dispatch, isLogin]);
 
-  const properties = propertyState.data || [];
 
   const autoplay = Autoplay({
     stopOnInteraction:false,
@@ -34,12 +46,30 @@ const FeaturedProperties = () => {
     stopOnMouseEnter:true
   });
 
-  if(properties.length == 0){
-    return <div className="max-w-[100vw] mx-auto h-auto relative text-center">
-      <h4>  Loading...</h4>
-    
+  // handling  fallback
+  if (!properties || properties.length === 0) {
+    return (
+      <section className="max-w-[100vw] mx-auto h-auto relative">
+      <div className="h-auto px-30 py-20 flex flex-col gap-10 relative">
+        <article className="flex flex-col items-center">
+          <h3 className="">
+            Featured Properties
+          </h3>
+          <p className="text-gray-700/60 text-md">
+            A great platform to buy and sell your properties without any agent
+            or commisions.
+          </p>
+        </article>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[...Array(6)].map((_, index) => (
+            <PropertySkeleton key={index} />
+          ))}
+        </div>
       </div>
+    </section>
+    );
   }
+  
 
   return (
     <section className="max-w-[100vw] mx-auto h-auto relative">

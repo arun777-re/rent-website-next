@@ -314,6 +314,9 @@ export const getNotification = createAsyncThunk<
     });
   }
 });
+
+
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -428,6 +431,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = { message: "", status: 0, success: false };
       })
+     
       .addCase(getNotification.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
