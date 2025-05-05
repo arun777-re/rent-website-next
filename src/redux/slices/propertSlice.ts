@@ -149,26 +149,28 @@ const handleImageUpload = async (file: File): Promise<string> => {
     const base64Image = buffer.toString("base64");
     const imageUri = `data:${file.type};base64,${base64Image}`;
 
+    const formData = new FormData();
+    formData.append("file", imageUri);
+    formData.append("upload_preset", "rently");
+    formData.append("folder", "rentwebsite/images");
+
     const res = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`, {
       method: "POST",
-      body: new URLSearchParams({
-        file: imageUri,
-        upload_preset: "ml_default", // Replace with your preset
-        folder: "rentwebsite/property", // Optional, specify folder
-      }),
+      body: formData,
     });
 
     const result = await res.json();
     if (res.ok) {
-      return result.secure_url; // Return the URL of the uploaded image
+      return result.secure_url;
     } else {
       throw new Error(result.message || "Image upload failed");
     }
-  } catch (error) {
-    console.error("Cloudinary Image Upload Error:", error);
+  } catch (error: any) {
+    console.error("Cloudinary Image Upload Error:", error.message);
     throw new Error("Image upload failed");
   }
 };
+
 
 export const createProperty = createAsyncThunk<
   PropertyProps, 
@@ -189,7 +191,7 @@ export const createProperty = createAsyncThunk<
       formData.append('images',url)
 
     })
-    
+
     const res = await fetch("/api/admin/create-property", {
       method: "POST",
       body: formData,

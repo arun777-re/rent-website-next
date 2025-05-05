@@ -8,7 +8,7 @@ import Team from "../Components/Team";
 
 const AboutUs = () => {
   return (
-    <div>
+    <div className="w-auto h-auto relative mx-auto inset-0">
       <Navbar />
       <Banner heading="About Us" image={"/images/banner-contact.avif"} />
       <HowItWorks />

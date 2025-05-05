@@ -30,9 +30,6 @@ export async function POST(req:CustomRequest){
     const agent = req.admin;
     const formData = await req.formData();
 
-    console.log("formdata is",formData)
-
-
     if(!formData){
         return createResponse("provide valid input data",false,400);
     }
