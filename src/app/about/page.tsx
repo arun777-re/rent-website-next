@@ -8,7 +8,7 @@ import Team from "../Components/Team";
 
 const AboutUs = () => {
   return (
-    <div className="w-auto h-auto relative mx-auto inset-0">
+    <div className="w-auto h-auto relative mx-auto inset-0 flex flex-col items-center justify-center">
       <Navbar />
       <Banner heading="About Us" image={"/images/banner-contact.avif"} />
       <HowItWorks />
