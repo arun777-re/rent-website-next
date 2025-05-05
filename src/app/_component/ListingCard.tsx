@@ -42,81 +42,67 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
   return (
     <Card
-      className={clsx(
-        "w-[38vw] h-auto bg-white shadow hover:shadow-xl cursor-pointer transition-all duration-300 rounded-lg overflow-hidden"
+      className={clsx("w-full sm:w-[100vw] md:w-full lg:w-[38vw] h-[224px] bg-white shadow hover:drop-shadow-2xl cursor-pointer transition-all duration-300 rounded-lg overflow-hidden"
       )}
     >
       <figure
         className={clsx(
           "flex",
           "flex-row",
-          "items-center relative w-full h-auto"
+          "items-center relative w-full h-full"
         )}
       >
-        <div className="relative w-full aspect-[4/3] overflow-hidden rounded-l-lg">
+        <div className="relative w-[40%] h-full overflow-hidden rounded-l-lg">
           <Image
             src={images?.[0] || "/images/banner-main-1.jpg"}
             alt="property image"
             fill
-            className="object-cover"
+            className="object-fill object-center"
             priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            unoptimized
           />
         </div>
 
-        <figcaption
-          className={`w-full flex flex-col items-start justify-start px-6
-        "pt-4"
-          
-          "space-y-2" flex-grow`}
-        >
-          <Link href={`/property-detail/${slug}`} className="relative">
-            <h4 className="font-medium tracking-wide pb-4 hover:text-first cursor-pointer transition-colors duration-300">
-              {title
-                ? title.length > 45
-                  ? `${title.slice(0, 45)}...`
-                  : title
-                : "No title available"}
+        <figcaption className="w-[60%] h-full flex flex-col justify-between px-4 sm:px-6 py-4 space-y-4">
+          <Link href={`/property-detail/${slug}`} className="block">
+            <h4 className="font-medium text-base md:text-lg text-gray-900 tracking-wide hover:text-first cursor-pointer transition-colors duration-300 line-clamp-2">
+              {title || "No title available"}
             </h4>
           </Link>
 
-          <div className="w-full h-[1px] bg-gray-400/40"></div>
-          <div className="w-full flex flex-row justify-between items-center py-3">
-            <figure className="flex flex-row items-center justify-center gap-2">
+          <div className="border-t border-gray-300/40"></div>
+
+          <div className="flex flex-row justify-between gap-3 py-2">
+            <div className="flex items-center gap-1">
               <HiMiniArrowsPointingIn size={20} className="text-green-600" />
-              <figcaption className="text-gray-800 font-normal text-sm">
-                {area}
-              </figcaption>
-            </figure>
-            <figure className="flex flex-row items-center justify-center gap-2">
+              <span className="text-sm text-gray-700 text-nowrap">{area}</span>
+            </div>
+            <div className="flex items-center gap-1">
               <LuBedSingle size={20} className="text-green-600" />
-              <figcaption className="text-gray-800 font-normal text-sm">
-                {bedrooms}&nbsp;Beds
-              </figcaption>
-            </figure>
-            <figure className="flex flex-row items-center justify-center gap-2">
+              <span className="text-sm text-gray-700 text-nowrap">{bedrooms} Beds</span>
+            </div>
+            <div className="flex items-center gap-1">
               <MdOutlineBathtub size={20} className="text-green-600" />
-              <figcaption className="text-gray-800 font-normal text-sm">
-                {bathrooms}&nbsp;Bath
-              </figcaption>
-            </figure>
+              <span className="text-sm text-gray-700 text-nowrap">{bathrooms} Bath</span>
+            </div>
           </div>
 
-          <div className="w-full h-[1px] bg-gray-400/40"></div>
-          <div className="w-full pt-3 flex flex-row items-center justify-between pb-5">
-            <article className="flex flex-col items-start">
-              <h5 className="text-gray-700/60 font-medium text-md">Price</h5>
-              <p className="text-gray-800 font-semibold">{price}</p>
+          <div className="border-t border-gray-300/40"></div>
+
+          <div className="flex justify-between items-end pt-2">
+            <article>
+              <h5 className="text-xs text-gray-500 font-medium">Price</h5>
+              <p className="text-base font-semibold text-gray-800">{price}</p>
             </article>
-            <article className="flex flex-col items-start">
-              <h5 className="text-gray-700/60 font-medium text-md">Rating</h5>
-              <div className="flex items-center justify-center gap-1 text-gray-800 font-semibold">
-                <FaStar className="text-yellow-500" />
-                <FaStar className="text-yellow-500" />
-                <FaStar className="text-yellow-500" />
-                <FaStar className="text-yellow-500" />
-                <FaStar className="text-yellow-500" />
-                <p>5</p>
+            <article className="text-right">
+              <h5 className="text-xs text-gray-500 font-medium">Rating</h5>
+              <div className="flex items-center gap-1 text-yellow-500">
+                {[...Array(5)].map((_, i) => (
+                  <FaStar key={i} size={14} />
+                ))}
+                <span className="text-sm text-gray-800 font-medium ml-1">
+                  5
+                </span>
               </div>
             </article>
           </div>
@@ -127,7 +113,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           aria-label={active ? "Remove from favorites" : "Add to favorites"}
           size={30}
           className={clsx(
-            `absolute "left-2" top-2 text-white ${
+            `absolute left-2 top-2 text-white ${
               active ? "bg-red-500/80" : "bg-gray-400"
             }`,
             "rounded-full hover:bg-red-400/60 cursor-pointer transition-colors duration-300"

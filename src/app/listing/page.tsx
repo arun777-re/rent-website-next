@@ -93,7 +93,7 @@ const ListingPage = () => {
   }
 
   return (
-    <div className="mx-auto w-full h-auto flex flex-col items-center" >
+    <div className="mx-auto w-full h-auto flex flex-col items-center inset-0" >
       <Navbar color="gray-400" />
       <Banner heading="List View Layout" image={"/images/prprty-2.jpg"} />
       <section className="max-w-screen-xl relative w-full h-auto">
@@ -207,7 +207,7 @@ const ListingPage = () => {
         </div>
       </section>
       <section className="relative py-20 max-w-screen-xl w-full">
-        <div className="flex flex-row flex-wrap items-center justify-center px-30 gap-10">
+        <div className="flex flex-row flex-wrap items-center justify-center sm:px-6 md:px-8 lg:px-10 xl:px-16 gap-4 lg:gap-10">
 
           {
             (isSearch ? propertyBySearch : properties).map((i, k) => {
