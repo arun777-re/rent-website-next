@@ -10,7 +10,7 @@ import Testimonials from "./Components/Testimonials";
 export default function Home() {
 
   return (
-   <div className="w-full bg-white">
+   <div className="w-full bg-white mx-auto relative flex flex-col items-center inset-0">
     <Navbar headColor="gray-800" color="gray-800" hoverColor="first"/>
     <Banner/>
     <ListingCategory/>

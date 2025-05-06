@@ -14,7 +14,7 @@ import ViewFavorate from "@/app/Components/user/ViewFavorate";
 import NotificationBell from "@/app/_component/NotificationBell";
 
 const UserDashboard = () => {
-  const [page, setPage] = useState<string>("activity");
+  const [page, setPage] = useState<string>("interaction");
   const dispatch = useDispatch<AppDispatch>();
   const [user, setUser] = useState<UserProps>({
     firstName: "",
@@ -36,7 +36,7 @@ const UserDashboard = () => {
   // get user from redux
 
   return (
-    <div className="w-[100vw] relative h-auto mx-auto">
+    <div className="w-[100vw] relative h-auto mx-auto inset-0">
       <div className="w-full flex flex-row relative">
         <aside className="w-[20%] min-h-screen sticky top-10 flex flex-col items-start justify-start gap-10 p-5 bg-black text-white">
           <a
