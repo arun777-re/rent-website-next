@@ -1,14 +1,16 @@
 // components/NotificationBell.tsx
 "use client";
-import { useEffect, useState } from "react";
-import { BellIcon } from "@heroicons/react/24/outline";
+import { useCallback, useEffect, useState } from "react";
 import Pusher from "pusher-js";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { getNotification } from "@/redux/slices/userSlice";
+import { getNotification, readNotification} from "@/redux/slices/userSlice";
+import { IoMdNotificationsOutline } from "react-icons/io";
+import { Card } from "@radix-ui/themes";
+import dayjs from 'dayjs'
 
 interface Notification {
-  id: string;
+  _id: string;
   title: string;
   message: string;
   timestamp: string;
@@ -16,6 +18,8 @@ interface Notification {
 
 export default function NotificationBell() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notification, setNotification] = useState<Notification[]>([]);
+
   const [open, setOpen] = useState(false);
   const [hasNew, setHasNew] = useState(false);
 
@@ -53,38 +57,50 @@ export default function NotificationBell() {
   };
 
   useEffect(() => {
-    dispatch(getNotification()).unwrap();
+    dispatch(getNotification()).unwrap().then((res)=>{
+      if(res?.data.length > 0){
+setNotification(res?.data)
+      }
+    });
     // eslint-disable-next-line
   }, [dispatch]);
 
-  const notification = useSelector(
-    (state: RootState) => state.user.notification
-  );
+  // after click set message read
+  const handleRead = useCallback((id:string)=>{
+    if(id){
+      dispatch(readNotification({id:id}))
+    }
+  },[dispatch])
+
+const liveNotification = [...notifications,...notification];
 
   return (
     <div className="relative inline-block">
       <button onClick={toggleDropdown} className="relative">
-        <BellIcon className="w-6 h-6 text-gray-700" />
+        <IoMdNotificationsOutline className="w-6 h-6 text-gray-700 shadow-md cursor-pointer" />
         {hasNew && (
           <span className="absolute top-0 right-0 bg-red-500 rounded-full w-2 h-2" />
         )}
       </button>
       {open && (
-        <div className="absolute right-0 mt-2 w-80 bg-white border rounded shadow-lg z-50 max-h-96 overflow-y-auto">
-          <div className="p-2 text-sm font-semibold border-b">
+        <div className="absolute right-0 mt-2 w-[20rem] bg-white border rounded shadow-lg z-50 max-h-[60vh] 
+        hide-scrollbar overflow-y-auto">
+          <div className="p-2 text-sm font-semibold border-b w-full">
             Notifications
           </div>
-          {notifications.length === 0 ? (
+          {liveNotification.length === 0 ? (
             <div className="p-4 text-gray-500 text-sm">No notifications</div>
           ) : (
-            notifications.map((n, k) => (
-              <div key={k} className="p-3 border-b hover:bg-gray-50">
-                <div className="font-medium">{n.title}</div>
-                <div className="text-sm text-gray-600">{n.message}</div>
-                <div className="text-xs text-gray-400">
-                  {new Date(n.timestamp).toLocaleString()}
+            liveNotification.map((n, k) => (
+              <Card key={k} className="p-3 border-b hover:bg-gray-50 drop-shadow-xl cursor-pointer w-[20rem]"
+              onClick={()=> handleRead(n?._id)}
+              >
+                <h4 className="font-semibold text-blue-700/60 pb-2 leading-loose break-words whitespace-normal">{n.title}</h4>
+                <p className="text-sm text-gray-600 leading-loose break-words whitespace-normal w-full h-auto">{n.message}</p>
+                <div className="text-xs text-gray-400 pt-2">
+                {dayjs(n.timestamp).format("YYYY-MM-DD HH:mm")}
                 </div>
-              </div>
+              </Card>
             ))
           )}
         </div>

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ErrorProps } from "./adminSlice";
 
-interface UserProps {
+export interface UserProps {
   _id: string;
   firstName: string;
   lastName?: string;
@@ -14,6 +14,7 @@ interface dataProps {
 }
 
 interface NotificationProps {
+  _id?:string;
   title?: string;
   message?: string;
 }
@@ -146,7 +147,6 @@ export const loginUser = createAsyncThunk<
       });
     }
 
-    alert("Logged in successfully");
     return resData;
   } catch (error: any) {
     return rejectWithValue({
@@ -315,6 +315,35 @@ export const getNotification = createAsyncThunk<
   }
 });
 
+// read notification
+export const readNotification = createAsyncThunk<
+  any,
+  {id?:string},
+  { rejectValue: ErrorProps }
+>("/user/read/notification", async (payload, { rejectWithValue }) => {
+  try {
+    const res = await fetch(`/api/user/notify/read-notification?notifyId=${payload.id}`, {
+      method: "PATCH",
+      credentials: "include",
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      return rejectWithValue({
+        message: data?.message,
+        status: data?.status,
+        success: data?.success,
+      });
+    }
+
+    return data;
+  } catch (error: any) {
+    return rejectWithValue({
+      message: `Error during get notification: ${error.message}`,
+      success: false,
+    });
+  }
+});
+
 
 
 const userSlice = createSlice({
@@ -437,6 +466,11 @@ const userSlice = createSlice({
         state.success = true;
         state.error = { message: "", status: 0, success: false };
         state.notification = action.payload;
+      })
+      .addCase(readNotification.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = { message: "", status: 0, success: false };
       });
   },
 });

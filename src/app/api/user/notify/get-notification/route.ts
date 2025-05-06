@@ -14,14 +14,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
     oldDate.setDate(oldDate.getDate() - 7);
 
     const notification = await Notification.find({
-      createdAt: { $gte: oldDate },
+      isRead:false,createdAt: { $gte: oldDate },
     }).sort({ createdAt: -1 });
 
     if (notification.length === 0) {
       return createResponse("No Notification", true, 200, [], 0, 0);
     }
-
-    
     return createResponse(
       "All Notification are:",
       true,

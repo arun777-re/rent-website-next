@@ -41,7 +41,7 @@ const Testimonials = () => {
   ];
 
   const autoPlay = useMemo(()=>Autoplay({
-    delay:800,
+    delay:2000,
     stopOnInteraction:false,
     stopOnMouseEnter:true
 }),[]) 

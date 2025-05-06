@@ -12,9 +12,9 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     return auth;
   }
   try {
-    const notificationId = req.nextUrl.searchParams.get("propertyId");
+    const notificationId = req.nextUrl.searchParams.get("notifyId");
     if (!notificationId) {
-      return createResponse("Provide an appropriate propertyId", false, 400);
+      return createResponse("Provide an appropriate notifyId", false, 400);
     }
 
     const updated = await Notification.findByIdAndUpdate(

@@ -12,10 +12,14 @@ interface CustomReq extends NextRequest {
 
 // api to show users interactions or last activity
 export async function GET(req: CustomReq, res: NextResponse) {
-  await verifyUserToken(req, res);
+  const auth = await verifyUserToken(req, res);
+  if(auth instanceof NextResponse){
+    return auth;
+  }
   try {
-    const { userId } = req.user;
-    const lastActivity = await UserInteraction.find({ userId })
+    const userId = req.user.id;
+    const lastActivity = await UserInteraction.find({ userId }).
+    populate('propertyId','title slug')
       .sort({ createdAt: -1 })
       .limit(10);
     if (lastActivity.length === 0) {
