@@ -229,21 +229,26 @@ const ListingPage = () => {
         </div>
       </section>
       <section className="relative py-20 max-w-screen-xl w-full">
-        <div className="flex flex-row flex-wrap items-center justify-center w-full sm:px-6 md:px-8 lg:px-30 xl:px-30 gap-4 lg:gap-10">
-          {properties.length === 0 && propertyBySearch.length === 0 ? (
-            <section className="max-w-[100vw] w-full mx-auto h-auto relative">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[...Array(6)].map((_, index) => (
-                  <PropertySkeleton key={index} />
-                ))}
-              </div>
-            </section>
-          ) : (
-            (isSearch ? propertyBySearch : properties).map((i, k) => {
-              return <ListingCard key={k} {...i} />;
-            })
-          )}
-        </div>
+      <div className="flex flex-col items-center justify-center w-full sm:px-6 md:px-8 lg:px-30 xl:px-30 gap-4 lg:gap-10">
+  {(properties.length === 0 && propertyBySearch.length === 0) ? (
+    <section className="max-w-[100vw] w-full mx-auto h-auto relative">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {[...Array(6)].map((_, index) => (
+          <PropertySkeleton key={index} />
+        ))}
+      </div>
+    </section>
+  ) : (
+    <section className="max-w-[100vw] w-full mx-auto h-auto relative">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+        {(isSearch ? propertyBySearch : properties).map((i, k) => (
+          <ListingCard key={k} {...i} />
+        ))}
+      </div>
+    </section>
+  )}
+</div>
+
       </section>
       {/* Pagination Controls */}
       <div className="flex justify-center items-center gap-4 mb-10">
