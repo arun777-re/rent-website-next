@@ -229,9 +229,9 @@ const ListingPage = () => {
         </div>
       </section>
       <section className="relative py-20 max-w-screen-xl w-full">
-        <div className="flex flex-row flex-wrap items-center justify-center sm:px-6 md:px-8 lg:px-10 xl:px-16 gap-4 lg:gap-10">
+        <div className="flex flex-row flex-wrap items-center justify-center w-full sm:px-6 md:px-8 lg:px-30 xl:px-30 gap-4 lg:gap-10">
           {properties.length === 0 && propertyBySearch.length === 0 ? (
-            <section className="max-w-[100vw] mx-auto h-auto relative">
+            <section className="max-w-[100vw] w-full mx-auto h-auto relative">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[...Array(6)].map((_, index) => (
                   <PropertySkeleton key={index} />
