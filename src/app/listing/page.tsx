@@ -240,7 +240,7 @@ const ListingPage = () => {
     </section>
   ) : (
     <section className="max-w-[100vw] w-full mx-auto h-auto relative">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+      <div className="w-full flex flex-row flex-wrap items-center gap-11">
         {(isSearch ? propertyBySearch : properties).map((i, k) => (
           <ListingCard key={k} {...i} />
         ))}
