@@ -53,7 +53,7 @@ export const paginationFunc = async (
   const skip = (page - 1) * limit;
 
   const totalItems = await model.countDocuments(filter);
-  const totalPages = Math.ceil(totalItems / page);
+  const totalPages = Math.ceil(totalItems / limit);
   return { page, limit, skip, totalPages, totalItems };
 };
 

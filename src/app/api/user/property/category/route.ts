@@ -8,10 +8,16 @@ dbConnect();
 
 // api to get properties by category
 export async function GET(req:NextRequest,res:NextResponse){
-  const auth = await verifyUserToken(req,res);
-  if(auth instanceof NextResponse){
-    return auth;
-  }
+   let user = null
+   try {
+     const auth = await verifyAccess(req, res);
+     if (auth instanceof NextResponse) {
+       user = auth;
+       return user;
+     }
+   } catch{
+     user = null;
+   }
     try {
         const pageParams:any = req.nextUrl.searchParams.get('page');
         const limitParams:any = req.nextUrl.searchParams.get('limit');

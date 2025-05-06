@@ -13,48 +13,49 @@ import { AppDispatch, RootState } from "@/redux/store";
 import {
   getavailableProperties,
   getPropertyByAdvanceSearch,
+  PropertyItem,
 } from "@/redux/slices/propertSlice";
 import {
   BiSolidSkipPreviousCircle,
   BiSolidSkipNextCircle,
 } from "react-icons/bi";
 import { Formik, FormikHelpers } from "formik";
+import PropertySkeleton from "../_component/PropertySkeleton";
 
 export interface FormValues {
   title: string;
   category: string;
-  price: string;
+  price: number;
   location: string;
 }
 
 const initialValues: FormValues = {
   title: "",
   category: "",
-  price: "",
+  price:0,
   location: "",
 };
 
 // here api will be fetched based on the search query one is from home page and other is from same page
 const ListingPage = () => {
+  const [propertyBySearch, setPropertyBySearch] = useState<PropertyItem[]>([]);
+  const [properties, setProperties] = useState<PropertyItem[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(1);
   const dispatch = useDispatch<AppDispatch>();
   const [currentPage, setCurrentPage] = React.useState(1);
   const [limit] = React.useState(10);
-  const [isSearch,setIsSearch] = useState<boolean>(false);
+  const [isSearch, setIsSearch] = useState<boolean>(false);
   // number of items per page
 
-  // when component loads then fetch api to get recommended properties
+  // when component loads then fetch api to get available properties here
   useEffect(() => {
-    dispatch(getavailableProperties({ page: currentPage, limit })).unwrap();
-  }, [dispatch,currentPage,limit]);
-
-  // getting recommended properties after api call
-  const propertyState = useSelector(
-    (state: RootState) => state.property.property
-  );
-
-  const properties = propertyState.data || [];
-
-  const totalPages = propertyState?.totalPages ?? 1;
+    dispatch(getavailableProperties({ page: currentPage, limit }))
+      .unwrap()
+      .then((res) => {
+        setProperties(res?.data);
+        setTotalPages(res?.totalPages);
+      });
+  }, [dispatch, currentPage, limit]);
 
   const handleOnSubmit = useCallback(
     async (
@@ -62,44 +63,57 @@ const ListingPage = () => {
       { resetForm }: FormikHelpers<FormValues>
     ) => {
       try {
-        const formData = new FormData();
+        const formData: {
+          title?: string;
+          price?:number;
+          category?: string;
+          location?: string;
+        } = {};
         if (values) {
-          formData.append("title", values.title);
-          formData.append("category", values.category);
-          formData.append("price", values.price);
-          formData.append("location", values.location);
+          if (values.title) formData.title = values.title;
+          if (values.location) formData.location = values.location;
+          if (values.price) formData.price = values.price;
+          if (values.category) formData.category = values.category;
           setIsSearch(true);
-          await dispatch(getPropertyByAdvanceSearch(formData)).unwrap();
+          await dispatch(
+            getPropertyByAdvanceSearch({
+              ...formData,
+              page: currentPage,
+              limit: limit,
+            })
+          )
+            .unwrap()
+            .then((res) => {
+              const data = res?.data;
+              setPropertyBySearch(data);
+              setTotalPages(res?.totalPages);
+            });
         }
         resetForm();
       } catch (error) {
-        console.error("Error submitting form:",error)
+        console.error("Error submitting form:", error);
       }
     },
     [dispatch]
   );
 
-  // get properties when search
-  const propertyBySearch = propertyState.data || [];
-
-
-
-  if (properties.length == 0 || (isSearch && propertyBySearch.length === 0)) {
-    return (
-      <div className="max-w-[100vw] mx-auto h-auto relative text-center">
-        <h4> Loading...</h4>
-      </div>
-    );
-  }
-
   return (
-    <div className="mx-auto w-full h-auto flex flex-col items-center inset-0" >
+    <div className="mx-auto w-full h-auto flex flex-col items-center inset-0 overflow-x-hidden hide-scrollbar">
       <Navbar color="gray-400" />
       <Banner heading="List View Layout" image={"/images/prprty-2.jpg"} />
       <section className="max-w-screen-xl relative w-full h-auto">
         <div className="relative px-30 z-0">
           <Formik initialValues={initialValues} onSubmit={handleOnSubmit}>
-            {({ values, errors, handleSubmit, handleBlur, handleChange }) => (
+            {({
+              values,
+              errors,
+              handleSubmit,
+              handleBlur,
+              handleChange,
+              isSubmitting,
+              isValid,
+              dirty,
+            }) => (
               <form
                 onSubmit={handleSubmit}
                 method="post"
@@ -119,6 +133,7 @@ const ListingPage = () => {
                         id="search-input"
                         type="text"
                         placeholder="Search your Keywords"
+                        name="title"
                         className="placeholder:text-xs bg-gray-100/40 py-3 pl-8 w-full"
                         value={values.title}
                         onChange={handleChange}
@@ -139,15 +154,16 @@ const ListingPage = () => {
                       <select
                         id="category-select"
                         className="text-xs bg-gray-100/40 py-3.5 px-14 w-full"
+                        name="category"
                         value={values.category}
                         onChange={handleChange}
                         onBlur={handleBlur}
                       >
                         <option value="">Select...</option>
-                        <option value="industrial">Industrial</option>
+                        <option value="plot">Plots</option>
                         <option value="apartment">Apartment</option>
                         <option value="offices">Offices</option>
-                        <option value="townhome">TownHome</option>
+                        <option value="villa">Villa</option>
                       </select>
                     </div>
                   </article>
@@ -166,9 +182,10 @@ const ListingPage = () => {
                       />
                       <input
                         id="price-range"
-                        type="text"
+                        type="number"
                         placeholder="Search Price Range"
                         className="placeholder:text-xs bg-gray-100/40 py-3 pl-8 w-full"
+                        name="price"
                         value={values.price}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -190,6 +207,7 @@ const ListingPage = () => {
                         type="text"
                         placeholder="Search by Location"
                         className="placeholder:text-xs bg-gray-100/40 py-3 pl-8 w-full"
+                        name="location"
                         value={values.location}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -198,7 +216,11 @@ const ListingPage = () => {
                   </article>
                 </div>
 
-                <Button className="bg-first py-3 px-6 md:px-10 text-white font-semibold">
+                <Button
+                  type="submit"
+                  disabled={!isValid || !dirty || isSubmitting}
+                  className="bg-first py-3 px-6 md:px-10 text-white font-semibold cursor-pointer"
+                >
                   Search
                 </Button>
               </form>
@@ -208,22 +230,23 @@ const ListingPage = () => {
       </section>
       <section className="relative py-20 max-w-screen-xl w-full">
         <div className="flex flex-row flex-wrap items-center justify-center sm:px-6 md:px-8 lg:px-10 xl:px-16 gap-4 lg:gap-10">
-
-          {
+          {properties.length === 0 && propertyBySearch.length === 0 ? (
+            <section className="max-w-[100vw] mx-auto h-auto relative">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[...Array(6)].map((_, index) => (
+                  <PropertySkeleton key={index} />
+                ))}
+              </div>
+            </section>
+          ) : (
             (isSearch ? propertyBySearch : properties).map((i, k) => {
-              return (
-                <ListingCard
-                  key={k}
-                  {...i}
-                />
-              );
+              return <ListingCard key={k} {...i} />;
             })
-          }
-         
+          )}
         </div>
       </section>
       {/* Pagination Controls */}
-      <div className="flex justify-center items-center gap-4 mt-10">
+      <div className="flex justify-center items-center gap-4 mb-10">
         <Button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -251,7 +274,7 @@ const ListingPage = () => {
         </Button>
       </div>
       <Footer />
-    </div >
+    </div>
   );
 };
 

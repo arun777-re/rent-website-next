@@ -77,6 +77,8 @@ export interface initialValProps {
   loading: boolean;
 }
 export interface SearchParams {
+  title?:string;
+  price?:number;
   location?: string;
   page: number;
   limit: number;
@@ -277,20 +279,20 @@ export const getPropertyByHome = createAsyncThunk(
 // get property by home search
 export const getPropertyByAdvanceSearch = createAsyncThunk(
   "property/advancesearch",
-  async (formData: FormData, { rejectWithValue }) => {
+  async (data:SearchParams,{ rejectWithValue }) => {
     try {
-      if (!formData) {
+      if (!data) {
         return rejectWithValue("Provide at least one field");
       }
+      
+      const {page,limit,...searchParams} = data;
+      console.log('gfdgdgdgdgddgdggd',data)
       const response = await fetch(
-        `/api/user/property/advance-search?page=4&limit=10`,
+        `/api/user/property/advance-search?page=${page}&limit=${limit}`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
           credentials: "include",
-          body: JSON.stringify(formData),
+          body:JSON.stringify(searchParams),
         }
       );
       if (!response.ok) {
@@ -561,7 +563,7 @@ export const getTotalRevenue = createAsyncThunk(
   }
 );
 
-//
+//admin route
 export const getPropertyByOwner = createAsyncThunk(
   "admin/getpropertybyowner",
   async (data: string, { rejectWithValue }) => {

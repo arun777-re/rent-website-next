@@ -40,7 +40,7 @@ const PropertyDetails = () => {
       dispatch(getSingleProperty(slug))
         .unwrap()
         .then((res) => {
-          const data = res.data;
+          const data = res?.data;
           setProperty(data);
         })
         .catch((err) => {});
@@ -86,8 +86,8 @@ const PropertyDetails = () => {
   return (
     <>
       {property ? (
-        <div>
-          <Navbar />
+        <div className="mx-auto max-w-screen-xl h-auto inset-0">
+          <Navbar headColor="black"/>
           <section className="relative max-w-screen-xl w-full min-h-screen pt-20 px-30 pb-10">
             <div className="flex flex-col lg:flex-row gap-6">
               {/* LEFT: Property Details */}
@@ -172,10 +172,9 @@ const PropertyDetails = () => {
                   latitude={property?.location?.coordinates?.[0]}
                 />
               </div>
-
               {/* RIGHT: Sticky Sidebar */}
               <div className="w-full lg:w-1/3 h-auto">
-                <div className="sticky top-14 ">
+                <div className="sticky top-20 ">
                   <div className="bg-gray-100/40 rounded-lg pb-4">
                     <article className="p-6">
                       <h4 className="text-xl">Price:</h4>

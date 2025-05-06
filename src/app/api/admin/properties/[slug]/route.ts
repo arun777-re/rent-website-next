@@ -6,22 +6,33 @@ import { NextRequest, NextResponse } from "next/server";
 dbConnect();
 
 // find a particular property
-export async function GET(req: NextRequest,context:{params:{slug:string}},res:NextResponse) {
-  const auth = await verifyAccess(req, res);
-  if (auth instanceof NextResponse) {
-    return auth;
-  }
+export async function GET(
+  req: NextRequest,
+  context: { params: { slug: string } },
+  res: NextResponse
+) {
+  let user = null;
   try {
-    const {slug} = await context.params;
-    console.log('slug',slug)
+    const auth = await verifyAccess(req, res);
+    if (auth instanceof NextResponse) {
+      user = auth;
+      return user;
+    }
+  } catch {
+    user = null;
+  }
+
+  try {
+    const { slug } = await context.params;
+    console.log("slug", slug);
     if (!slug) {
       return createResponse("Missing property slug", false, 400);
     }
-    const property = await Property.findOne({ slug});
+    const property = await Property.findOne({ slug });
     if (!property) {
       return createResponse("No such Property exists", true, 200, []);
     }
-console.log(property)
+    console.log(property);
     return createResponse("fetch property successfull", true, 200, property);
   } catch (error: any) {
     console.error(error.message);

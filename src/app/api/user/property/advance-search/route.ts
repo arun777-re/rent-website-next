@@ -8,20 +8,21 @@ import {
 } from "@/lib/middleware/error";
 dbConnect();
 
-interface bodyProps {
-  title?: string;
-  location?: string;
-  price?: number | string;
-  category?: string;
-}
 
 export async function POST(req: NextRequest, res: NextResponse) {
-  const auth = await verifyAccess(req, res);
-  if (auth instanceof NextResponse) {
-    return auth;
-  }
+  let user = null
   try {
-    const body: bodyProps = await req.json();
+    const auth = await verifyAccess(req, res);
+    if (auth instanceof NextResponse) {
+      user = auth;
+      return user;
+    }
+  } catch{
+    user = null;
+  }
+
+  try {
+    const body = await req.json();
     if (!body) {
       return createResponse("Provide at least one Parameter", false, 400);
     }
@@ -31,11 +32,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const location = body.location;
 
     const query: Record<string, any> = {};
+    console.log(body)
 
     if (title) query.title = { $regex: title, $options: "i" };
     if (category) query.category = category;
     if (price) query.price = { $gte: Number(price) };
     if (location) query.location = { $regex: location, $options: "i" };
+    query.status = 'available';
     if (Object.keys(query).length === 0) {
       return createResponse("Provide atleast one search parameter", false, 400);
     }

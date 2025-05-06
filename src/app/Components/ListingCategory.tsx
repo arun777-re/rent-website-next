@@ -6,7 +6,7 @@ import Link from "next/link";
 const ListingCategory = () => {
   const categories = [
     { name: "residentials", image: "/images/residential.jpg", list: "80" },
-    { name: "land", image: "/images/agriculture.jpg", list: "80" },
+    { name: "plot", image: "/images/agriculture.jpg", list: "80" },
     { name: "industrial", image: "/images/industrial.jpg", list: "80" },
     { name: "commercial", image: "/images/commercial.jpg", list: "80" },
     { name: "investment", image: "/images/investment.jpg", list: "80" },
