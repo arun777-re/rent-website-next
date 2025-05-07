@@ -47,8 +47,8 @@ router.push(`/explore/${value}`);
                 </p>
               </article>
 
-              <div className="max-w-[100vw] w-full h-[88vh] mx-auto relative rounded-2xl flex items-start justify-center">
-                <form className="w-full max-w-[50vw] relative z-20 drop-shadow-2xl" onSubmit={handleSubmit}>
+              <div className="max-w-screen w-full h-[88vh] mx-auto relative rounded-2xl flex items-start justify-center">
+                <form className=" max-w-screen w-full lg:w-2xl relative z-20 drop-shadow-2xl" onSubmit={handleSubmit}>
                   <CiSearch
                     className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-900"
                     size={25}

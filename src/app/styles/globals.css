@@ -162,7 +162,7 @@ body {
     @apply text-base antialiased 
   }
   p{
-   @apply text-xs antialiased text-gray-800/50 font-medium
+   @apply text-xs antialiased text-slate-400 font-medium
   }
 }
 
