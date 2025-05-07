@@ -35,8 +35,8 @@ router.push(`/explore/${value}`);
       {path === "/" ? (
         <>
           <div className="max-w-screen w-full relative mx-auto h-auto" >
-            <div className="relative w-full mx-auto flex flex-col items-center justify-center pt-28 lg:pt-40 px-4 lg:px-30 xl:px-30 gap-12">
-              <article className="relative z-10 flex flex-col items-center gap-5 justify-center h-full w-full text-center text-white">
+            <div className="relative w-full mx-auto flex flex-col items-center justify-center pt-28 md:pt-36 lg:pt-40 px-4 lg:px-30 xl:px-30 gap-8 md:gap-12">
+              <article className="relative z-10 flex flex-col items-center gap-2 md:gap-5 justify-center h-full w-full text-center text-white">
                 <h1 className="font-bold tracking-wider text-gray-800 leading-relaxed">
                   Are you ready to find Your Dream Home
                 </h1>
@@ -48,7 +48,7 @@ router.push(`/explore/${value}`);
               </article>
 
               <div className="max-w-screen w-full h-[88vh] mx-auto relative rounded-2xl flex items-start justify-center">
-                <form className=" max-w-screen w-full lg:w-2xl relative z-20 drop-shadow-2xl" onSubmit={handleSubmit}>
+                <form className=" max-w-screen w-full sm:w-lg md:w-xl lg:w-2xl relative z-20 drop-shadow-2xl" onSubmit={handleSubmit}>
                   <CiSearch
                     className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-900"
                     size={25}
