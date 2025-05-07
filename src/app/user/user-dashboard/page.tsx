@@ -36,12 +36,12 @@ const UserDashboard = () => {
   // get user from redux
 
   return (
-    <div className="w-[100vw] relative h-auto mx-auto inset-0">
+    <div className="w-[100vw] relative h-auto mx-auto inset-0 hide-scroolbar overflow-x-hidden">
       <div className="w-full flex flex-row relative">
         <aside className="w-[20%] min-h-screen sticky top-10 flex flex-col items-start justify-start gap-10 p-5 bg-black text-white">
           <a
                     href="/"
-                    className="flex items-center justify-center gap-1 rtl:space-x-reverse sticky top-10"
+                    className="flex items-center justify-center gap-1 rtl:space-x-reverse sticky top-5"
                   >
                     <Image
                       src={"/images/tree-house.png"}

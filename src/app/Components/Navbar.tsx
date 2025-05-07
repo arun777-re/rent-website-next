@@ -27,24 +27,30 @@ const Navbar: React.FC<navProps> = ({
 }) => {
   const router = useRouter();
   const [hasNotification, setHasNotification] = useState<boolean>(true);
-
-  const [scrool, setScrool] = useState<boolean>(false);
+  const [scroll, setScroll] = useState<boolean>(false);
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
-  // get user if it is logged in
   const { user } = useSelector((state: RootState) => state.user);
-
   const dispatch = useDispatch<AppDispatch>();
+
+  // Intersection Observer to detect when the banner is out of view
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setScrool(true);
-      } else {
-        setScrool(false);
+    const banner = document.getElementById("banner");
+    if (!banner) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setScroll(!entry.isIntersecting); // true when the banner is out of view
+      },
+      {
+        root: null,
+        rootMargin: '-10px 0px 0px 0px', // Observe before it fully leaves the view
+        threshold: 0,
       }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-    // eslint-disable-next-line
+    );
+
+    observer.observe(banner);
+
+    return () => observer.disconnect();
   }, []);
 
   const handleSignUp = useCallback(
@@ -80,24 +86,27 @@ const Navbar: React.FC<navProps> = ({
     [router]
   );
 
-  useEffect(()=>{
-    dispatch(getNotification()).unwrap().then((res)=>{
-      if(res?.data?.length > 0){
-        setHasNotification(true)
+  useEffect(() => {
+    dispatch(getNotification()).unwrap().then((res) => {
+      if (res?.data?.length > 0) {
+        setHasNotification(true);
       }
     });
-  },[])
+  }, [dispatch]);
+
   return (
     <>
       <nav
-        className={clsx(`hidden md:block ${
-          scrool ? "bg-white" : "bg-transparent"
-        } dark:bg-gray-900 fixed ${
-          scrool ? "backdrop-blur-3xl" : "bg-transparent"
-        }  w-full z-1000 top-0
-           start-0  dark:border-gray-600 transition-all duration-300 ${
-             scrool ? "shadow-md" : "shadow-none"
-           }`)}
+        id="banner"
+        className={clsx(
+          `hidden md:block scroll-smooth ${
+            scroll ? "bg-white" : "bg-transparent"
+          } dark:bg-gray-900 fixed ${
+            scroll ? "backdrop-blur-3xl" : "bg-transparent"
+          } w-full z-1000 top-0 start-0 dark:border-gray-600 transition-all duration-300 ${
+            scroll ? "shadow-md" : "shadow-none"
+          }`
+        )}
       >
         <div className="w-full flex flex-wrap items-center justify-between mx-auto py-4 inset-0 px-4 lg:px-30 xl:px-30">
           <a
@@ -113,7 +122,7 @@ const Navbar: React.FC<navProps> = ({
             />
             <span
               className={clsx(`self-center tracking-wide text-lg font-medium whitespace-nowrap dark:text-gray-700
-                ${scrool ? `text-${onScrollColor}` : `text-${headColor}`}`)}
+                ${scroll ? `text-${onScrollColor}` : `text-${headColor}`}`)}
             >
               Hously
             </span>
@@ -131,11 +140,11 @@ const Navbar: React.FC<navProps> = ({
                           }`}
                           className={clsx(
                             "dark:text-gray-700 active:text-first",
-                            scrool
+                            scroll
                               ? `hover:text-${onScrollHover}`
                               : `hover:text-${hoverColor}`,
                             "dark:hover:text-green-600 cursor-pointer",
-                            scrool ? `text-${onScrollColor}` : `text-${color}`,
+                            scroll ? `text-${onScrollColor}` : `text-${color}`,
                             "transition-colors duration-300"
                           )}
                         >
@@ -183,12 +192,12 @@ const Navbar: React.FC<navProps> = ({
 
       <nav
         className={clsx(`md:hidden fixed top-0 left-0 w-full z-50 px-4 py-3
-   scrool ? "bg-white" : "bg-transparent"
+   ${scroll ? "bg-white" : "bg-transparent"}
           } dark:bg-gray-900 fixed ${
-            scrool ? "backdrop-blur-3xl" : "bg-transparent"
+            scroll ? "backdrop-blur-3xl" : "bg-transparent"
           }  w-full z-1000 top-0
            start-0  dark:border-gray-600 transition-all duration-300 ${
-             scrool ? "shadow-md" : "shadow-none"
+             scroll ? "shadow-md" : "shadow-none"
            }`)}
       >
         <div className="flex items-center justify-between">
@@ -205,7 +214,7 @@ const Navbar: React.FC<navProps> = ({
             />
             <span
               className={clsx(`self-center tracking-wide text-lg font-medium whitespace-nowrap dark:text-gray-700
-                ${scrool ? `text-${onScrollColor}` : `text-${headColor}`}`)}
+                ${scroll ? `text-${onScrollColor}` : `text-${headColor}`}`)}
             >
               Hously
             </span>
