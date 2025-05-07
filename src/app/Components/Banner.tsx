@@ -34,7 +34,7 @@ router.push(`/explore/${value}`);
     <>
       {path === "/" ? (
         <>
-          <div className="w-full relative mx-auto h-auto">
+          <div className="w-full relative mx-auto h-auto" >
             <div className="relative w-full mx-auto flex flex-col items-center justify-center pt-40 px-20 lg:px-30 gap-12">
               <article className="relative z-10 flex flex-col items-center gap-5 justify-center h-full text-center text-white">
                 <h1 className="font-bold tracking-wide text-gray-800">

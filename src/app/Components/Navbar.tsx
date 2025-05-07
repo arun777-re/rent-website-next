@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Button from "../_component/Button";
@@ -32,26 +32,18 @@ const Navbar: React.FC<navProps> = ({
   const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
 
-  // Intersection Observer to detect when the banner is out of view
   useEffect(() => {
-    const banner = document.getElementById("banner");
-    if (!banner) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setScroll(!entry.isIntersecting); // true when the banner is out of view
-      },
-      {
-        root: null,
-        rootMargin: '-10px 0px 0px 0px', // Observe before it fully leaves the view
-        threshold: 0,
-      }
-    );
-
-    observer.observe(banner);
-
-    return () => observer.disconnect();
-  }, []);
+    const handleScroll = () => {
+      setScroll(window.scrollY > 0);
+    };
+  
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); 
+  
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [window.scrollY]);
+  
+  
 
   const handleSignUp = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -87,26 +79,26 @@ const Navbar: React.FC<navProps> = ({
   );
 
   useEffect(() => {
-    dispatch(getNotification()).unwrap().then((res) => {
-      if (res?.data?.length > 0) {
-        setHasNotification(true);
-      }
-    });
+    dispatch(getNotification())
+      .unwrap()
+      .then((res) => {
+        if (res?.data?.length > 0) {
+          setHasNotification(true);
+        }
+      });
   }, [dispatch]);
 
   return (
     <>
-      <nav
-        id="banner"
-        className={clsx(
-          `hidden md:block scroll-smooth ${
-            scroll ? "bg-white" : "bg-transparent"
-          } dark:bg-gray-900 fixed ${
+      <nav       
+        className={clsx(`hidden md:block scroll-smooth fixed top-0 left-0 max-w-screen w-full z-50
+   ${scroll ? "bg-white" : "bg-transparent"}
+           dark:bg-gray-900 fixed ${
             scroll ? "backdrop-blur-3xl" : "bg-transparent"
-          } w-full z-1000 top-0 start-0 dark:border-gray-600 transition-all duration-300 ${
-            scroll ? "shadow-md" : "shadow-none"
-          }`
-        )}
+          }  w-full z-1000 top-0
+           start-0  dark:border-gray-600 transition-all duration-300 ${
+             scroll ? "shadow-md" : "shadow-none"
+           }`)}
       >
         <div className="w-full flex flex-wrap items-center justify-between mx-auto py-4 inset-0 px-4 lg:px-30 xl:px-30">
           <a
@@ -163,9 +155,9 @@ const Navbar: React.FC<navProps> = ({
                 className=" text-first 
                       cursor-pointer hover:text-green-700"
               />
-                {hasNotification && (
-    <span className="absolute top-9 right-52 block h-2 w-2 rounded-full ring-2 ring-white bg-red-600 animate-pulse" />
-  )}
+              {hasNotification && (
+                <span className="absolute top-9 right-52 block h-2 w-2 rounded-full ring-2 ring-white bg-red-600 animate-pulse" />
+              )}
               {user && user?.success ? (
                 <Button
                   onClick={handleLogout}
@@ -192,7 +184,7 @@ const Navbar: React.FC<navProps> = ({
 
       <nav
         className={clsx(`md:hidden fixed top-0 left-0 w-full z-50 px-4 py-3
-   ${scroll ? "bg-white" : "bg-transparent"}
+           ${scroll ? "bg-white" : "bg-transparent"}
           } dark:bg-gray-900 fixed ${
             scroll ? "backdrop-blur-3xl" : "bg-transparent"
           }  w-full z-1000 top-0
@@ -258,7 +250,15 @@ const Navbar: React.FC<navProps> = ({
 
         {mobileOpen && (
           <div className="mt-3 space-y-1">
-            {["Dashboard","Buy","Sell","listing", "About", "Contact", "Logout"].map((item) => (
+            {[
+              "Dashboard",
+              "Buy",
+              "Sell",
+              "listing",
+              "About",
+              "Contact",
+              "Logout",
+            ].map((item) => (
               <a
                 key={item}
                 href={`/${item.toLowerCase()}`}
