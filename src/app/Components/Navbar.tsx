@@ -183,7 +183,7 @@ const Navbar: React.FC<navProps> = ({
       </nav>
 
       <nav
-        className={clsx(`md:hidden fixed max-w-screen top-0 left-0 w-full z-50 px-4 py-3
+        className={clsx(`md:hidden fixed max-w-screen top-0 left-0 w-full z-50 px-4  py-4
            ${scroll ? "bg-white" : "bg-transparent"}
           } dark:bg-gray-900 fixed ${
             scroll ? "backdrop-blur-3xl" : "bg-transparent"
