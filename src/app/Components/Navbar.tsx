@@ -183,14 +183,8 @@ const Navbar: React.FC<navProps> = ({
       </nav>
 
       <nav
-        className={clsx(`md:hidden fixed max-w-screen top-0 left-0 w-full z-50 px-4  py-4
-           ${scroll ? "bg-white" : "bg-transparent"}
-          } dark:bg-gray-900 fixed ${
-            scroll ? "backdrop-blur-3xl" : "bg-transparent"
-          }  w-full z-1000 top-0
-           start-0  dark:border-gray-600 transition-all duration-300 ${
-             scroll ? "shadow-md" : "shadow-none"
-           }`)}
+        className={clsx(`md:hidden fixed max-w-screen top-0 left-0 w-full z-50 px-4  py-4 bg-white
+           start-0  dark:border-gray-600 transition-all duration-300 shadow-md backdrop-blur-3xl`)}
       >
         <div className="flex items-center justify-between">
           <a
