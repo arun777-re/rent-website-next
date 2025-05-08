@@ -84,9 +84,9 @@ const HowItWorks = () => {
           </p>
         </article>
          <div className="flex-row flex items-center justify-between flex-wrap w-full gap-4 md:gap-10 ">
-            {works.map((item)=>{
+            {works.map((item,index)=>{
                 return (
-                    <figure className="flex flex-col items-center justify-center w-full  lg:w-65  h-auto">
+                    <figure key={index} className="flex flex-col items-center justify-center w-full  lg:w-65  h-auto">
                     <div className="w-25 h-25 bg-green-200/10 rounded-md flex items-center justify-center shadow-md"
                      style={{clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'}}>
                         {item?.icon}

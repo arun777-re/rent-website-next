@@ -42,7 +42,7 @@ const Footer = () => {
           </Button>
         </article>
         <div className="w-full mx-auto">
-          <div className=" w-full h-auto mx-auto relative  mt-20 rounded-lg px-[7.5rem]">
+          <div className=" w-full h-auto mx-auto relative  mt-20 rounded-lg  lg:px-[7.5rem]">
             <article className="relative p-10 flex flex-row items-center justify-between shadow-2xl z-30 rounded-lg bg-white ">
               <article className="flex flex-col ">
                 <h3 className="text-2xl font-medium text-gray-800">
