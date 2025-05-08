@@ -75,7 +75,7 @@ const HowItWorks = () => {
 
     ):(
       <section className='max-w-screen-xl w-full h-auto bg-white '>
-      <div className="flex flex-col items-center justify-center gap-6 md:gap-8 lg:gap-15 relative px-4 md:px-20 lg:px-30 pb-16 lg:pb-20">
+      <div className="flex flex-col items-center justify-center gap-6 md:gap-8 lg:gap-15 relative px-4 md:px-20 lg:px-30 xl:px-30 pb-16 lg:pb-20">
         <article className="flex flex-col items-center">
           <h3 className="">How It Works</h3>
           <p className=" w-full lg:w-140 text-center leading-loose tracking-wider">
@@ -83,10 +83,10 @@ const HowItWorks = () => {
             commisions.
           </p>
         </article>
-         <div className="flex-row flex items-center justify-between flex-wrap w-full gap-4 md:gap-10 ">
+         <div className="flex-row flex items-center justify-between flex-wrap w-full ">
             {works.map((item,index)=>{
                 return (
-                    <figure key={index} className="flex flex-col items-center justify-center w-full  lg:w-65  h-auto">
+                    <figure key={index} className="flex flex-col items-center justify-center w-full  lg:w-65 xl:w-70 h-auto">
                     <div className="w-25 h-25 bg-green-200/10 rounded-md flex items-center justify-center shadow-md"
                      style={{clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'}}>
                         {item?.icon}

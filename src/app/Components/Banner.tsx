@@ -22,19 +22,18 @@ const Banner: React.FC<BannerProps> = ({
 }) => {
   const path = usePathname();
   const router = useRouter();
-const [value,setValue] = useState<string>('');
+  const [value, setValue] = useState<string>("");
 
-  const handleSubmit = (e:React.FormEvent<HTMLFormElement>)=>{
-e.preventDefault();
-router.push(`/explore/${value}`);
-
-  }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    router.push(`/explore/${value}`);
+  };
 
   return (
     <>
       {path === "/" ? (
         <>
-          <div className="max-w-screen w-full relative mx-auto h-auto" >
+          <div className="max-w-screen w-full relative mx-auto h-auto">
             <div className="relative w-full mx-auto flex flex-col items-center justify-center pt-30 md:pt-36 lg:pt-40 px-4 md:px-20 lg:px-30 xl:px-30 gap-8 md:gap-12">
               <article className="relative z-10 flex flex-col items-center gap-2 md:gap-5 justify-center h-full w-full text-center text-white">
                 <h1 className="font-bold tracking-wider text-gray-800 leading-relaxed">
@@ -48,7 +47,10 @@ router.push(`/explore/${value}`);
               </article>
 
               <div className="max-w-screen w-full h-[56vh] lg:h-[94vh] mx-auto relative rounded-2xl flex items-start justify-center">
-                <form className="relative max-w-screen w-full sm:w-lg md:w-xl lg:w-2xl z-20 drop-shadow-2xl" onSubmit={handleSubmit}>
+                <form
+                  className="relative max-w-screen w-full sm:w-lg md:w-xl lg:w-2xl z-20 drop-shadow-2xl"
+                  onSubmit={handleSubmit}
+                >
                   <CiSearch
                     className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-900"
                     size={25}
@@ -57,14 +59,17 @@ router.push(`/explore/${value}`);
                   <input
                     type="text"
                     placeholder="City, Address, Zip"
-                    onChange={(e:React.ChangeEvent<HTMLInputElement>) =>setValue(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setValue(e.target.value)
+                    }
                     value={value}
                     className="w-full px-12 py-3 pr-30 rounded-full bg-white text-gray-800
                         border border-gray-300 placeholder:text-sm
                     placeholder-gray-700/70 shadow-xl focus:outline-none placeholder:pl-6 placeholder:font-normal"
                   />
 
-                  <button type='submit'
+                  <button
+                    type="submit"
                     className="absolute right-0 top-1/2 transform -translate-y-1/2 px-6 py-3 bg-green-600 text-white 
          rounded-full flex items-center cursor-pointer hover:bg-green-800 transition duration-300 ease-in-out"
                   >
@@ -99,7 +104,9 @@ router.push(`/explore/${value}`);
         >
           <div className="absolute w-full h-full inset-0 bg-blend-overlay bg-black opacity-60 z-10"></div>
           <article className="relative translate-y-1/2 z-50">
-            <h1 className="text-3xl font-semibold text-white tracking-loose">{heading}</h1>
+            <h1 className="text-3xl font-semibold text-white tracking-loose">
+              {heading}
+            </h1>
             <p>{subHeading}</p>
           </article>
         </header>
