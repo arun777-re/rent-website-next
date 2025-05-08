@@ -7,7 +7,7 @@ const UserSignUp = () => {
   const [page, setPage] = useState<String>("register");
 
   return (
-    <div className="relative w-[100vw] mx-auto h-screen">
+    <div className="relative max-w-screen w-full mx-auto h-[120vh]">
       <div
         className=" absolute inset-0 z-0 bg-[url('/images/login.avif')] bg-no-repeat bg-cover bg-fixed 
                animate-wiggle transition-all duration-800"
@@ -17,7 +17,7 @@ const UserSignUp = () => {
           className="absolute inset-0 bg-gray-700/60
        opacity-80 z-0"
         ></div>
-        <div className="relative z-10 flex flex-col justify-center items-center h-full gap-2 ">
+        <div className="relative z-10 flex flex-col justify-center items-center h-full gap-5 px-4 ">
           <div className="relative ">
             {page === "login" ? <LoginForm /> : <RegisterForm />}
           </div>
@@ -25,7 +25,8 @@ const UserSignUp = () => {
           <button
             type="button"
             onClick={() => setPage(page === "login" ? "register" : "login")}
-            className="underline text-first cursor-pointer px-4 py-2 bg-white rounded-lg"
+            className="underline text-white font-semibold cursor-pointer px-8 py-2 bg-green-400 animate-out
+             rounded-lg relative right-[32%] md:right-[16%] z-300 top-[-88%] md:top-[-86%]"
           >
             {page === "login" ? "SignUp" : "Login"}
           </button>

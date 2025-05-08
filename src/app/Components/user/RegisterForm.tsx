@@ -8,6 +8,7 @@ import { RiHome8Line } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 import { createUser } from "@/redux/slices/userSlice";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 interface registerProps {
   firstName: string;
@@ -42,7 +43,6 @@ const RegisterForm = () => {
       { resetForm }: FormikHelpers<registerProps>
     ) => {
       try {
-        console.log("Signup triggered", values);
         await dispatch(createUser(values))
           .unwrap()
           .then((res) => {
@@ -62,10 +62,13 @@ const RegisterForm = () => {
     [dispatch]
   );
   return (
+    <div className="max-w-[100vw] w-full relative bg-white rounded-sm drop-shadow-2xl drop-shadow-black py-10">
+
     <Formik
       initialValues={initialSignUpValue}
       validationSchema={initialSignUpSchema}
       onSubmit={handleSignUp}
+      className={"relative w-full"}
     >
       {({
         values,
@@ -78,19 +81,22 @@ const RegisterForm = () => {
         <form
           onSubmit={handleSubmit}
           method="POST"
-          className="relative w-[40vw] bg-white flex flex-col  z-20
-        items-center justify-cente gap-5 py-10 rounded-sm shadow-xl "
+          className="relative w-[96vw] md:w-[40vw]  flex flex-col px-4 z-20 
+        items-center justify-center gap-5  "
         >
           <a
             href="/"
             className="flex items-center space-x-1 rtl:space-x-reverse"
           >
-            <RiHome8Line className="text-3xl text-green-600  dark:text-gray-700" />
-            <span className="self-center text-xl font-semibold whitespace-nowrap text-gray-800 dark:text-gray-700">
-              Hously
-            </span>
+            <Image src={'/images/tree-house.png'}
+            height={60}
+            width={60}
+            alt="logo-image"
+            priority
+            className="text-3xl text-green-700  dark:text-gray-700" />
+           
           </a>
-          <div className="relative w-full h-auto flex flex-col items-start gap-5 px-10 z-40">
+          <div className="relative w-full h-auto flex flex-col items-start gap-5  md:px-10 z-40">
             <input
               type="text"
               placeholder="Fistname"
@@ -117,7 +123,7 @@ const RegisterForm = () => {
             )}
             <input
               type="email"
-              placeholder="Email"
+              placeholder="Email:name@example.com"
               name="email"
               value={values.email}
               onBlur={handleBlur}
@@ -129,7 +135,7 @@ const RegisterForm = () => {
             )}
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Password:Asdf@123"
               name="password"
               value={values.password}
               onBlur={handleBlur}
@@ -162,6 +168,8 @@ const RegisterForm = () => {
         </form>
       )}
     </Formik>
+    </div>
+
   );
 };
 

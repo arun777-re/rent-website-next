@@ -61,8 +61,8 @@ const initialState: userstate = {
 
 // thunk to create user
 export const createUser = createAsyncThunk<
-  dataProps, // what it resolves to
-  object, // argument
+  dataProps, 
+  object, 
   { rejectValue: ErrorProps }
 >("/user/create", async (formData, { rejectWithValue }) => {
   try {
