@@ -72,8 +72,8 @@ useEffect(() => {
   
 
   return (
-    <section className="max-w-screen-xl mx-auto h-auto relative">
-      <div className="h-auto px-4 md:px-20 lg:px-30 pb-20 flex flex-col gap-10 relative">
+    <section className="max-w-screen-xl w-full mx-auto h-auto relative">
+      <div className="h-auto w-full px-4 md:px-20 lg:px-30 pb-20 flex flex-col gap-10 relative">
         <article className="flex flex-col items-center">
           <h3 className="">
             Featured Properties
