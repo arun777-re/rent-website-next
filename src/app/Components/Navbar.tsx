@@ -9,6 +9,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { getNotification, logoutuser } from "@/redux/slices/userSlice";
 import toast from "react-hot-toast";
 import { FaDashcube } from "react-icons/fa6";
+import Link from "next/link";
 
 interface navProps {
   color?: string;
@@ -227,14 +228,14 @@ const Navbar: React.FC<navProps> = ({
             ) : (
               <div className='flex flex-row items-center gap-2'
               >
-                  <a
-                  onClick={handleSignUp}
-                  className="md:px-4 md:py-2 lg:px-5 lg:py-2 bg-green-600 rounded-full cursor-pointer
+                  <Link
+                  href={'/user/auth-login'}
+                  className="md:px-4 md:py-2 lg:px-5 lg:py-2 underline cursor-pointer
                 hover:bg-green-700 
-                text-white"
+                text-first"
                 >
                   Signup
-                </a>
+                </Link>
               <svg
                 className="h-6 w-6"
                 fill="none"
