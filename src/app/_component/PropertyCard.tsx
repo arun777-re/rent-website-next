@@ -52,9 +52,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
   return (
     <Card
-    style={{width:width || '24.9vw'}}
+  
       className={clsx(
-        "h-auto bg-white shadow hover:shadow-xl cursor-pointer transition-all duration-300 rounded-lg overflow-hidden"
+        "h-auto bg-white shadow hover:shadow-xl cursor-pointer transition-all duration-300 rounded-lg overflow-hidden w-[98%] sm:w-[99%] lg:w-[24.9vw] "
       )}
     >
       <figure

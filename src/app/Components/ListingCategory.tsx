@@ -13,8 +13,8 @@ const ListingCategory = () => {
   ];
 
   return (
-    <section className="w-full  px-30 py-16 bg-white">
-      <div className="max-w-screen-xl mx-auto flex flex-col gap-10">
+    <section className="max-w-screen-xl w-full relative bg-white">
+      <div className="w-full relative flex flex-col gap-10 py-16 lg:py-20 px-4 md:px-20 lg:px-30">
         {/* Heading */}
         <header className="space-y-4">
           <h3 className="">
@@ -39,9 +39,9 @@ const ListingCategory = () => {
                   alt={`${category.name} image`}
                   width={300}
                   height={150}
-                  className="w-full h-[20vh] object-cover object-center"
+                  className="w-full h-[24vh] object-cover object-center"
                 />
-                <figcaption className="relative p-4 space-y-4">
+                <figcaption className="relative p-4 space-y-2">
                   <p
                     className="text-base font-semibold text-gray-800 hover:text-green-600"
                   >

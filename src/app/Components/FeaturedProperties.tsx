@@ -42,7 +42,7 @@ useEffect(() => {
 
   const autoplay = Autoplay({
     stopOnInteraction:false,
-    delay: 1000,
+    delay: 2000,
     stopOnMouseEnter:true
   });
 
@@ -72,8 +72,8 @@ useEffect(() => {
   
 
   return (
-    <section className="max-w-[100vw] mx-auto h-auto relative">
-      <div className="h-auto px-30 py-20 flex flex-col gap-10 relative">
+    <section className="max-w-screen-xl mx-auto h-auto relative">
+      <div className="h-auto px-4 md:px-20 lg:px-30 pb-20 flex flex-col gap-10 relative">
         <article className="flex flex-col items-center">
           <h3 className="">
             Featured Properties
@@ -85,12 +85,12 @@ useEffect(() => {
         </article>
         <div className="w-full">
           <Carousel className="w-full max-w-full" plugins={[autoplay]}>
-            <CarouselContent className="-ml-0 py-10 flex flex-row gap-1">
+            <CarouselContent className="-ml-0 pt-10 pb-6 flex flex-row gap-1">
               {properties && properties?.map((prprty) => {
                 return (
                   <CarouselItem 
                     key={prprty._id}
-                    className="pl-1 md:basis-1/2 lg:basis-1/3"
+                    className="pl-1 basis-1/1 sm:basis-1/2 md:basis-1/2 lg:basis-1/3"
                   >
                     <PropertCard {...prprty} />
                   </CarouselItem>

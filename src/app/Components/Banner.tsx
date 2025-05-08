@@ -35,7 +35,7 @@ router.push(`/explore/${value}`);
       {path === "/" ? (
         <>
           <div className="max-w-screen w-full relative mx-auto h-auto" >
-            <div className="relative w-full mx-auto flex flex-col items-center justify-center pt-28 md:pt-36 lg:pt-40 px-4 lg:px-30 xl:px-30 gap-8 md:gap-12">
+            <div className="relative w-full mx-auto flex flex-col items-center justify-center pt-30 md:pt-36 lg:pt-40 px-4 md:px-20 lg:px-30 xl:px-30 gap-8 md:gap-12">
               <article className="relative z-10 flex flex-col items-center gap-2 md:gap-5 justify-center h-full w-full text-center text-white">
                 <h1 className="font-bold tracking-wider text-gray-800 leading-relaxed">
                   Are you ready to find Your Dream Home
@@ -47,8 +47,8 @@ router.push(`/explore/${value}`);
                 </p>
               </article>
 
-              <div className="max-w-screen w-full h-[88vh] mx-auto relative rounded-2xl flex items-start justify-center">
-                <form className=" max-w-screen w-full sm:w-lg md:w-xl lg:w-2xl relative z-20 drop-shadow-2xl" onSubmit={handleSubmit}>
+              <div className="max-w-screen w-full h-[56vh] lg:h-[94vh] mx-auto relative rounded-2xl flex items-start justify-center">
+                <form className="relative max-w-screen w-full sm:w-lg md:w-xl lg:w-2xl z-20 drop-shadow-2xl" onSubmit={handleSubmit}>
                   <CiSearch
                     className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-900"
                     size={25}
@@ -72,7 +72,7 @@ router.push(`/explore/${value}`);
                   </button>
                 </form>
 
-                <div className="absolute bottom-6 w-full inset-x-0 h-[80vh] bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="absolute top-7 w-full inset-x-0 h-[50vh] lg:h-[88vh] bg-white rounded-lg shadow-md overflow-hidden">
                   <Image
                     src="/images/banner-main.jpg"
                     alt="Banner Image"
@@ -88,7 +88,7 @@ router.push(`/explore/${value}`);
         </>
       ) : (
         <header
-          className={`w-[100vw] h-[54vh] relative
+          className={`max-w-screen w-full h-[54vh] relative
             flex items-center justify-center
            overflow-hidden
                bg-cover bg-no-repeat bg-center object-center object-fill`}
