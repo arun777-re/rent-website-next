@@ -73,7 +73,7 @@ useEffect(() => {
 
   return (
     <section className="max-w-screen w-full mx-auto h-auto relative">
-      <div className="h-auto w-full px-4 md:px-20 lg:px-30 xl:px-30 pb-20 flex flex-col gap-10 relative">
+      <div className="h-auto w-full px-4 md:px-20 lg:px-30 xl:px-30 pb-20 flex flex-col items-center justify-center gap-10 relative">
         <article className="flex flex-col items-center">
           <h3 className="">
             Featured Properties
@@ -90,7 +90,7 @@ useEffect(() => {
                 return (
                   <CarouselItem 
                     key={prprty._id}
-                    className="pl-0 basis-1/1 sm:basis-1/2 md:basis-1/2 lg:basis-1/3"
+                    className="pl-2 basis-1/1 sm:basis-1/2 md:basis-1/2 lg:basis-1/3"
                   >
                     <PropertCard {...prprty} />
                   </CarouselItem>
