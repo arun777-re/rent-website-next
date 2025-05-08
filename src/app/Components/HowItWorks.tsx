@@ -74,7 +74,7 @@ const HowItWorks = () => {
            </section>
 
     ):(
-      <section className='relative max-w-screen-xl w-full h-auto bg-white inset-0'>
+      <section className='relative max-w-screen w-full h-auto bg-white inset-0'>
       <div className="relative w-full flex flex-col items-center justify-center gap-6 md:gap-8 lg:gap-15 px-4 md:px-20 lg:px-30 xl:px-30 pb-16 lg:pb-20">
         <article className="flex flex-col items-center">
           <h3 className="">How It Works</h3>
