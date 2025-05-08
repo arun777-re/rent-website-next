@@ -225,6 +225,19 @@ const Navbar: React.FC<navProps> = ({
                 />
               </svg>
             ) : (
+              <div className='flex flex-row items-center gap-2' {
+                constructor(parameters) {
+                  
+                }
+              }>
+                  <Button
+                  onClick={handleSignUp}
+                  className="md:px-4 md:py-2 lg:px-5 lg:py-2 bg-green-600 rounded-full cursor-pointer
+                hover:bg-green-700 
+                text-white"
+                >
+                  Signup
+                </Button>
               <svg
                 className="h-6 w-6"
                 fill="none"
@@ -238,6 +251,7 @@ const Navbar: React.FC<navProps> = ({
                   d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
                 />
               </svg>
+              </div>
             )}
           </button>
         </div>
