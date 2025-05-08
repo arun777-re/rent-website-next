@@ -74,8 +74,8 @@ const HowItWorks = () => {
            </section>
 
     ):(
-      <section className='max-w-screen-xl w-full h-auto bg-white '>
-      <div className="flex flex-col items-center justify-center gap-6 md:gap-8 lg:gap-15 relative px-4 md:px-20 lg:px-30 xl:px-30 pb-16 lg:pb-20">
+      <section className='relative max-w-screen-xl w-full h-auto bg-white inset-0'>
+      <div className="relative w-full flex flex-col items-center justify-center gap-6 md:gap-8 lg:gap-15 px-4 md:px-20 lg:px-30 xl:px-30 pb-16 lg:pb-20">
         <article className="flex flex-col items-center">
           <h3 className="">How It Works</h3>
           <p className=" w-full lg:w-140 text-center leading-loose tracking-wider">
@@ -83,7 +83,7 @@ const HowItWorks = () => {
             commisions.
           </p>
         </article>
-         <div className="flex-row flex items-center justify-between flex-wrap w-full ">
+         <div className="relative w-full flex-row flex items-center justify-between flex-wrap ">
             {works.map((item,index)=>{
                 return (
                     <figure key={index} className="flex flex-col items-center justify-center w-full  lg:w-65 xl:w-70 h-auto">
