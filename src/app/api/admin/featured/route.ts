@@ -6,11 +6,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 // api to get featured property
 export async function GET(req:NextRequest){
+    
     const authResult = await verifyTkn(req);
     if(authResult instanceof NextResponse) return authResult;
     
     try {
-        const filter = {featured:true}
+        const filter = {featured:true,status:'available'}
         const {skip,totalItems,totalPages,limit} = await paginationFunc(req.nextUrl.searchParams,Property,filter);
         const featured = await Property.find(filter).sort({createdAt:-1}).skip(skip).limit(limit);
 

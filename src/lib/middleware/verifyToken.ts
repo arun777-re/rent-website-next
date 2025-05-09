@@ -17,7 +17,7 @@ const secret = process.env.JWT_SECRET || "";
 export const verifyTkn = async (req: CustomReq) => {
   try {
     const cookie = await cookies();
-    const token = cookie.get("accessToken")?.value;
+    const token = cookie.get("adminToken")?.value;
     if (!token) {
       throw new Error("Token not available");
     }

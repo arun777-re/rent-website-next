@@ -32,16 +32,8 @@ export async function POST(req: NextRequest) {
 
     const token = jwt.sign({ id: admin._id }, secret, { expiresIn: "7d" });
 
-    (await cookies()).set("accessToken", token, {
-      httpOnly: true,
-      sameSite: "none",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 7 * 60 * 60 * 24,
-      path: "/",
-    });
-
     const { _id, name, email, agencyName, agencyAddress, isMainAdmin } = admin;
-    return createResponse("logged in", true, 200, {
+    const response =  createResponse("logged in", true, 200, {
       _id,
       name,
       email,
@@ -49,6 +41,16 @@ export async function POST(req: NextRequest) {
       agencyAddress,
       isMainAdmin,
     });
+
+    response.cookies.set('adminToken',token,{
+      httpOnly: true,
+      sameSite: "none",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 60 * 60 * 24,
+      path: "/",
+    });
+
+    return response;
   } catch (error: any) {
     console.error("Error during login user", error.message);
     return createResponse("Internal Server Error", false, 500);

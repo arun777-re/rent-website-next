@@ -1,69 +1,67 @@
-import React from 'react'
+"use client"
+import React, { useEffect, useState } from 'react'
 import Banner from '../Components/Banner'
 import Navbar from '../Components/Navbar';
 import { IoSearchOutline } from "react-icons/io5";
 import PropertyCard from '../_component/PropertyCard';
 import Footer from '../Components/Footer';
 import HowItWorks from '../Components/HowItWorks';
+import { getFeaturedProperty, getRecommendedProperties, PropertyItem } from '@/redux/slices/propertSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import PropertySkeleton from '../_component/PropertySkeleton';
 
-const page = () => {
+const Buy = () => {
 
-    const properties = [
-        {
-          image: "/images/banner-main.jpg",
-          title: "Property for sale in Sonipat",
-          price: "10M",
-          rating: "5",
-          rooms: "5",
-          bathrooms: "3",
-          area: "2000sqft",
-        },
-        {
-          image: "/images/banner-main.jpg",
-          title: "Property for sale in Sonipat",
-          price: "10M",
-          rating: "5",
-          rooms: "5",
-          bathrooms: "3",
-          area: "2000sqft",
-        },
-        {
-          image: "/images/banner-main-1.jpg",
-          title: "Property for sale in Sonipat",
-          price: "10M",
-          rating: "5",
-          rooms: "5",
-          bathrooms: "3",
-          area: "2000sqft",
-        },
-        {
-          image: "/images/industrial.jpg",
-          title: "Property for sale in Sonipat",
-          price: "10M",
-          rating: "5",
-          rooms: "4",
-          bathrooms: "3",
-          area: "1000sqft",
-        },
-        {
-          image: "/images/commercial.jpg",
-          title: "Property for sale in Sonipat",
-          price: "5M",
-          rating: "5",
-          rooms: "2",
-          bathrooms: "1",
-          area: "3000sqft",
-        },
-        {
-          image: "/images/commercial.jpg",
-          title: "Property for sale in Sonipat",
-          price: "5M",
-          rating: "5",
-          rooms: "2",
-          bathrooms: "1",
-          area: "3000sqft",
-        },
-      ];
+  const [properties,setProperties] = useState<PropertyItem[]>([]);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state:RootState)=>state.user.user);
+  const isLogin = user?.success;
+// when component loads then fetch api to get recommended properties
+useEffect(() => {
+  const fetchProperties = async () => {
+    try {
+      const res = isLogin
+        ? await dispatch(getRecommendedProperties()).unwrap()
+        : await dispatch(getFeaturedProperty()).unwrap();
+
+      setProperties(res?.data || []);
+    } catch (err) {
+      console.error("Failed to fetch properties", err);
+    }
+  };
+
+  fetchProperties();
+}, [dispatch, isLogin]);
+
+
+ 
+
+  // handling  fallback
+  if (!properties || properties.length === 0) {
+    return (
+      <section className="max-w-[100vw] mx-auto h-auto relative">
+      <div className="h-auto px-30 py-20 flex flex-col gap-10 relative">
+        <article className="flex flex-col items-center">
+          <h3 className="">
+            Featured Properties
+          </h3>
+          <p className="text-gray-700/60 text-md">
+            A great platform to buy and sell your properties without any agent
+            or commisions.
+          </p>
+        </article>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[...Array(6)].map((_, index) => (
+            <PropertySkeleton key={index} />
+          ))}
+        </div>
+      </div>
+    </section>
+    );
+  }
+    
 
 return (
     <div className="w-full h-auto relative mx-auto">
@@ -104,4 +102,4 @@ return (
 )
 }
 
-export default page
+export default Buy;

@@ -2,7 +2,6 @@ import { NextRequest } from "next/server";
 import { dbConnect } from "@/lib/db";
 import { createResponse, handleValidation } from "@/lib/middleware/error";
 import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
 import User from "@/models/User";
 
 const secret = process.env.JWT_SECRET || "";
@@ -38,15 +37,25 @@ export async function POST(req: NextRequest) {
     }
 
     const token = jwt.sign({ id: admin._id }, secret, { expiresIn: "7d" });
+    const refreshtoken = jwt.sign({id:admin._id},secret,{expiresIn:'30d'});
 
-    (await cookies()).set("accesstoken", token, {
-      httpOnly: true,
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60,
-      path: "/",
+    const response = createResponse("logged in", true, 200, admin);
+    response.cookies.set('accesstoken',token,{
+      httpOnly:true,
+      secure:process.env.NODE_ENV === 'production',
+      maxAge:7 * 24 * 60 * 60,
+      sameSite:'strict',
+      path:"/"
     });
+    response.cookies.set('refreshtoken',refreshtoken,{
+      httpOnly:true,
+      secure:process.env.NODE_ENV === 'production',
+      maxAge:30 * 24 * 60 * 60,
+      sameSite:'strict',
+      path:"/"
 
-    return createResponse("logged in", true, 200, admin);
+    })
+    return response;
   } catch (error: any) {
     console.error("Error during login user", error.message);
     return createResponse("Internal Server Error", false, 500);

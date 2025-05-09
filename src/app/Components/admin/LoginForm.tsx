@@ -7,6 +7,7 @@ import { AppDispatch ,RootState} from "@/redux/store";
 import { loginAdmin,signupAdmin } from "@/redux/slices/adminSlice";
 import { RiHome8Line } from "react-icons/ri";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface loginProps {
     email: string;
@@ -36,8 +37,11 @@ const LoginForm = () => {
             const succ = res?.success;
             if(succ === true){
               resetForm();
-              router.push('/admin/dashboard')
+              toast.success(res?.message);
+              router.push('/admin/dashboard');
             }
+          }).catch((err)=>{
+            toast.error(err?.message);
           });
          
         } catch (error) {

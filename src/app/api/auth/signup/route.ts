@@ -62,14 +62,18 @@ export async function POST(req: NextRequest) {
       await newAdmin.save();
       const token = jwt.sign({id:newAdmin._id},secret,{expiresIn:'7d'});
       
-       (await cookies()).set('accessToken',token,{
+     
+      const response = createResponse(`Admin account created with ${name}`,true,201);
+      response.cookies.set('adminToken',token,{
         httpOnly:true,
         secure:process.env.NODE_ENV === 'production',
         sameSite:"none",
         maxAge:7 * 60 * 60 * 24,
         path:"/"
-      })
-      return createResponse(`Admin account created with ${name}`,true,201);
+      });
+
+      return response;
+
     } else if (countDocuments >= 1 && code) {
       if (!code) {
         return createResponse(`InviteCode Required`,false,400);
@@ -105,14 +109,15 @@ export async function POST(req: NextRequest) {
     //   generate token
     const token = jwt.sign({id:newAdmin._id},secret,{expiresIn:'7d'});
     //   set cookie
-      (await cookies()).set('accessToken',token,{
-        httpOnly:true,
-        secure:process.env.NODE_ENV === 'production',
-        sameSite:"strict",
-        maxAge:7 * 60 * 60 * 24,
-        path:"/"
-      })
-      return createResponse('Admin created successfully',true,201);
+    const response = createResponse(`Admin account created with ${name}`,true,201);
+    response.cookies.set('adminToken',token,{
+      httpOnly:true,
+      secure:process.env.NODE_ENV === 'production',
+      sameSite:"none",
+      maxAge:7 * 60 * 60 * 24,
+      path:"/"
+    });
+    return response;
     }
 
     return createResponse('Invalid Request',false,400);
