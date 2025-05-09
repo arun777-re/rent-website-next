@@ -90,8 +90,8 @@ const LoginForm = () => {
              {touched.email && errors.email && <div className="text-red-500 text-sm">{errors.email}</div>}
              <input
                type="password"
-               placeholder="Password"
-               name="password:Asdf@145"
+               placeholder="Password:Asdf@145"
+               name="password"
                value={values.password}
                onBlur={handleBlur}
                onChange={handleChange}

@@ -80,8 +80,8 @@ const Footer = () => {
 
         <div className="absolute h-auto bg-black px-0 w-full z-0 top-[88%] text-gray-100/90">
           <div className="flex flex-col gap-20">
-            <div className="grid grid-cols-1 lg:grid-cols-1 px-4 md:px-20 lg:px-30 pt-30 gap-10 ">
-              <div className="flex flex-col gap-5 items-start justify-start">
+            <div className="max-w-screen w-full grid grid-cols-1 lg:grid-cols-4 px-4 md:px-20 lg:px-30 pt-30 gap-10 ">
+              <div className="flex flex-col gap-5 items-start w-3/ justify-start">
                 <Link
                   href="/"
                   className="flex items-center space-x-1 rtl:space-x-reverse"
@@ -102,7 +102,7 @@ const Footer = () => {
                   agent or commisions.
                 </p>
               </div>
-              <div className="flex flex-col gap-5 items-start justify-start">
+              <div className="flex flex-col gap-5 items-start w-3/ justify-start">
                 <h4 className="font-medium tracking-widest leading-loose">Company</h4>
                 <ul className="flex flex-col gap-3">
                   <li>
@@ -147,7 +147,7 @@ const Footer = () => {
                   </li>
                 </ul>
               </div>
-              <div className="flex flex-col gap-5 items-start justify-start">
+              <div className="flex flex-col gap-5 items-start w-3/ justify-start">
                 <h4 className="font-normal tracking-widest leading-loose">Support</h4>
                 <ul className="flex flex-col gap-3">
                   <li>
@@ -188,7 +188,7 @@ const Footer = () => {
                   </li>
                 </ul>
               </div>
-              <div className="flex flex-col gap-5 items-start justify-start">
+              <div className="flex flex-col gap-5 items-start w-3/ justify-start">
                 <h4 className="font-normal tracking-widest leading-loose">Contact Details</h4>
                 <ul className="flex flex-col gap-3">
                   <li className="flex flex-row items-center gap-2">
