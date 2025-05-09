@@ -11,14 +11,14 @@ dbConnect();
 
 // this api is used to get property based on location search
 export async function GET(req: NextRequest, res: NextResponse) {
-  let user = null
+  let user = null;
   try {
     const auth = await verifyAccess(req, res);
     if (auth instanceof NextResponse) {
       user = auth;
       return user;
     }
-  } catch{
+  } catch {
     user = null;
   }
   try {
@@ -30,9 +30,16 @@ export async function GET(req: NextRequest, res: NextResponse) {
         400
       );
     }
-    const filter = { location: { $regex: location, $options: "i" } };
+    const filter = {
+      $or: [
+        { "address.city": { $regex: location, $options: "i" } },
+        { "address.postalCode": { $regex: location, $options: "i" } },
+        { "address.state": { $regex: location, $options: "i" } },
+        { "address.country": { $regex: location, $options: "i" } },
+      ],
+    };
 
-    const {limit, skip, totalPages } = await paginationFunc(
+    const { limit, skip, totalPages } = await paginationFunc(
       req.nextUrl.searchParams,
       Property,
       filter
@@ -41,8 +48,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
-
-console.log(properties)
 
     if (properties.length === 0) {
       return createResponse(

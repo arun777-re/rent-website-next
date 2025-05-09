@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
       status:'available'
     })
       .sort({ createdAt: -1 })
-      .limit(10);
+      .limit(12);
     if (featuredProperties.length === 0) {
       return createResponse("No Featured Property to show", true, 200, []);
     }

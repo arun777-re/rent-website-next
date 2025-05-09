@@ -10,7 +10,7 @@ const SellPage = () => {
     <div>
         <Navbar/>
         <Banner heading='Sell Faster. Save Thousands.' image={'/images/banner-main.jpg'}/>
-        <HowItWorks/>
+        <HowItWorks paddingtop={true}/>
         <BrokerageCalc/>
         <Footer/>
     </div>

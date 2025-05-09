@@ -42,17 +42,17 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
   return (
     <Card
-      className={clsx("w-full sm:w-[100vw] md:w-full lg:w-[38vw] h-[224px] bg-white shadow hover:drop-shadow-2xl cursor-pointer transition-all duration-300 rounded-lg overflow-hidden"
+      className={clsx("w-full sm:w-[100vw] md:w-full lg:w-[38vw] h-auto sm:h-[224px] bg-white shadow hover:drop-shadow-2xl cursor-pointer transition-all duration-300 rounded-lg overflow-hidden"
       )}
     >
       <figure
         className={clsx(
           "flex",
-          "flex-row",
+          "flex-col","sm:flex-row",
           "items-center relative w-full h-full"
         )}
       >
-        <div className="relative w-[40%] h-full overflow-hidden rounded-l-lg">
+        <div className="relative w-full sm:w-[40%] h-[29vh] sm:h-full overflow-hidden rounded-t-lg sm:rounded-l-lg">
           <Image
             src={images?.[0] || "/images/banner-main-1.jpg"}
             alt="property image"
@@ -63,7 +63,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           />
         </div>
 
-        <figcaption className="w-[60%] h-full flex flex-col justify-between px-4 sm:px-6 py-4 space-y-4">
+        <figcaption className="w-full sm:w-[60%] h-full flex flex-col justify-between px-4 sm:px-6 py-4 space-y-4">
           <Link href={`/property-detail/${slug}`} className="block">
             <h4 className="font-medium text-base md:text-lg text-gray-900 tracking-wide hover:text-first cursor-pointer transition-colors duration-300 line-clamp-2">
               {title || "No title available"}

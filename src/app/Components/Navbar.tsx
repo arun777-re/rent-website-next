@@ -267,8 +267,8 @@ const Navbar: React.FC<navProps> = ({
             ].map((item) => (
               <a
                 key={item}
-                href={`/${item.toLowerCase()}`}
-                className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700"
+                href={item === 'Dashboard' ? '/user/user-dashboard' : `/${item.toLowerCase()}`}
+                className="block px-3 py-2 rounded-md text-base font-medium text-slate-400 hover:text-white hover:bg-gray-700"
               >
                 {item}
               </a>

@@ -52,7 +52,6 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
   return (
     <Card
-  
       className={clsx(
         "h-auto bg-white shadow hover:shadow-xl cursor-pointer transition-all duration-300 rounded-lg overflow-hidden w-[98%] sm:w-[99%] lg:w-[24.9vw] "
       )}
@@ -103,19 +102,19 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
           <div className="w-full h-[1px] bg-gray-400/40"></div>
           <div className="w-full flex flex-row justify-between items-center py-3">
-            <figure className="flex flex-row items-center justify-center gap-2">
+            <figure className="flex flex-row items-center justify-center gap-0 sm:gap-2">
               <HiMiniArrowsPointingIn size={20} className="text-green-600" />
               <figcaption className="text-gray-800 font-normal text-sm">
                 {area}
               </figcaption>
             </figure>
-            <figure className="flex flex-row items-center justify-center gap-2">
+            <figure className="flex flex-row items-center justify-center gap-0 sm:gap-2">
               <LuBedSingle size={20} className="text-green-600" />
               <figcaption className="text-gray-800 font-normal text-sm">
                 {bedrooms}&nbsp;Beds
               </figcaption>
             </figure>
-            <figure className="flex flex-row items-center justify-center gap-2">
+            <figure className="flex flex-row items-center justify-center gap-0 sm:gap-2">
               <MdOutlineBathtub size={20} className="text-green-600" />
               <figcaption className="text-gray-800 font-normal text-sm">
                 {bathrooms}&nbsp;Bath

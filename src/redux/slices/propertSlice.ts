@@ -248,7 +248,8 @@ export const getPropertyByCategory = createAsyncThunk(
 );
 
 // get property by home-search
-export const getPropertyByHome = createAsyncThunk(
+export const getPropertyByHome = createAsyncThunk<PropertyProps,
+SearchParams,{rejectValue:string}>(
   "property/homesearch",
   async (data: SearchParams, { rejectWithValue }) => {
     try {
@@ -262,13 +263,12 @@ export const getPropertyByHome = createAsyncThunk(
           credentials: "include",
         }
       );
+      const errData = await response.json();
+
       if (!response.ok) {
-        const errData = await response.json();
         return rejectWithValue(errData.message) || "Failed Operation Get User";
       }
-      if (response.status === 200) {
-        return response.json();
-      }
+        return errData;
     } catch (error: any) {
       console.error(error);
       return rejectWithValue("Error during fetch property by search");

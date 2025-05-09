@@ -37,7 +37,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
     if (title) query.title = { $regex: title, $options: "i" };
     if (category) query.category = category;
     if (price) query.price = { $gte: Number(price) };
-    if (location) query.location = { $regex: location, $options: "i" };
+    if (location){ 
+      query.location = {$or:[{'address.city':{$regex: location, $options: "i" }},
+     {'address.state':{$regex: location, $options: "i" }},{'address.country':{$regex: location, $options: "i" }},
+        {'address.postalCode':{$regex: location, $options: "i" }}
+    ]}
+  };
     query.status = 'available';
     if (Object.keys(query).length === 0) {
       return createResponse("Provide atleast one search parameter", false, 400);

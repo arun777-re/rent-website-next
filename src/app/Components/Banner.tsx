@@ -103,10 +103,10 @@ const Banner: React.FC<BannerProps> = ({
           }}
         >
           <div className="absolute w-full h-full inset-0 bg-blend-overlay bg-black opacity-60 z-10"></div>
-          <article className="relative translate-y-1/2 z-50">
-            <h1 className="text-3xl font-semibold text-white tracking-loose">
+          <article className="relative px-4 translate-y-1/2 z-50">
+            <h2 className="font-semibold text-white tracking-wide text-center">
               {heading}
-            </h1>
+            </h2>
             <p>{subHeading}</p>
           </article>
         </header>

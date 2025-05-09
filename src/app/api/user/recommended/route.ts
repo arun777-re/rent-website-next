@@ -41,12 +41,12 @@ export async function GET(req: customReq, res: NextResponse) {
       ],
     })
       .sort({ createdAt: -1 })
-      .limit(10);
+      .limit(12);
 
     if (recommended.length === 0) {
       const featuredProperties = await Property.find({ featured: true })
         .sort({ createdAt: -1 })
-        .limit(10);
+        .limit(12);
       if (featuredProperties.length === 0) {
         return createResponse("No Featured Property to show", true, 200, []);
       }

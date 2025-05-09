@@ -98,11 +98,11 @@ const ListingPage = () => {
   );
 
   return (
-    <div className="mx-auto w-full h-auto flex flex-col items-center inset-0 overflow-x-hidden hide-scrollbar">
+    <div className="mx-auto max-w-screen w-full h-auto inset-0 overflow-x-hidden hide-scrollbar">
       <Navbar color="gray-400" />
       <Banner heading="List View Layout" image={"/images/prprty-2.jpg"} />
       <section className="max-w-screen-xl relative w-full h-auto">
-        <div className="relative px-30 z-0">
+        <div className="relative px-4 md:px-20 lg:px-30 z-0">
           <Formik initialValues={initialValues} onSubmit={handleOnSubmit}>
             {({
               values,
@@ -119,7 +119,7 @@ const ListingPage = () => {
                 method="post"
                 className="w-full px-5 py-5 z-3000 shadow-lg rounded-lg space-y-6 -mt-14 bg-white"
               >
-                <div className="w-full relative flex flex-row gap-4 basis-1/4">
+                <div className="w-full relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 basis-1/1 md:basis:1/2 lg:basis-1/4">
                   <article className="relative flex flex-col gap-2">
                     <label
                       htmlFor="search-input"
@@ -229,9 +229,9 @@ const ListingPage = () => {
         </div>
       </section>
       <section className="relative py-20 max-w-screen-xl w-full">
-        <div className="w-full sm:px-6 px-4 md:px-8 lg:px-30 xl:px-30">
+        <div className="w-full px-4 md:px-20 lg:px-30">
           {properties.length === 0 && propertyBySearch.length === 0 ? (
-            <section className="max-w-[100vw] w-full mx-auto h-auto relative">
+            <section className="max-w-screen w-full mx-auto h-auto relative">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[...Array(6)].map((_, index) => (
                   <PropertySkeleton key={index} />
@@ -239,7 +239,7 @@ const ListingPage = () => {
               </div>
             </section>
           ) : (
-            <section className="max-w-[100vw] w-full mx-auto h-auto relative">
+            <section className="max-w-screen  w-full mx-auto h-auto relative ">
               <div className="w-full flex flex-row flex-wrap items-center gap-11">
                 {(isSearch ? propertyBySearch : properties).map((i, k) => (
                   <ListingCard key={k} {...i} />

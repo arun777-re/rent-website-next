@@ -49,8 +49,8 @@ useEffect(() => {
   // handling  fallback
   if (!properties || properties.length === 0) {
     return (
-      <section className="max-w-[100vw] mx-auto h-auto relative">
-      <div className="h-auto px-30 py-20 flex flex-col gap-10 relative">
+      <section className="max-w-screen w-full mx-auto h-auto relative">
+      <div className="w-full h-auto px-4 md:px-20 lg:px-30 py-20 flex flex-col gap-10 relative">
         <article className="flex flex-col items-center">
           <h3 className="">
             Featured Properties

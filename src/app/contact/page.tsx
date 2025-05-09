@@ -5,11 +5,11 @@ import MapComponent from "../Components/MapComponent";
 import Image from "next/image";
 import Button from "../_component/Button";
 import Footer from "../Components/Footer";
-import HowItWorks from "../Components/HowItWorks";
+import HowItWorks1 from "../Components/HowItWorks1";
 
 const ContactUs = () => {
   return (
-    <div>
+    <div className='max-w-screen w-full relative h-auto mx-auto overflow-x-hidden'>
       <Navbar />
       <Banner heading="Contact Us" image={"/images/banner-contact.avif"} />
       <section className="max-w-screen w-full relative">
@@ -83,7 +83,7 @@ const ContactUs = () => {
         
         <MapComponent />
         
-      <HowItWorks/>
+      <HowItWorks1/>
         <Footer/>
     </div>
   );
