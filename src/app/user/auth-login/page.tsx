@@ -4,7 +4,7 @@ import LoginForm from "@/app/Components/user/LoginForm";
 import RegisterForm from "@/app/Components/user/RegisterForm";
 
 const UserSignUp = () => {
-  const [page, setPage] = useState<String>("register");
+  const [page, setPage] = useState<string>("register");
 
   return (
     <div className="relative max-w-screen w-full mx-auto h-[120vh]">
@@ -18,18 +18,19 @@ const UserSignUp = () => {
        opacity-80 z-0"
         ></div>
         <div className="relative z-10 flex flex-col justify-center items-center h-full gap-5 px-4 ">
+            <button
+                   style={{top:page ==='login' ? '22%' :"7%",right:"8%"}}
+                      type="button"
+                      onClick={() => setPage(page === "login" ? "register" : "login")}
+                      className="underline text-white font-semibold cursor-pointer px-8 py-2 bg-green-400 animate-out
+                       rounded-sm absolute z-300  "
+                    >
+                      {page === "login" ? "SignUp" : "Login"}
+                    </button>
           <div className="relative ">
             {page === "login" ? <LoginForm /> : <RegisterForm />}
           </div>
 
-          <button
-            type="button"
-            onClick={() => setPage(page === "login" ? "register" : "login")}
-            className="underline text-white font-semibold cursor-pointer px-8 py-2 bg-green-400 animate-out
-             rounded-lg relative right-[32%] md:right-[16%] z-300 top-[-88%] md:top-[-86%]"
-          >
-            {page === "login" ? "SignUp" : "Login"}
-          </button>
         </div>
       </div>
     </div>

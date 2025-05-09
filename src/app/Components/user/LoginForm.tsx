@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { loginUser } from "@/redux/slices/userSlice";
 import toast from "react-hot-toast";
 import { ErrorProps } from "@/redux/slices/adminSlice";
+import Image from "next/image";
 
 interface loginProps {
     email: string;
@@ -49,6 +50,7 @@ const LoginForm = () => {
         }
       };
   return (
+    <div className="max-w-[100vw] w-full relative bg-white rounded-sm drop-shadow-2xl drop-shadow-black py-10">
   <Formik
        initialValues={initialLoginValue}
        validationSchema={initialLoginSchema
@@ -59,18 +61,26 @@ const LoginForm = () => {
          <form onSubmit={handleSubmit} 
          method="POST"
          
-         className="relative w-[40vw] bg-white flex flex-col  z-20
-         items-center justify-cente gap-5 py-10 rounded-sm shadow-xl ">
-           <a href="/" className="flex items-center space-x-1 rtl:space-x-reverse">
-               <RiHome8Line className="text-3xl text-green-600  dark:text-gray-700" />
-                <span className="self-center text-xl font-semibold whitespace-nowrap text-gray-800 dark:text-gray-700">Hously</span>
-            </a>
-           <div className="relative w-full h-auto flex flex-col items-start gap-5 px-10 z-40">
+         className="relative w-[96vw] md:w-[40vw]  flex flex-col px-4 z-20 
+        items-center justify-center gap-5  ">
+           <a
+                    href="/"
+                    className="flex items-center space-x-1 rtl:space-x-reverse"
+                  >
+                    <Image src={'/images/tree-house.png'}
+                    height={60}
+                    width={60}
+                    alt="logo-image"
+                    priority
+                    className="text-3xl text-green-700  dark:text-gray-700" />
+                   
+                  </a>
+           <div className="relative w-full h-auto flex flex-col items-start gap-5 md:px-10 z-40">
                  
  
              <input
                type="email"
-               placeholder="Email"
+               placeholder="Email:name@gmail.com"
                name="email"
                value={values.email}
                onBlur={handleBlur}
@@ -81,7 +91,7 @@ const LoginForm = () => {
              <input
                type="password"
                placeholder="Password"
-               name="password"
+               name="password:Asdf@145"
                value={values.password}
                onBlur={handleBlur}
                onChange={handleChange}
@@ -93,11 +103,14 @@ const LoginForm = () => {
              rounded-lg cursor-pointer hover:bg-green-700 transition-colors duration-300 bg-green-600 text-white font-medium">
                Login
              </button>
+             
+        
            </div>
      
          </form>
        )}
      </Formik>
+     </div>
   )
 }
 

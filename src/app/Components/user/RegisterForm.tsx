@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback } from "react";
+import React, { useCallback} from "react";
 import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
@@ -165,6 +165,7 @@ const RegisterForm = () => {
               <p className="text-white text-sm">SignUp</p>
             </button>
           </div>
+       
         </form>
       )}
     </Formik>
