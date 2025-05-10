@@ -2,14 +2,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Navbar from "../Components/Navbar";
 import Banner from "../Components/Banner";
-import Footer from "../Components/Footer";
+import Footer from "../Components/Footer"; 
 import Button from "../_component/Button";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoHomeOutline } from "react-icons/io5";
-import { FaIndianRupeeSign, FaRupeeSign } from "react-icons/fa6";
+import { FaIndianRupeeSign } from "react-icons/fa6";
 import ListingCard from "../_component/ListingCard";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
 import {
   getavailableProperties,
   getPropertyByAdvanceSearch,

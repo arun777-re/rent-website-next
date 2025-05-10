@@ -52,27 +52,7 @@ const Buy = () => {
       });
   }, [dispatch,value]);
 
-  // handling  fallback
-  if (!properties || properties.length === 0) {
-    return (
-      <section className="max-w-screen w-full mx-auto h-auto relative">
-        <div className="h-auto px-4 md:px-20 lg:px-30 py-20 flex flex-col gap-10 relative">
-          <article className="flex flex-col items-center">
-            <h3 className="">Featured Properties</h3>
-            <p className="text-gray-700/60 text-md">
-              A great platform to buy and sell your properties without any agent
-              or commisions.
-            </p>
-          </article>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[...Array(6)].map((_, index) => (
-              <PropertySkeleton key={index} />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
+
 
   return (
     <div className="max-w-screen w-full h-auto relative mx-auto inset-0">
@@ -111,24 +91,46 @@ const Buy = () => {
           </button>
         </form>
       </div>
-      <div className="flex flex-col max-w-screen-xl w-full overflow-hidden relative mx-auto px-4 md:px-20 lg:px-30">
-        <article className="flex flex-col gap-0 items-center text-center pt-20">
-          <h3 className="font-semibold  text-gray-800">Featured Properties</h3>
-          <p className="max-w-md">
-            A great platform to buy and sell your properties without any agent
-            or commissions.
-          </p>
-        </article>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 grid-rows-auto gap-8 py-20 w-full h-auto">
-          {propertyBySearch?.length > 0
-            ? propertyBySearch.map((prprty, index) => {
-                return <PropertyCard key={index} {...prprty} />;
-              })
-            : properties.map((prprty, index) => {
-                return <PropertyCard key={index} {...prprty} />;
-              })}
-        </div>
-      </div>
+      {
+        !properties || properties.length === 0 ? (
+          <section className="max-w-screen w-full mx-auto h-auto relative">
+          <div className="h-auto px-4 md:px-20 lg:px-30 py-20 flex flex-col gap-10 relative">
+            <article className="flex flex-col items-center">
+              <h3 className="">Featured Properties</h3>
+              <p className="text-gray-700/60 text-md">
+                A great platform to buy and sell your properties without any agent
+                or commisions.
+              </p>
+            </article>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[...Array(6)].map((_, index) => (
+                <PropertySkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+        ):(
+          <section className="flex flex-col max-w-screen-xl w-full overflow-hidden relative mx-auto px-4 md:px-20 lg:px-30">
+          <article className="flex flex-col gap-0 items-center text-center pt-20">
+            <h3 className="font-semibold  text-gray-800">Featured Properties</h3>
+            <p className="max-w-md">
+              A great platform to buy and sell your properties without any agent
+              or commissions.
+            </p>
+          </article>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 grid-rows-auto gap-8 py-20 relative w-full h-auto">
+            {propertyBySearch?.length > 0
+              ? propertyBySearch.map((prprty, index) => {
+                  return <PropertyCard key={index} {...prprty} />;
+                })
+              : properties.map((prprty, index) => {
+                  return <PropertyCard key={index} {...prprty} />;
+                })}
+          </div>
+        </section>
+        )
+      }
+    
       <HowItWorks paddingtop={false}/>
       <Footer />
     </div>
