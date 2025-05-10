@@ -110,7 +110,7 @@ const Buy = () => {
           </div>
         </section>
         ):(
-          <section className="flex flex-col max-w-screen-xl w-full overflow-hidden relative mx-auto px-4 md:px-20 lg:px-30">
+          <section className="flex flex-col max-w-screen w-full overflow-hidden relative mx-auto px-4 md:px-20 lg:px-30">
           <article className="flex flex-col gap-0 items-center text-center pt-20">
             <h3 className="font-semibold  text-gray-800">Featured Properties</h3>
             <p className="max-w-md">
