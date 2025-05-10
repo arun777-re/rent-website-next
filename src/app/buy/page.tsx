@@ -118,7 +118,7 @@ const Buy = () => {
               or commissions.
             </p>
           </article>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 grid-rows-auto gap-8 py-20 relative w-full h-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 grid-rows-auto gap-8 py-20 relative max-w-screen w-full h-auto">
             {propertyBySearch?.length > 0
               ? propertyBySearch.map((prprty, index) => {
                   return <PropertyCard key={index} {...prprty} />;
