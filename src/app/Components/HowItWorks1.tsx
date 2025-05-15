@@ -26,8 +26,8 @@ const works1 = [
 ];
 const HowItWorks1 = () => {
   return (
-    <section className="max-w-screen relative w-full h-auto bg-white pt-20 pb-10">
-    <div className="flex-row flex items-center justify-between relative w-full gap-10 px-4 md:px-20 lg:px-30">
+    <section className="max-w-screen relative w-full h-auto bg-white pt-14 sm:pt-20 pb-20sm:pb-10">
+    <div className="flex-row flex flex-wrap items-center justify-center sm:justify-between relative w-full gap-10 px-4 md:px-20 lg:px-30">
       {works1.map((item, index) => {
         return (
           <figure

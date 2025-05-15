@@ -46,7 +46,7 @@ const Testimonials = () => {
     stopOnMouseEnter:true
 }),[]) 
   return (
-     <section className="max-w-screen w-full relative h-auto">
+     <section className="max-w-screen w-full relative h-auto hide-scrollbar">
           <div className="h-auto px-4 md:px-20 lg:px-30 xl:px-30 pb-16 sm:pb-20 flex flex-col items-center gap-10 relative w-full">
             <article className="text-center">
               <h3 className="">What Our Client Say ?</h3>

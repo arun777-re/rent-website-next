@@ -28,9 +28,9 @@ const MapComponent:React.FC<locationProps> = ({
       });
   return (
     <section className="contact-us-map" style={{ width: '100%'
-      ,height:height ? height :'80vh'
+      ,height:height ? height :'60vh'
     }}>
-      <MapContainer style={{ height: '100%', width: '100%' }} center={[28.877383, 76.913158]} zoom={16}>
+      <MapContainer style={{ height: '100%', width: '100%' }} center={[latitude ?? 28.877383, longitude ?? 76.913158]} zoom={16}>
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
