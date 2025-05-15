@@ -107,7 +107,7 @@ const safeLocation = category as string;
     <div className="mx-auto max-w-screen w-full h-auto inset-0 overflow-x-hidden hide-scrollbar">
       <Navbar color="gray-400" />
       <Banner heading="List View Layout" image={"/images/prprty-2.jpg"} />
-      <section className="max-w-screen-xl relative w-full h-auto">
+      <section className="max-w-screen relative w-full h-auto">
         <div className="relative px-4 md:px-20 lg:px-30 z-0">
           <Formik initialValues={initialValues} onSubmit={handleOnSubmit}>
             {({
