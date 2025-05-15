@@ -34,7 +34,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   const handleFavorate = (
     e: React.MouseEvent<HTMLButtonElement | SVGElement>
   ) => {
-    e.stopPropagation(); // 🚫 prevent card click
+    e.stopPropagation();
     setActive((prev) => !prev);
     dispatch(addFavorate({ propertyId: _id, type: "liked" })).unwrap();
     dispatch(createInteraction({ type: "click", propertyId: _id })).unwrap();
@@ -42,7 +42,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
   return (
     <Card
-      className={clsx("w-full sm:w-[100vw] md:w-full lg:w-[38vw] h-auto sm:h-[224px] bg-white shadow hover:drop-shadow-2xl cursor-pointer transition-all duration-300 rounded-lg overflow-hidden"
+      className={clsx("w-full  md:w-full lg:w-[38vw] h-auto sm:h-[224px] bg-white shadow hover:drop-shadow-2xl cursor-pointer transition-all duration-300 rounded-lg overflow-hidden"
       )}
     >
       <figure
@@ -52,7 +52,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           "items-center relative w-full h-full"
         )}
       >
-        <div className="relative w-full sm:w-[40%] h-[29vh] sm:h-full overflow-hidden rounded-t-lg sm:rounded-l-lg">
+        <div className="relative w-full sm:w-[40%] h-[360px] sm:h-full overflow-hidden rounded-t-lg sm:rounded-l-lg">
           <Image
             src={images?.[0] || "/images/banner-main-1.jpg"}
             alt="property image"
@@ -63,7 +63,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           />
         </div>
 
-        <figcaption className="w-full sm:w-[60%] h-full flex flex-col justify-between px-4 sm:px-6 py-4 space-y-4">
+        <figcaption className="w-full sm:w-[56%] h-full flex flex-col justify-between px-4 sm:px-6 py-4">
           <Link href={`/property-detail/${slug}`} className="block">
             <h4 className="font-medium text-base md:text-lg text-gray-900 tracking-wide hover:text-first cursor-pointer transition-colors duration-300 line-clamp-2">
               {title || "No title available"}
@@ -91,7 +91,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
           <div className="flex justify-between items-end pt-2">
             <article>
-              <h5 className="text-xs text-gray-500 font-medium">Price</h5>
+              <h5 className="text-xs text-gray-500 font-medium">Price:&nbsp;Rs</h5>
               <p className="text-base font-semibold text-gray-800">{price}</p>
             </article>
             <article className="text-right">

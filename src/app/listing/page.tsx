@@ -228,7 +228,7 @@ const ListingPage = () => {
           </Formik>
         </div>
       </section>
-      <section className="relative py-20 max-w-screen-xl w-full">
+      <section className="relative py-20 max-w-screen w-full">
         <div className="w-full px-4 md:px-20 lg:px-30">
           {properties.length === 0 && propertyBySearch.length === 0 ? (
             <section className="max-w-screen w-full mx-auto h-auto relative">
@@ -239,8 +239,8 @@ const ListingPage = () => {
               </div>
             </section>
           ) : (
-            <section className="max-w-screen  w-full mx-auto h-auto relative ">
-              <div className="w-full flex flex-row flex-wrap items-center gap-11">
+            <section className="max-w-screen w-full mx-auto h-auto relative ">
+              <div className="w-full grid grid-cols-1 lg:grid-cols-2 grid-rows-auto gap-8 lg:gap-11 basis-1/1 md:basis-1/2">
                 {(isSearch ? propertyBySearch : properties).map((i, k) => (
                   <ListingCard key={k} {...i} />
                 ))}

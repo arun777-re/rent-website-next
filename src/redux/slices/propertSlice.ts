@@ -237,9 +237,7 @@ export const getPropertyByCategory = createAsyncThunk(
           "Failed Operation Get Property By Category"
         );
       }
-      if (response.status === 200) {
         return response.json();
-      }
     } catch (error: any) {
       console.error(error);
       return rejectWithValue("Error during fetch property by search");
@@ -268,7 +266,8 @@ SearchParams,{rejectValue:string}>(
       if (!response.ok) {
         return rejectWithValue(errData.message) || "Failed Operation Get User";
       }
-        return errData;
+
+      return errData;
     } catch (error: any) {
       console.error(error);
       return rejectWithValue("Error during fetch property by search");

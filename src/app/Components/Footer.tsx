@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useCallback } from "react";
 import Button from "../_component/Button";
 import { TbPhoneCalling } from "react-icons/tb";
 import { CiLocationOn, CiMail} from "react-icons/ci";
@@ -13,22 +13,22 @@ import Link  from "next/link";
 
 const Footer = () => {
   const router = usePathname();
+  const redirect = useRouter();
 
-  const Handlecontact = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const Handlecontact = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const redirect = useRouter();
     redirect.push('/contact')
-  };
+  },[router]);
   return (
     <section className="relative max-w-screen w-full mx-auto ">
-      <div className="relative w-full flex flex-col pt-5">
+      <div className="relative w-full flex flex-col pt-2 sm:pt-5">
         <article
           className={`relative flex flex-col text-center gap-4 items-center justify-center px-4 sm:px-20 ${
             router === "/contact" ? "hidden" : "visible"
           }`}
         >
           <h3 className="font-medium mb-2">Have Questions ? Get in Touch!</h3>
-          <p className="leading-loose w-full sm:w-[40vw] lg:w-[36vw]">
+          <p className="leading-loose tracking-wide w-full sm:w-[40vw] lg:w-[36vw]">
             A great plateform to buy and sell your properties without any agent
             or commisions.
           </p>
@@ -45,17 +45,17 @@ const Footer = () => {
           <div className=" w-full h-auto mx-auto relative  mt-20 rounded-lg px-4 md:px-20 lg:px-[7.5rem]">
             <div className="relative p-4 sm:p-10 flex flex-col lg:flex-row gap-6 lg:gap-0 items-center justify-between shadow-2xl z-30 rounded-lg bg-white ">
               <article className="flex flex-col md:text-center">
-                <h3 className="text-2xl font-medium text-gray-800">
+                <h3 className="text-2xl font-medium text-gray-800 text-center sm:text-start">
                   Subscribe to our Newsletter!
                 </h3>
-                <p className="leading-loose tracking-wider">
+                <p className="leading-loose tracking-wide text-center lg:text-start">
                   Subscribe to get latest updates and information.
                 </p>
               </article>
               <form
                 action=""
                 method="post"
-                className="flex flex-col sm:flex-row items-center justify-center relative gap-4 w-full lg:w-[40%]"
+                className="flex flex-col md:flex-row items-center justify-center relative gap-4 w-full lg:w-[40%]"
               >
                 <input
                   type="email"
@@ -63,7 +63,7 @@ const Footer = () => {
                   id="email"
                   placeholder="Enter your email"
                   className="w-full
-    h-10 px-4 border border-gray-400 rounded-full border-none placeholder:text-sm
+    h-10 px-4 border border-gray-400 rounded-full border-none placeholder:text-sm placeholder:text-center
     shadow focus:outline-none focus:border-green-600"
                 />
                 <Button

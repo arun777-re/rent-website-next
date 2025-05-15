@@ -2,17 +2,19 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Navbar from "@/app/Components/Navbar";
 import Banner from "@/app/Components/Banner";
-import Footer from "@/app/Components/Footer";
+import Footer from "@/app/Components/Footer"; 
 import Button from "@/app/_component/Button";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoHomeOutline } from "react-icons/io5";
-import { FaIndianRupeeSign} from "react-icons/fa6";
+import { FaIndianRupeeSign } from "react-icons/fa6";
 import ListingCard from "@/app/_component/ListingCard";
-import { useDispatch} from "react-redux";
-import { AppDispatch} from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
 import {
+  getavailableProperties,
   getPropertyByAdvanceSearch,
   getPropertyByCategory,
+  getPropertyByHome,
   PropertyItem,
 } from "@/redux/slices/propertSlice";
 import {
@@ -33,12 +35,12 @@ export interface FormValues {
 const initialValues: FormValues = {
   title: "",
   category: "",
-  price:0,
+  price: 0,
   location: "",
 };
 
 // here api will be fetched based on the search query one is from home page and other is from same page
-const ListingByCategory = () => {
+const ListingByHomeSearch = () => {
   const [propertyBySearch, setPropertyBySearch] = useState<PropertyItem[]>([]);
   const [properties, setProperties] = useState<PropertyItem[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
@@ -48,11 +50,12 @@ const ListingByCategory = () => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
   // number of items per page
 
-  const {category} = useParams();
+const {category} = useParams();
 const safeLocation = category as string;
+
   // when component loads then fetch api to get available properties here
   useEffect(() => {
-    dispatch(getPropertyByCategory({ category:safeLocation,page: currentPage, limit }))
+    dispatch(getPropertyByCategory({category:safeLocation,page: currentPage, limit }))
       .unwrap()
       .then((res) => {
         setProperties(res?.data);
@@ -68,7 +71,7 @@ const safeLocation = category as string;
       try {
         const formData: {
           title?: string;
-          price?:number;
+          price?: number;
           category?: string;
           location?: string;
         } = {};
@@ -101,14 +104,15 @@ const safeLocation = category as string;
   );
 
   return (
-    <div className="mx-auto w-full h-auto flex flex-col items-center inset-0 overflow-x-hidden hide-scrollbar">
+    <div className="mx-auto max-w-screen w-full h-auto inset-0 overflow-x-hidden hide-scrollbar">
       <Navbar color="gray-400" />
       <Banner heading="List View Layout" image={"/images/prprty-2.jpg"} />
       <section className="max-w-screen-xl relative w-full h-auto">
-        <div className="relative px-30 z-0">
+        <div className="relative px-4 md:px-20 lg:px-30 z-0">
           <Formik initialValues={initialValues} onSubmit={handleOnSubmit}>
             {({
               values,
+              errors,
               handleSubmit,
               handleBlur,
               handleChange,
@@ -121,7 +125,7 @@ const safeLocation = category as string;
                 method="post"
                 className="w-full px-5 py-5 z-3000 shadow-lg rounded-lg space-y-6 -mt-14 bg-white"
               >
-                <div className="w-full relative flex flex-row gap-4 basis-1/4">
+                <div className="w-full relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 basis-1/1 md:basis:1/2 lg:basis-1/4">
                   <article className="relative flex flex-col gap-2">
                     <label
                       htmlFor="search-input"
@@ -230,10 +234,10 @@ const safeLocation = category as string;
           </Formik>
         </div>
       </section>
-      <section className="relative py-20 max-w-screen-xl w-full">
-        <div className="flex flex-row flex-wrap items-center justify-center sm:px-6 md:px-8 lg:px-30 xl:px-30 gap-4 lg:gap-10">
+      <section className="relative py-20 max-w-screen w-full">
+        <div className="w-full px-4 md:px-20 lg:px-30">
           {properties.length === 0 && propertyBySearch.length === 0 ? (
-            <section className="max-w-[100vw] w-full mx-auto h-auto relative">
+            <section className="max-w-screen w-full mx-auto h-auto relative">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[...Array(6)].map((_, index) => (
                   <PropertySkeleton key={index} />
@@ -241,9 +245,13 @@ const safeLocation = category as string;
               </div>
             </section>
           ) : (
-            (isSearch ? propertyBySearch : properties).map((i, k) => {
-              return <ListingCard key={k} {...i} />;
-            })
+            <section className="max-w-screen w-full mx-auto h-auto relative ">
+              <div className="w-full grid grid-cols-1 lg:grid-cols-2 grid-rows-auto gap-8 lg:gap-11 basis-1/1 md:basis-1/2">
+                {(isSearch ? propertyBySearch : properties).map((i, k) => (
+                  <ListingCard key={k} {...i} />
+                ))}
+              </div>
+            </section>
           )}
         </div>
       </section>
@@ -280,4 +288,4 @@ const safeLocation = category as string;
   );
 };
 
-export default ListingByCategory;
+export default ListingByHomeSearch;

@@ -37,21 +37,22 @@ const HowItWorks: React.FC<HowItW> = ({ paddingtop=false }) => {
         <section className="relative max-w-screen w-full h-auto bg-white inset-0">
           <div
         className={clsx(
-            "relative w-full flex flex-col items-center justify-center gap-6 md:gap-8 lg:gap-15 px-4 md:px-20 lg:px-30 xl:px-30 pb-16 lg:pb-20",
+            "relative w-full flex flex-col items-center justify-center gap-8 md:gap-10 lg:gap-15 px-4 md:px-20 lg:px-30 xl:px-30 pb-16 lg:pb-20",
             {
-              "pt-20": paddingtop, // Apply pt-20 if paddingtop is true
-              "pt-0": !paddingtop, // Apply pt-0 if paddingtop is false
+              "md:pt-20": paddingtop,
+              "pt-0": !paddingtop,
+              "pt-16":paddingtop
             }
           )}
           >
             <article className="flex flex-col items-center">
               <h3 className="">How It Works</h3>
-              <p className=" w-full lg:w-140 text-center leading-loose tracking-wider">
+              <p className=" w-full lg:w-140 text-center leading-loose tracking-wider max-w-md">
                 A great platform to buy and sell your properties without any
                 agent or commisions.
               </p>
             </article>
-            <div className="relative w-full flex-row flex items-center justify-between flex-wrap ">
+            <div className="relative w-full flex-row flex items-center justify-between flex-wrap gap-6 md:gap-10">
               {works.map((item, index) => {
                 return (
                   <figure

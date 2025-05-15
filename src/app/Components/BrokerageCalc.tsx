@@ -10,17 +10,17 @@ const BrokerageCalc = () => {
         AOS.refresh(); // tells AOS to recalculate all positions
       }, []);
   return (
-    <section className='relative h-auto w-full pb-16 sm:pb-20 max-w-screen'>
+    <section className='relative h-auto w-full pb-16 md:pb-20 max-w-screen'>
         <div  className="flex flex-col items-center justify-center px-4">
             <article className="order-0 text-center">
                 <h3>Brokerage Calculator</h3>
                 <p className="max-w-lg tracking-wide leading-loose">A great plateform to buy,sell and rent your properties without any agent or commissions</p>
             </article>
-            <div data-aos='zoom-in' className="p-6 max-w-2xl rounded-lg relative w-full mt-16 border-[2px] border-gray-100">
+            <div data-aos='zoom-in' className="p-6 max-w-2xl rounded-lg relative w-full mt-12 md:mt-16 border-[2px] border-gray-100">
               <form action="" className=''>
-                <article className="w-full flex flex-row items-center justify-between">
-                    <h4>Min Rs 1000000</h4>
-                    <h4>Min Rs 100000000</h4>
+                <article className="w-full flex flex-row items-center justify-between gap-20">
+                    <h4 className=''>Min Rs 1000000</h4>
+                    <h4 className=''>Max Rs 100000000</h4>
 
                 </article>
                 <input type="range" className='w-full outline-none border-none mt-2' 
@@ -29,14 +29,14 @@ const BrokerageCalc = () => {
                 value={value}
                 />
               </form>
-              <article className="w-full flex flex-col sm:flex-row items-center justify-center sm:justify-between space-y-4 sm:space-y-0 py-4">
+              <article className="w-full flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-0 py-4">
                 <div className='text-center space-y-2 sm:space-y-0 sm:items-start'>
                     <h4>Total Value (Rs)</h4>
                     <p className='text-first'>Rs&nbsp;{value}</p>
                 </div>
                 <div  className='text-center space-y-2 sm:space-y-0 sm:items-start'>
                     <h4>Brokerage Fee (Rs)</h4>
-                    <p className='text-first'>Rs&nbsp;{value && value/100}</p>
+                    <p className='text-first'>Rs&nbsp;{value && value/10}</p>
                 </div>
               </article>
             </div>
