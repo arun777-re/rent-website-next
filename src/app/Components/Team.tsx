@@ -33,15 +33,15 @@ const Team = () => {
   ];
 
   return (
-    <section className="max-w-screen-xl w-full relative h-auto">
-      <div className="h-auto px-30 py-20 flex flex-col gap-10 relative">
+    <section className="max-w-screen w-full relative h-auto ">
+      <div className="h-auto px-4 md:px-20 lg:px-30 py-20 flex flex-col gap-10 relative">
         <article className="flex flex-col items-center">
           <h3 className="">Meet The Agent Team</h3>
-          <p className="text-gray-700/60 text-md">
+          <p className="text-gray-700/60 text-md leading-loose text-center tracking-wide">
             A great platform to buy and sell your properties without any agent
             or commisions.
           </p>
-          <div className="w-full relative flex flex-row items-center justify-between pt-18">
+          <div className="w-full relative flex flex-row flex-wrap items-center justify-center sm:justify-between gap-10 pt-18">
             {teamData &&
               teamData.map((i, k) => {
                 return (

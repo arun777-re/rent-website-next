@@ -47,15 +47,15 @@ const Testimonials = () => {
 }),[]) 
   return (
      <section className="max-w-screen w-full relative h-auto">
-          <div className="h-auto px-4 md:px-20 lg:px-30 xl:px-30 pb-20 flex flex-col items-center gap-10 relative w-full">
+          <div className="h-auto px-4 md:px-20 lg:px-30 xl:px-30 pb-16 sm:pb-20 flex flex-col items-center gap-10 relative w-full">
             <article className="text-center">
               <h3 className="">What Our Client Say ?</h3>
-              <p className={"text-gray-700/60 text-md"}>
+              <p className={"text-gray-700/60 text-md tracking-wide leading-loose"}>
                 A great platform to buy and sell your properties without any agent
                 or commisions.
               </p>
             </article>
-              <div className="w-full relative flex flex-row items-center justify-center pt-8">
+              <div className="w-full relative flex flex-row items-center justify-center pt-4 sm:pt-8">
                 <Carousel plugins={[autoPlay]} className="w-full md:w-2/5">
                <CarouselContent>
                 {testimData && testimData.map((i,k)=>{
