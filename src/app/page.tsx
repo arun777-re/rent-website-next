@@ -14,7 +14,7 @@ export default function Home() {
     <Navbar headColor="gray-800" color="gray-800" hoverColor="first"/>
     <Banner/>
     <ListingCategory/>
-    <HowItWorks/>
+    <HowItWorks paddingtop={false}/>
     <FeaturedProperties/>
     <Testimonials/>
     <Footer/>
