@@ -476,7 +476,6 @@ export const getAllProperty = createAsyncThunk(
           rejectWithValue(errData.message) || "Failed Operation Get Property"
         );
       }
-      console.log("errordataaaaaaaaaaa", errData);
 
       return errData;
     } catch (error: any) {

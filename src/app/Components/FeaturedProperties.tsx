@@ -78,7 +78,7 @@ useEffect(() => {
           <h3 className="">
             Featured Properties
           </h3>
-          <p className="text-gray-700/60 text-md">
+          <p className="text-gray-700/60 text-md tracking-wide leading-loose text-center">
             A great platform to buy and sell your properties without any agent
             or commisions.
           </p>
