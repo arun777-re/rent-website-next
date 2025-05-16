@@ -6,8 +6,8 @@ import { MdOutlineAddHomeWork } from "react-icons/md";
 import { RiHomeHeartFill } from "react-icons/ri";
 import Image from "next/image";
 
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import { useDispatch} from "react-redux";
+import { AppDispatch} from "@/redux/store";
 import { getUser, UserProps } from "@/redux/slices/userSlice";
 import LastActivity from "@/app/Components/user/LastActivity";
 import ViewFavorate from "@/app/Components/user/ViewFavorate";
@@ -94,7 +94,7 @@ const UserDashboard = () => {
               </div>
             </div>
           </div>
-          <div className="relative w-full h-auto px-6 py-6 bg-gray-300/20 overflow-y-scroll overflow-x-hidden">
+          <div className="relative w-full h-auto px-6 py-6 bg-gray-300/20 overflow-y-scroll hide-scrollbar overflow-x-hidden">
             {page === "interaction" && <LastActivity />}
             {page === "favorate" && <ViewFavorate />}
           </div>
