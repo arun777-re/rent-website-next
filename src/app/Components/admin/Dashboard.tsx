@@ -49,6 +49,7 @@ const Dashboard = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
+  // get sold properties when component loads
   useEffect(() => {
     dispatch(getSoldProperties({ page: 1, limit:2 }))
       .unwrap()
@@ -57,6 +58,7 @@ const Dashboard = () => {
         setSold(items);
       });
   }, [dispatch]);
+  // get all properties when component loads
   useEffect(() => {
     dispatch(getAllProperty({ page: 1, limit: 10 }))
       .unwrap()
@@ -65,6 +67,7 @@ const Dashboard = () => {
         setAllProperties(items);
       });
   }, [dispatch]);
+  // get active users when component loads
   useEffect(() => {
     dispatch(getActiveUsers())
       .unwrap()
@@ -73,8 +76,10 @@ const Dashboard = () => {
         setActive(items);
       });
   }, [dispatch]);
+
+  // get rented properties when component loads
   useEffect(() => {
-    dispatch(getRentedProperties({ page: 6, limit: 10 }))
+    dispatch(getRentedProperties({ page:1, limit: 10 }))
       .unwrap()
       .then((res) => {
         const items = res.dataLength ?? 0;
@@ -82,6 +87,7 @@ const Dashboard = () => {
       });
   }, [dispatch]);
 
+  // get total revenue when component loads
   useEffect(() => {
     dispatch(getTotalRevenue())
       .unwrap()

@@ -21,7 +21,6 @@ try {
     if(properties.length === 0){
         return createResponse('No available Properties to show',true,200,[])
     }
-    console.log('properties',properties);
 
     return createResponse('Fetched rented Properties are',true,200,properties,totalPages,totalItems)
 } catch (error:any) {
