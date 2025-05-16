@@ -97,7 +97,7 @@ const Buy = () => {
           <div className="h-auto px-4 md:px-20 lg:px-30 py-20 flex flex-col gap-10 relative">
             <article className="flex flex-col items-center">
               <h3 className="">Featured Properties</h3>
-              <p className="text-gray-700/60 text-md leading-loose tracking-wide">
+              <p className="text-gray-700/60 text-md leading-loose tracking-wide text-center">
                 A great platform to buy and sell your properties without any agent
                 or commisions.
               </p>
@@ -113,7 +113,7 @@ const Buy = () => {
           <section className="flex flex-col max-w-screen w-full overflow-hidden relative mx-auto px-4 md:px-20 lg:px-30">
           <article className="flex flex-col gap-0 items-center text-center pt-20">
             <h3 className="font-semibold  text-gray-800">Featured Properties</h3>
-            <p className="max-w-md leading-loose tracking-wide">
+            <p className="max-w-md leading-loose tracking-wide text-center">
               A great platform to buy and sell your properties without any agent
               or commissions.
             </p>
