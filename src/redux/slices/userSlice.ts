@@ -428,6 +428,9 @@ const userSlice = createSlice({
             lastName: "",
           },
         };
+        state.interaction = null;
+        state.notification = null;
+        state.success = false;
       })
       .addCase(logoutuser.rejected, (state, action) => {
         state.success = false;

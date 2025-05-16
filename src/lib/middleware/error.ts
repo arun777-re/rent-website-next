@@ -26,7 +26,8 @@ export const createResponse = (
   status: number,
   data?: any,
   totalPages?: number,
-  dataLength?: number
+  dataLength?: number,
+  totalRevenue?:number
 ) => {
   return NextResponse.json(
     {
@@ -35,6 +36,7 @@ export const createResponse = (
       data,
       totalPages,
       dataLength,
+      totalRevenue
     },
     { status }
   );

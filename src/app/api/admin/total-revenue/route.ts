@@ -12,7 +12,10 @@ export async function GET(req: NextRequest) {
     return authResult;
   }
   try {
-    const soldItems = await Property.find({ status: "sold" });
+    const filter = {
+      status:'sold'
+    }
+    const soldItems = await Property.find(filter);
     if (soldItems.length === 0) {
       return createResponse("No Property sold yet", true, 200, [], 0, 0);
     }
@@ -26,6 +29,7 @@ export async function GET(req: NextRequest) {
       true,
       200,
       soldItems,
+      0,
       soldItems.length,
       totalRevenue
     );
