@@ -257,7 +257,6 @@ const Navbar: React.FC<navProps> = ({
         {mobileOpen && (
           <div className="mt-3 space-y-1">
             {[
-              "Dashboard",
               "Buy",
               "Sell",
               "listing",
@@ -267,15 +266,16 @@ const Navbar: React.FC<navProps> = ({
               <a
                 key={item}
                 href={
-                  item === "Dashboard"
-                    ? "/user/user-dashboard"
-                    : `/${item.toLowerCase()}`
+                  item = `/${item.toLowerCase()}`
                 }
                 className="block px-3 py-2 rounded-md text-base font-medium text-slate-400 hover:text-white hover:bg-gray-700"
               >
                 {item}
               </a>
             ))}
+            <button onClick= {handleUserDashboard} className="block px-3 py-2 rounded-md text-base font-medium text-slate-400 hover:text-white hover:bg-gray-700">
+              Dashboard
+            </button>
             <button
               onClick={handleLogout}
               className="block w-full px-3 py-2 rounded-md text-base font-medium text-white bg-green-600 hover:bg-green-700"
