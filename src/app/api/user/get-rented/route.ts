@@ -13,11 +13,16 @@ export async function GET(req:NextRequest,res:NextResponse){
        return authResult;
      }
 try {
-    const {totalItems,skip,totalPages,limit} = await paginationFunc(req.nextUrl.searchParams,Property);
-    const properties = await Property.find({status:'rented'}).sort({createdAt:-1}).skip(skip).limit(limit);
+    const filter = {
+        status:'rented'
+    }
+    const {totalItems,skip,totalPages,limit} = await paginationFunc(req.nextUrl.searchParams,Property,filter);
+    const properties = await Property.find(filter).sort({createdAt:-1}).skip(skip).limit(limit);
     if(properties.length === 0){
         return createResponse('No available Properties to show',true,200,[])
     }
+    console.log('properties',properties);
+
     return createResponse('Fetched rented Properties are',true,200,properties,totalPages,totalItems)
 } catch (error:any) {
     console.error(error.message);

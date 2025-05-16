@@ -22,8 +22,9 @@ export async function GET(req: NextRequest) {
 
     const totalRevenue = soldItems.reduce((sum, property) => {
       return sum + (property.price || 0);
-    });
+    },0);
 
+    // Return the total revenue along with the sold items
     return createResponse(
       "Total revenue fetched successfully",
       true,

@@ -15,11 +15,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
     return authResult;
   }
   try {
+    const filter ={
+      status:'sold'
+    }
     const { skip, totalPages, limit, totalItems } = await paginationFunc(
       req.nextUrl.searchParams,
-      Property
+      Property,filter
     );
-    const properties = await Property.find({ status: "sold" })
+    const properties = await Property.find(filter)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);

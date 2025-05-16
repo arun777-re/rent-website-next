@@ -50,7 +50,7 @@ const Dashboard = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(getSoldProperties({ page: 6, limit: 10 }))
+    dispatch(getSoldProperties({ page: 1, limit:2 }))
       .unwrap()
       .then((res) => {
         const items = res.dataLength ?? 0;
@@ -86,7 +86,7 @@ const Dashboard = () => {
     dispatch(getTotalRevenue())
       .unwrap()
       .then((res) => {
-        const items = res.dataLength ?? 0;
+        const items = res.totalRevenue ?? 0;
         setRevenue(items);
       });
   }, [dispatch]);
