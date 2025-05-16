@@ -37,15 +37,14 @@ const Navbar: React.FC<navProps> = ({
     const handleScroll = () => {
       setScroll(window.scrollY > 0);
     };
-  
+
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); 
-  
+    handleScroll();
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, [window.scrollY]);
-  
-  
 
+  // handle signup logic
   const handleSignUp = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
@@ -54,6 +53,7 @@ const Navbar: React.FC<navProps> = ({
     [router]
   );
 
+  // handle logout logic
   const handleLogout = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
@@ -70,6 +70,7 @@ const Navbar: React.FC<navProps> = ({
   const handleUserDashboard = useCallback(
     (e: React.MouseEvent<SVGElement>) => {
       e.preventDefault();
+      console.log(user?.success)
       if (user && user?.success === true) {
         router.push("/user/user-dashboard");
       } else {
@@ -91,12 +92,12 @@ const Navbar: React.FC<navProps> = ({
 
   return (
     <>
-      <nav       
+      <nav
         className={clsx(`hidden md:block scroll-smooth fixed top-0 left-0 max-w-screen w-full z-50
    ${scroll ? "bg-white" : "bg-transparent"}
            dark:bg-gray-900 fixed ${
-            scroll ? "backdrop-blur-3xl" : "bg-transparent"
-          }  w-full z-1000 top-0
+             scroll ? "backdrop-blur-3xl" : "bg-transparent"
+           }  w-full z-1000 top-0
            start-0  dark:border-gray-600 transition-all duration-300 ${
              scroll ? "shadow-md" : "shadow-none"
            }`)}
@@ -226,29 +227,28 @@ const Navbar: React.FC<navProps> = ({
                 />
               </svg>
             ) : (
-              <div className='flex flex-row items-center gap-2'
-              >
-                  <Link
-                  href={'/user/auth-login'}
+              <div className="flex flex-row items-center gap-2">
+                <Link
+                  href={"/user/auth-login"}
                   className="md:px-4 md:py-2 lg:px-5 lg:py-2 underline cursor-pointer
                 hover:bg-green-700 
                 text-first"
                 >
                   Signup
                 </Link>
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                />
-              </svg>
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  />
+                </svg>
               </div>
             )}
           </button>
@@ -263,16 +263,25 @@ const Navbar: React.FC<navProps> = ({
               "listing",
               "About",
               "Contact",
-              "Logout",
             ].map((item) => (
               <a
                 key={item}
-                href={item === 'Dashboard' ? '/user/user-dashboard' : `/${item.toLowerCase()}`}
+                href={
+                  item === "Dashboard"
+                    ? "/user/user-dashboard"
+                    : `/${item.toLowerCase()}`
+                }
                 className="block px-3 py-2 rounded-md text-base font-medium text-slate-400 hover:text-white hover:bg-gray-700"
               >
                 {item}
               </a>
             ))}
+            <button
+              onClick={handleLogout}
+              className="block w-full px-3 py-2 rounded-md text-base font-medium text-white bg-green-600 hover:bg-green-700"
+              >
+                Logout
+              </button>
           </div>
         )}
       </nav>

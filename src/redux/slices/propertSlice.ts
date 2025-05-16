@@ -275,7 +275,7 @@ SearchParams,{rejectValue:string}>(
   }
 );
 
-// get property by home search
+// get property by advance search
 export const getPropertyByAdvanceSearch = createAsyncThunk(
   "property/advancesearch",
   async (data:SearchParams,{ rejectWithValue }) => {
