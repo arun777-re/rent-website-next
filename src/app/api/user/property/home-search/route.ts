@@ -16,9 +16,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const auth = await verifyAccess(req, res);
     if (auth instanceof NextResponse) {
       user = auth;
-      return user;
     }
   } catch {
+    console.warn("Authentication failed or missing, continuing as guest.");
     user = null;
   }
   try {

@@ -57,7 +57,7 @@ export const paginationFunc = async (
   return { page, limit, skip, totalPages, totalItems };
 };
 
-export async function verifyAccess(req: NextRequest, res: NextResponse) {
+export async function verifyAccess(req: NextRequest, res: NextResponse):Promise<any | null> {
   const accessType = req.nextUrl.searchParams.get("access");
   if (accessType === "secure") {
     const tokenVerifier = await verifyTkn(req);
