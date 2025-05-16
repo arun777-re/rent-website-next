@@ -68,7 +68,7 @@ const Navbar: React.FC<navProps> = ({
   );
 
   const handleUserDashboard = useCallback(
-    (e: React.MouseEvent<SVGElement>) => {
+    (e: React.MouseEvent<SVGElement | HTMLButtonElement>) => {
       e.preventDefault();
       console.log(user?.success)
       if (user && user?.success === true) {
