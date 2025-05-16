@@ -124,6 +124,7 @@ export const loginAdmin = createAsyncThunk(
     }
   }
 );
+
 export const createCode = createAsyncThunk(
   "/admin/code",
   async (data: string, { rejectWithValue }) => {
@@ -150,13 +151,15 @@ export const createCode = createAsyncThunk(
     }
   }
 );
+
+// send notification to all active users
 export const sendNotification = createAsyncThunk(
   "/admin/sendNotification",
   async (formData: any, { rejectWithValue }) => {
     try {
       if (!formData) throw new Error("please provide formData");
       const res = await fetch(
-        "/api/admin/create-notification?access='secure'",
+        "/api/admin/create-notification?access=secure",
         {
           method: "POST",
           headers: {
@@ -169,7 +172,7 @@ export const sendNotification = createAsyncThunk(
       const data = await res.json();
 
       if (!res.ok) {
-        rejectWithValue(data);
+        return rejectWithValue(data?.message);
       }
       return data;
     } catch (error: any) {

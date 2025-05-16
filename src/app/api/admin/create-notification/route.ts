@@ -2,7 +2,7 @@ import Notification from "@/models/Notification";
 import User from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/db";
-import { createResponse, verifyAccess } from "@/lib/middleware/error";
+import { createResponse, verifyAccess} from "@/lib/middleware/error";
 import Pusher from "pusher";
 
 dbConnect();

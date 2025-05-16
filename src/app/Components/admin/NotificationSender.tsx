@@ -27,7 +27,13 @@ const NotificationSender = () => {
   const handleOnSubmit = useCallback(async (values: any, { resetForm }: any) => {
     try {
       dispatch(sendNotification(values)).unwrap().then((res)=>{
+        if (res) {
+          setFeedback('Notification sent successfully');
         toast.success('Notification Sent')
+
+        } else {
+          setFeedback('Failed to send notification');
+        }
       }).catch((error)=>{
         toast.error('Failed Notification')
       });
